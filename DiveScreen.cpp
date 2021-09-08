@@ -20,6 +20,8 @@ lv_obj_t* DiveScreen::lblDepth;
 lv_obj_t* DiveScreen::lblSpO2Obj;
 lv_obj_t* DiveScreen::lblHeartFrequency;
 
+Timer DiveScreen::diveTimer;
+
 void DiveScreen::setup() {
 
   screenObj = lv_obj_create(NULL, NULL);
@@ -134,6 +136,9 @@ void DiveScreen::setup() {
   imgHeartFrequencyObj = lv_img_create(contHeartFrequency, NULL);
   lv_img_set_src(imgHeartFrequencyObj, &heart_image);
   lv_obj_align(imgHeartFrequencyObj, NULL, LV_ALIGN_IN_TOP_LEFT, 8, 8);
+
+  diveTimer = Timer();
+  diveTimer.start();
 }
 
 void DiveScreen::showScreen() {
@@ -145,8 +150,14 @@ void DiveScreen::processButtonPress(ButtonType buttonType) {
 }
 
 void DiveScreen::dataUpdate() {
-  int8_t s = UISystem::currentDiveData.time % 60;
-  int8_t m = (UISystem::currentDiveData.time - s) / 60;
+  //int8_t s = UISystem::currentDiveData.time % 60;
+  //int8_t m = (UISystem::currentDiveData.time - s) / 60;
+
+  int currentTime = diveTimer.elapsedSeconds();
+
+  int32_t s = currentTime % 60;
+  int32_t m = (currentTime - s) / 60;
+
   //lv_gauge_set_value(gaugeSpO2Obj, 0, UISystem::currentDiveData.o2saturation);
   lv_arc_set_value(arcSpO2Obj, UISystem::currentDiveData.o2saturation);
   lv_label_set_text_fmt(lblTimeObj, "%02d:%02d", m, s);
