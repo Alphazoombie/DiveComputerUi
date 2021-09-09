@@ -12,7 +12,7 @@ public:
     void start()
     {
         //std::chrono::time_point<std::chrono::steady_clock, std::chrono::duration<int>> tp_start(std::chrono::duration<int>(0));
-        m_StartTime = std::chrono::steady_clock::now() - std::chrono::steady_clock::now();//std::chrono::system_clock::from_time_t(0);//std::chrono::steady_clock::duration::zero();
+        m_StartTime = std::chrono::steady_clock::now();
         m_bRunning = true;
     }
     

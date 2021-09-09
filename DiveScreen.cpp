@@ -21,6 +21,7 @@ lv_obj_t* DiveScreen::lblSpO2Obj;
 lv_obj_t* DiveScreen::lblHeartFrequency;
 
 Timer DiveScreen::diveTimer;
+//stopwatch::Stopwatch diveTimer;
 
 void DiveScreen::setup() {
 

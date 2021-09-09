@@ -3,6 +3,7 @@
 #include <SD.h>
 #include <string>
 #include <fstream>
+#include "WifiAccessGenerator.h"
 
 #define dateLength 10
 using namespace std;
@@ -14,6 +15,7 @@ public:
     const char* m_divePath PROGMEM = "/dive.log";
     const char* m_datePath PROGMEM = "/date.log";
     const char* m_sessionsPath PROGMEM = "/sessions.log";
+    const char* m_wifiDataPath PROGMEM = "/wifidata.wfd";
     static int m_diveID;
     // char m_date[9];
     // char m_oldDate[9];
@@ -29,4 +31,6 @@ public:
     void setDate(); 
     void initializeMetaData();
     void createDirectory();  
+    bool fileExists();
+    void createWifiDataFile();
 };

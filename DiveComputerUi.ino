@@ -8,9 +8,11 @@
 //#include <WiFi.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
+#include <SPI.h>
 //#include <ArduinoOTA.h>
 #include "Touch.h"
 #include "CustomTouchButton.h"
+#include "FileSystem.h"
 
 
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
@@ -18,9 +20,23 @@ static lv_disp_buf_t disp_buf;
 static lv_color_t buf[LV_HOR_RES_MAX * 10];
 const char* ssid = "23PSE";
 const char* password = "ZZZDiveZZZ";
+int m_chipSelect = 14;
 
 CustomTouchButton touchButton1, touchButton2;
 
+void initializeSD() 
+{
+    Serial.print("Initializing SD card...");
+    // see if the card is present and can be initialized:
+    SD.begin(m_chipSelect);
+    if (!SD.begin(m_chipSelect)) 
+    {
+      Serial.println("Card failed, or not present");
+      // don't do anything more:
+      while (1);
+    }
+    Serial.println(" card initialized.");
+}
 
 #if USE_LV_LOG != 0
 /* Serial debugging */
@@ -53,6 +69,7 @@ void setup()
   void SetMillis();
   Serial.begin(115200); /* prepare for possible serial debug */
   Serial.println("Booting");
+  SPI.begin(5, 19, 18);
   lv_init();
 #if USE_LV_LOG != 0
   lv_log_register_print_cb(my_print); /* register print function for debugging */
@@ -60,6 +77,8 @@ void setup()
 
   tft.begin(); /* TFT init */
   tft.setRotation(1); /* Landscape orientation */
+
+  initializeSD();
 
   uint16_t calData[5] = { 275, 3620, 264, 3532, 1 };
   tft.setTouch(calData);
@@ -82,6 +101,11 @@ void setup()
   //indev_drv.read_cb = my_touchpad_read;
   lv_indev_drv_register(&indev_drv);
 
+  delay(5000);
+
+  FileSystem fileSystem;
+  fileSystem.createWifiDataFile();
+  
   /*
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);

@@ -4,6 +4,8 @@ lv_obj_t* WifiScreen::screenObj;
 int16_t WifiScreen::selectionIndex;
 lv_obj_t* WifiScreen::buttons[4];
 lv_obj_t* WifiScreen::labelWifi;
+lv_obj_t* WifiScreen::labelWifiAccessData;
+lv_obj_t* WifiScreen::labelWifiGenerate;
 lv_style_t WifiScreen::styleSelected;
 lv_style_t WifiScreen::styleDefault;
 bool WifiScreen::wifiActive = false;
@@ -26,10 +28,13 @@ void WifiScreen::setup() {
     lv_obj_set_style_local_border_width(buttons[0], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     lv_obj_set_style_local_radius(buttons[0], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[0], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-    lv_obj_t * label1 = lv_label_create(buttons[0], NULL);
+    labelWifiAccessData = lv_label_create(buttons[0], NULL);
     //lv_obj_set_style_local_text_font(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
-    lv_obj_set_style_local_text_color(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-    lv_label_set_text(label1, "SSID");
+    lv_obj_set_style_local_text_color(labelWifiAccessData, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
+
+    String wifiAccessData = readWifiAccessData();
+
+    lv_label_set_text(labelWifiAccessData, wifiAccessData.c_str());
 
     buttons[1] = lv_btn_create(screenObj, NULL);
     lv_obj_set_pos(buttons[1], spacingX * 2 + btnWidth, spacingY);
@@ -38,10 +43,10 @@ void WifiScreen::setup() {
     lv_obj_set_style_local_border_width(buttons[1], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     lv_obj_set_style_local_radius(buttons[1], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[1], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-    lv_obj_t * label2 = lv_label_create(buttons[1], NULL);
+    labelWifiGenerate = lv_label_create(buttons[1], NULL);
     //lv_obj_set_style_local_text_font(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
-    lv_obj_set_style_local_text_color(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-    lv_label_set_text(label2, "Password");
+    lv_obj_set_style_local_text_color(labelWifiGenerate, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
+    lv_label_set_text(labelWifiGenerate, "Refresh SSID/PW");
 
     buttons[2] = lv_btn_create(screenObj, NULL);
     lv_obj_set_pos(buttons[2], spacingX, spacingY * 2 + btnHeight);
@@ -77,15 +82,19 @@ void WifiScreen::showScreen() {
 }
 
 void WifiScreen::processButtonPress(ButtonType buttonType) {
-    if(buttonType == BUTTON1) {
+    if(buttonType == BUTTON1) 
+    {
         lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
         selectionIndex++;
         selectionIndex %= 2;
         selectionIndex += 2;
         
         lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
-    } else {
-        switch(selectionIndex) {
+    } 
+    else 
+    {
+        switch(selectionIndex) 
+        {
             case 0:
                 // Bluetooth
                 break;
@@ -97,14 +106,18 @@ void WifiScreen::processButtonPress(ButtonType buttonType) {
                 if(!wifiActive)
                 {
                   lv_label_set_text(labelWifi, "Wifi [on]");
+                
+                  String newWifiAccessData = "SSID: " + WifiAccessGenerator::generateSsid() + "\n" +
+                                             "Password: " + WifiAccessGenerator::generatePassword();
+
+                  lv_label_set_text(labelWifiAccessData, newWifiAccessData.c_str());
                   wifiActive = true;
                 }
                 else
                 {
                   lv_label_set_text(labelWifi, "Wifi [off]");
                   wifiActive = false;
-                }
-                
+                }  
                 break;
             case 3:
                 UISystem::currentScreen = OPTION_SCREEN;  
@@ -121,4 +134,21 @@ void WifiScreen::dataUpdate() {
 void WifiScreen::update() {
 
     dataUpdate();
+}
+
+String WifiScreen::readWifiAccessData()
+{
+    String result, ssid, password;
+    if (SD.exists(WIFI_ACCESS_DATA_PATH))
+    {
+        File file = SD.open(WIFI_ACCESS_DATA_PATH);
+        if (file)
+        {
+            ssid = file.readStringUntil('\n');
+            password = file.readStringUntil('\n');
+            result = "SSID: " + ssid + "\n" + "Password: " + password;
+            file.close();
+        }         
+    }
+    return result;
 }
