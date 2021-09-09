@@ -4,9 +4,11 @@
 #include <Arduino.h>
 #include <SD.h>
 #include <lvgl.h>
+#include <vector>
 #include "UISystem.h"
 #include "ButtonType.h"
 #include "WifiAccessGenerator.h"
+#include "WifiManager.h"
 
 #define WIFI_ACCESS_DATA_PATH "/wifidata.wfd"
 
@@ -28,6 +30,7 @@ class WifiScreen {
         static void dataUpdate();
         static void update();
         static String readWifiAccessData();
+        static std::vector<String> readWifiAccessDataVector();
         static bool saveWifiAccessData(String& ssid, String& password);
 };
 

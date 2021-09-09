@@ -130,9 +130,14 @@ void WifiScreen::processButtonPress(ButtonType buttonType)
                 if(!wifiActive)
                 {
                     lv_label_set_text(labelWifi, "Wifi [on]");
+                    std::vector<String> wifiData = readWifiAccessDataVector();
 
-                    //TODO: TOGGLE WIFI ACCESS POINT ON
-
+                    Serial.println("----------WIFI DATA-----------");
+                    Serial.println(wifiData.at(0).c_str());
+                    Serial.println(wifiData.at(1).c_str());
+                    Serial.println("WIFI successfully activated.");
+                    
+                    WifiManager::createAccessPoint(21, wifiData.at(0).c_str(), wifiData.at(1).c_str());
                     wifiActive = true;
                 }
                 else
@@ -177,6 +182,25 @@ String WifiScreen::readWifiAccessData()
             password = file.readStringUntil('\n');
             result = "SSID: " + ssid + "\n" + "Password: " + password;
             file.close();
+        }         
+    }
+    return result;
+}
+
+std::vector<String> WifiScreen::readWifiAccessDataVector()
+{
+    std::vector<String> result;
+    String ssid, password;
+    if (SD.exists(WIFI_ACCESS_DATA_PATH))
+    {
+        File file = SD.open(WIFI_ACCESS_DATA_PATH);
+        if (file)
+        {
+            ssid = file.readStringUntil('\n');
+            password = file.readStringUntil('\n');
+            file.close();
+            result.push_back(ssid);
+            result.push_back(password); 
         }         
     }
     return result;
