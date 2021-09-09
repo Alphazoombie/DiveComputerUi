@@ -28,6 +28,7 @@ class WifiScreen {
         static void dataUpdate();
         static void update();
         static String readWifiAccessData();
+        static bool saveWifiAccessData(String& ssid, String& password);
 };
 
 #endif

@@ -10,7 +10,8 @@ lv_style_t WifiScreen::styleSelected;
 lv_style_t WifiScreen::styleDefault;
 bool WifiScreen::wifiActive = false;
 
-void WifiScreen::setup() {
+void WifiScreen::setup() 
+{
     screenObj = lv_obj_create(NULL, NULL);
 
     // Change screen-background-color
@@ -73,7 +74,8 @@ void WifiScreen::setup() {
     lv_label_set_text(label4, "Back");
 }
 
-void WifiScreen::showScreen() {
+void WifiScreen::showScreen() 
+{
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 2;
     lv_obj_set_style_local_border_width(buttons[2], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
@@ -81,13 +83,18 @@ void WifiScreen::showScreen() {
     lv_scr_load(WifiScreen::screenObj);
 }
 
-void WifiScreen::processButtonPress(ButtonType buttonType) {
+void WifiScreen::processButtonPress(ButtonType buttonType) 
+{
     if(buttonType == BUTTON1) 
     {
         lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
         selectionIndex++;
-        selectionIndex %= 2;
-        selectionIndex += 2;
+        selectionIndex %= 4;
+
+        if (selectionIndex == 0)
+        {
+            selectionIndex++;
+        }
         
         lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
     } 
@@ -96,43 +103,65 @@ void WifiScreen::processButtonPress(ButtonType buttonType) {
         switch(selectionIndex) 
         {
             case 0:
-                // Bluetooth
+            {
                 break;
+            }     
             case 1:
-                UISystem::currentScreen = STAT_SCREEN;  
-                UISystem::setScreen(UISystem::currentScreen);
-                break;
-            case 2:
-                if(!wifiActive)
-                {
-                  lv_label_set_text(labelWifi, "Wifi [on]");
-                
-                  String newWifiAccessData = "SSID: " + WifiAccessGenerator::generateSsid() + "\n" +
-                                             "Password: " + WifiAccessGenerator::generatePassword();
+            {
+                String newSsid = WifiAccessGenerator::generateSsid();
+                String newPassword = WifiAccessGenerator::generatePassword();
 
-                  lv_label_set_text(labelWifiAccessData, newWifiAccessData.c_str());
-                  wifiActive = true;
+                if (saveWifiAccessData(newSsid, newPassword))
+                {
+                    Serial.println("Saving new Wifi Access Data successful.");
+                    String newWifiAccessData = "SSID: " + WifiAccessGenerator::generateSsid() + "\n" +
+                                               "Password: " + WifiAccessGenerator::generatePassword();
+
+                    lv_label_set_text(labelWifiAccessData, newWifiAccessData.c_str());
                 }
                 else
                 {
-                  lv_label_set_text(labelWifi, "Wifi [off]");
-                  wifiActive = false;
+                    Serial.println("Saving new Wifi Access Data failed.");
+                }
+                break;
+            }
+            case 2:
+            {
+                if(!wifiActive)
+                {
+                    lv_label_set_text(labelWifi, "Wifi [on]");
+
+                    //TODO: TOGGLE WIFI ACCESS POINT ON
+
+                    wifiActive = true;
+                }
+                else
+                {
+                    lv_label_set_text(labelWifi, "Wifi [off]");
+
+                    //TODO: TOGGLE WIFI ACCESS POINT OFF
+
+                    wifiActive = false;
                 }  
                 break;
+            }
             case 3:
+            {
                 UISystem::currentScreen = OPTION_SCREEN;  
                 UISystem::setScreen(UISystem::currentScreen);
                 break;
+            }
         }
     }
 }
 
-void WifiScreen::dataUpdate() {
+void WifiScreen::dataUpdate() 
+{
 
 }
 
-void WifiScreen::update() {
-
+void WifiScreen::update() 
+{
     dataUpdate();
 }
 
@@ -151,4 +180,24 @@ String WifiScreen::readWifiAccessData()
         }         
     }
     return result;
+}
+
+bool WifiScreen::saveWifiAccessData(String& ssid, String& password)
+{
+    if (SD.exists(WIFI_ACCESS_DATA_PATH))
+    {
+        SD.remove(WIFI_ACCESS_DATA_PATH);
+        Serial.println("Old Wifi File deleted.");
+
+        File newFile = SD.open(WIFI_ACCESS_DATA_PATH, FILE_APPEND);
+        if (newFile)
+        {
+            Serial.println("New File created.");
+            newFile.println(ssid.c_str());
+            newFile.println(password.c_str());
+            newFile.close();
+            return true;
+        }       
+    }
+    return false;
 }
