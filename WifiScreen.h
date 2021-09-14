@@ -31,7 +31,7 @@ class WifiScreen {
         static void update();
         static String readWifiAccessData();
         static std::vector<String> readWifiAccessDataVector();
-        static bool saveWifiAccessData(String& ssid, String& password);
+        static bool saveWifiAccessData(String* ssid, String* password);
 };
 
 #endif

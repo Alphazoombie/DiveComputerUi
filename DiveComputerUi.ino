@@ -10,6 +10,8 @@
 #include <WiFiUdp.h>
 #include <SPI.h>
 //#include <ArduinoOTA.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
 #include "Touch.h"
 #include "CustomTouchButton.h"
 #include "FileSystem.h"
@@ -18,9 +20,11 @@
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
 static lv_color_t buf[LV_HOR_RES_MAX * 10];
-const char* ssid = "23PSE";
-const char* password = "ZZZDiveZZZ";
+//const char* ssid = "23PSE";
+//const char* password = "ZZZDiveZZZ";
 int m_chipSelect = 14;
+//int port = 21;
+//WiFiServer wifiServer;
 
 CustomTouchButton touchButton1, touchButton2;
 
@@ -105,6 +109,11 @@ void setup()
 
   FileSystem fileSystem;
   fileSystem.createWifiDataFile();
+
+
+  // wifiServer = WiFiServer(port);
+  // WiFi.mode(WIFI_AP);
+  // WiFi.softAP("Test1", "123");
   
   /*
   WiFi.mode(WIFI_STA);

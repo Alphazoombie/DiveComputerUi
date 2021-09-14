@@ -151,8 +151,8 @@ void FileSystem::createWifiDataFile()
         if (file)
         {
             Serial.println("Wifi Access data successfully written to file.");
-            file.println(WifiAccessGenerator::generateSsid());
-            file.println(WifiAccessGenerator::generatePassword());
+            file.println(*WifiAccessGenerator::generateSsid());
+            file.println(*WifiAccessGenerator::generatePassword());
             file.close();
         }
     }

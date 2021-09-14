@@ -31,7 +31,7 @@ public:
         std::mt19937 eng(millis());
         std::uniform_int_distribution<int> distribution(0, 9);
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 9; i++)
         {
             password += distribution(eng);
         }
