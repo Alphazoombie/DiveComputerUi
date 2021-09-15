@@ -1,5 +1,6 @@
+#ifndef CUSTOMTOUCHBUTTON_H
+#define CUSTOMTOUCHBUTTON_H
 
-#pragma once
 #include <Arduino.h>
 #include <functional>
 #include <Ticker.h>
@@ -25,3 +26,5 @@ private:
     bool m_inCycle = false;
     bool m_verifiedTouch = false;
 };
+
+#endif

@@ -8,8 +8,11 @@ lv_obj_t* WifiScreen::labelWifiAccessData;
 lv_obj_t* WifiScreen::labelWifiGenerate;
 lv_style_t WifiScreen::styleSelected;
 lv_style_t WifiScreen::styleDefault;
-static const char* ssid;
-static const char* password;
+
+char ssid[9] = "DC_";
+char password[9];
+char wifiAccessDataString[32];
+
 bool WifiScreen::wifiActive = false;
 
 void WifiScreen::setup() 
@@ -35,9 +38,12 @@ void WifiScreen::setup()
     //lv_obj_set_style_local_text_font(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(labelWifiAccessData, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
 
-    String wifiAccessData = readWifiAccessData();
+    readWifiAccessData(ssid, password);
+    // check this shit
+    buildWifiAccessDataString(ssid, password, wifiAccessDataString);
 
-    lv_label_set_text(labelWifiAccessData, wifiAccessData.c_str());
+
+    lv_label_set_text(labelWifiAccessData, wifiAccessDataString);
 
     buttons[1] = lv_btn_create(screenObj, NULL);
     lv_obj_set_pos(buttons[1], spacingX * 2 + btnWidth, spacingY);
@@ -110,16 +116,22 @@ void WifiScreen::processButtonPress(ButtonType buttonType)
             }     
             case 1:
             {
-                String newSsid = WifiAccessGenerator::generateSsid();
-                String newPassword = WifiAccessGenerator::generatePassword();
+                WifiAccessGenerator::generateSsid(ssid);
+                WifiAccessGenerator::generatePassword(password);
 
-                if (saveWifiAccessData(newSsid, newPassword))
+                if (saveWifiAccessData(ssid, password))
                 {
-                    Serial.println("Saving new Wifi Access Data successful.");
-                    String newWifiAccessData = String("SSID: " + newSsid + "\n" +
-                                         "PW: " + newPassword);
+                    lv_label_set_text(labelWifi, "Wifi [off]");
 
-                    lv_label_set_text(labelWifiAccessData, newWifiAccessData.c_str());
+                    WifiManager::disconnectAccessPoint();
+                    WifiManager::createAccessPoint(21, ssid, password);
+                    
+                    wifiAccessDataString[0] = '\0';
+                    buildWifiAccessDataString(ssid, password, wifiAccessDataString);
+                    lv_label_set_text(labelWifiAccessData, wifiAccessDataString);
+                    lv_label_set_text(labelWifi, "Wifi [on]");
+
+                    Serial.println("Saving new Wifi Access Data successful.");
                 }
                 else
                 {
@@ -132,10 +144,7 @@ void WifiScreen::processButtonPress(ButtonType buttonType)
                 if(!wifiActive)
                 {
                     lv_label_set_text(labelWifi, "Wifi [on]");
-                    std::vector<String> wifiData = readWifiAccessDataVector();
-
-                    ssid = wifiData.at(0).c_str();
-                    password = wifiData.at(1).c_str();
+                    readWifiAccessData(ssid, password);
 
                     Serial.println("----------WIFI DATA-----------");
                     Serial.println(ssid);
@@ -176,43 +185,39 @@ void WifiScreen::update()
     dataUpdate();
 }
 
-String WifiScreen::readWifiAccessData()
+void WifiScreen::buildWifiAccessDataString(char* ssid, char* password, char* output)
 {
-    String result, ssid, password;
+
+    char s1[] = "SSID: ";
+    char s2[] = "\n";
+    char s3[] = "PW: ";
+
+    Helper::concatCharArraysTwoArguments(output, s1);
+    Helper::concatCharArraysTwoArguments(output, ssid);
+    Helper::concatCharArraysTwoArguments(output, s2);
+    Helper::concatCharArraysTwoArguments(output, s3);
+    Helper::concatCharArraysTwoArguments(output, password);
+}
+
+void WifiScreen::readWifiAccessData(char* ssid, char* password)
+{
     if (SD.exists(WIFI_ACCESS_DATA_PATH))
     {
         File file = SD.open(WIFI_ACCESS_DATA_PATH);
         if (file)
         {
-            ssid = file.readStringUntil('\n');
-            password = file.readStringUntil('\n');
-            result = "SSID: " + ssid + "\n" + "PW: " + password;
+            file.readBytesUntil('\0', ssid, 9);
+            ssid[8] = '\0';
+            file.read();
+            file.readBytesUntil('\0', password, 9);
+            password[8] = '\0';
+
             file.close();
         }         
     }
-    return result;
 }
 
-std::vector<String> WifiScreen::readWifiAccessDataVector()
-{
-    std::vector<String> result;
-    String ssid, password;
-    if (SD.exists(WIFI_ACCESS_DATA_PATH))
-    {
-        File file = SD.open(WIFI_ACCESS_DATA_PATH);
-        if (file)
-        {
-            ssid = file.readStringUntil('\n');
-            password = file.readStringUntil('\n');
-            file.close();
-            result.push_back(ssid);
-            result.push_back(password); 
-        }         
-    }
-    return result;
-}
-
-bool WifiScreen::saveWifiAccessData(String ssid, String password)
+bool WifiScreen::saveWifiAccessData(char* ssid, char* password)
 {
     if (SD.exists(WIFI_ACCESS_DATA_PATH))
     {
@@ -223,11 +228,22 @@ bool WifiScreen::saveWifiAccessData(String ssid, String password)
         if (newFile)
         {
             Serial.println("New File created.");
-            newFile.println(ssid->c_str());
-            newFile.println(password->c_str());
+            newFile.println(ssid);
+            newFile.println(password);
             newFile.close();
-            return true;
-        }       
+            //return true;
+        }
+
+        // only test
+        File newFile2 = SD.open(WIFI_ACCESS_DATA_PATH);
+        if (newFile2)
+        {
+            Serial.println("nur gucken ob richtig gespeicher...");
+            Serial.println(newFile2.readStringUntil('\n'));
+            Serial.println(newFile2.readStringUntil('\n'));
+            newFile2.close();
+        }
+        return true;
     }
     return false;
 }

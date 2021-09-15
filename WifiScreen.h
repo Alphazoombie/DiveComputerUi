@@ -9,6 +9,8 @@
 #include "ButtonType.h"
 #include "WifiAccessGenerator.h"
 #include "WifiManager.h"
+#include "Helper.h"
+
 
 #define WIFI_ACCESS_DATA_PATH "/wifidata.wfd"
 
@@ -29,9 +31,9 @@ class WifiScreen {
         static void processButtonPress(ButtonType);
         static void dataUpdate();
         static void update();
-        static String readWifiAccessData();
-        static std::vector<String> readWifiAccessDataVector();
-        static bool saveWifiAccessData(String* ssid, String* password);
+        static void readWifiAccessData(char* ssid, char* password);
+        static bool saveWifiAccessData(char* ssid, char* password);
+        static void buildWifiAccessDataString(char* ssid, char* password, char* output);
 };
 
 #endif

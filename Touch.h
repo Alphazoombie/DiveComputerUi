@@ -1,3 +1,6 @@
+#ifndef TOUCH_H
+#define TOUCH_H
+
 using namespace std;
 #include <lvgl.h>
 #include <vector>
@@ -26,3 +29,5 @@ class Touch{
     static void drawAreas();
     static int areaTouched(int x, int y);
 };
+
+#endif

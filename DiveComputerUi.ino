@@ -5,7 +5,6 @@
 #include <lvgl.h>
 #include "UISystem.h"
 #include <TFT_eSPI.h>
-//#include <WiFi.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 #include <SPI.h>

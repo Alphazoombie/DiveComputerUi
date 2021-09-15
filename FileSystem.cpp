@@ -146,14 +146,19 @@ void FileSystem::createWifiDataFile()
 {
     if (!SD.exists(m_wifiDataPath))
     {
+        char ssid[9] = "DC_";
+        char password[9];
+
         File file = SD.open(m_wifiDataPath, FILE_APPEND);
         Serial.println("Creating wifi data file...");
         if (file)
         {
-            Serial.println("Wifi Access data successfully written to file.");
-            file.println(*WifiAccessGenerator::generateSsid());
-            file.println(*WifiAccessGenerator::generatePassword());
+            WifiAccessGenerator::generateSsid(ssid);
+            WifiAccessGenerator::generatePassword(password);
+            file.println(ssid);
+            file.println(password);
             file.close();
+            Serial.println("Wifi Access data successfully written to file.");
         }
     }
 }

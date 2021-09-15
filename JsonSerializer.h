@@ -1,4 +1,6 @@
-#pragma once
+#ifndef JSONSERIALIZER_H
+#define JSONSERIALIZER_H
+
 #include <ArduinoJson.h>
 //#include "FileSystem.h"
 
@@ -24,3 +26,5 @@ public:
 								 char* jsonResultString);
 
 };
+
+#endif

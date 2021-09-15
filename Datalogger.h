@@ -1,3 +1,6 @@
+#ifndef DATALOGGER_H
+#define DATALOGGER_H
+
 #include "JsonSerializer.h"
 #include "PeripheralManager.h"
 #include "FileSystem.h"
@@ -21,3 +24,5 @@ class Datalogger
         File m_dataFile;
         PeripheralManager* m_peripheralManager;
 };
+
+#endif

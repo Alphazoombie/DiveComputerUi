@@ -1,3 +1,6 @@
+#ifndef FILESYSTEM_H
+#define FILESYSTEM_H
+
 #include <Arduino.h>
 #include <iostream>
 #include <SD.h>
@@ -34,3 +37,5 @@ public:
     bool fileExists();
     void createWifiDataFile();
 };
+
+#endif

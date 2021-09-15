@@ -8,35 +8,36 @@ class WifiAccessGenerator
 {
 public:
 
-    static String generateSsid()
+    static void generateSsid(char* ssid)
     {
-        String ssid("DC_");
-
         std::random_device generator;
         std::mt19937 eng(millis());
         std::uniform_int_distribution<int> distribution(0, 9);
 
-        for (int i = 0; i < 5; i++)
+        char temp[2];
+
+        for (int i = 3; i < 8; i++)
         {
-            ssid += distribution(eng);     
+            snprintf(temp, sizeof(temp), "%i", distribution(eng));
+            ssid[i] = temp[0];     
         }
         delay(1);
-        return ssid;
     }
 
-    static String generatePassword()
+    static void generatePassword(char* password)
     {
-        String password;
         std::random_device generator;
         std::mt19937 eng(millis());
         std::uniform_int_distribution<int> distribution(0, 9);
 
-        for (int i = 0; i < 9; i++)
+        char temp[2];
+
+        for (int i = 0; i < 8; i++)
         {
-            password += distribution(eng);
+            snprintf(temp, sizeof(temp), "%i", distribution(eng));
+            password[i] = temp[0];
         }
         delay(1);
-        return password;
     }
 };
 

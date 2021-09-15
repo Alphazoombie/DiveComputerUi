@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PERIPHERALMANAGER_H
+#define PERIPHERALMANAGER_H
+
 #include <SparkFun_Bio_Sensor_Hub_Library.h>
 #include <SD.h>
 #include <SPI.h>
@@ -25,3 +27,5 @@ public:
     void initializeBioHubSensor();
     void initializeSD();
 };
+
+#endif
