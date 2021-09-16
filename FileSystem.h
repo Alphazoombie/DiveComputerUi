@@ -20,10 +20,8 @@ public:
     const char* m_sessionsPath PROGMEM = "/sessions.log";
     const char* m_wifiDataPath PROGMEM = "/wifidata.wfd";
     static int m_diveID;
-    // char m_date[9];
-    // char m_oldDate[9];
-    String m_date;
-    String m_oldDate;
+    char m_current_date[9];
+    char m_oldDate[9];
     char m_logPath[25] PROGMEM;
     bool m_sameSession = false;
     void setDateToFile(); 
@@ -31,7 +29,7 @@ public:
     int  getDiveID(); 
     void setDiveID();
     void writeDateToSessionFile(char* date); 
-    void setDate(); 
+    void getCurrentDate(); 
     void initializeMetaData();
     void createDirectory();  
     bool fileExists();
