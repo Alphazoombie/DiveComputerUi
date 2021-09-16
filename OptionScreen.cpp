@@ -31,13 +31,13 @@ void OptionScreen::setup()
     int16_t spacingY = (SCREEN_HEIGHT - btnHeight * 2) / 3;
 
     buttons[BUTTON_WIFI] = lv_btn_create(screenObj, NULL);
-    lv_obj_set_pos(buttons[0], spacingX, spacingY);
-    lv_obj_set_size(buttons[0], btnWidth, btnHeight);
-    lv_obj_set_style_local_bg_color(buttons[0], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_SECONDARY_COLOR_DARKER);
-    lv_obj_set_style_local_border_width(buttons[0], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
-    lv_obj_set_style_local_radius(buttons[0], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
-    lv_obj_set_style_local_border_color(buttons[0], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-    lv_obj_t * label1 = lv_label_create(buttons[0], NULL);
+    lv_obj_set_pos(buttons[BUTTON_WIFI], spacingX, spacingY);
+    lv_obj_set_size(buttons[BUTTON_WIFI], btnWidth, btnHeight);
+    lv_obj_set_style_local_bg_color(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_SECONDARY_COLOR_DARKER);
+    lv_obj_set_style_local_border_width(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+    lv_obj_set_style_local_radius(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_border_color(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
+    lv_obj_t * label1 = lv_label_create(buttons[BUTTON_WIFI], NULL);
     lv_obj_set_style_local_text_font(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(label1, LV_SYMBOL_WIFI);

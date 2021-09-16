@@ -12,7 +12,8 @@ lv_obj_t* StatScreen::lblSecondsObj;
 std::list<NamedChartSerie> StatScreen::namedSerieList = std::list<NamedChartSerie>();
 int8_t StatScreen::currentSeriesIndex = 0;
 
-void StatScreen::setup() {
+void StatScreen::setup() 
+{
     // Create new Screen
     screenObj = lv_obj_create(NULL, NULL);
 
@@ -66,23 +67,29 @@ void StatScreen::setup() {
 
 }
 
-void StatScreen::showScreen() {
+void StatScreen::showScreen() 
+{
     // Update stats after diving
     dataUpdate();
     lv_scr_load(StatScreen::screenObj);
 }
 
-void StatScreen::processButtonPress(ButtonType buttonType) {
+void StatScreen::processButtonPress(ButtonType buttonType) 
+{
     // Back to Idle-Screen or show the next series
-    if(buttonType == BUTTON_SELECT) {
+    if(buttonType == BUTTON_SELECT)
+    {
         //UISystem::setScreen(IDLE_SCREEN);
-    } else if(buttonType == BUTTON_ACTIVATE) {
+    } 
+    else if(buttonType == BUTTON_ACTIVATE) 
+    {
         showNextSeries();
     }
 }
 
 // Updates all data got from the last dive & inserts them into a chart
-void StatScreen::dataUpdate() {
+void StatScreen::dataUpdate() 
+{
     // Get last shown series
     std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
     std::advance(it, currentSeriesIndex);
@@ -96,7 +103,8 @@ void StatScreen::dataUpdate() {
     currentSeriesIndex = 0;
 
     //Reset serie-list for new dive-data
-    for(NamedChartSerie& serie : namedSerieList) {
+    for (NamedChartSerie& serie : namedSerieList) 
+    {
         lv_chart_clear_serie(chartObj, serie.series);
         serie.min = 32767;
         serie.max = -32767;
@@ -105,7 +113,8 @@ void StatScreen::dataUpdate() {
     }
 
     //Calculate Min/Max Values & Add them to chart-series
-    for(DiveData data : UISystem::diveDataSeries) {
+    for (DiveData data : UISystem::diveDataSeries) 
+    {
         std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
         processDiveData(data.depth, *it++);
         processDiveData(data.temperatur, *it++);
@@ -116,7 +125,8 @@ void StatScreen::dataUpdate() {
     }
 
     //Apply min values for correct chart-curve & put them on chart
-    for(DiveData data : UISystem::diveDataSeries) {
+    for (DiveData data : UISystem::diveDataSeries) 
+    {
         std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
         addNormlizedPointsOnChart(data.depth, *it++);
         addNormlizedPointsOnChart(data.temperatur, *it++);
@@ -130,13 +140,16 @@ void StatScreen::dataUpdate() {
     int16_t xGaps = 7;
     int16_t yGaps = 5;
 
-    for(NamedChartSerie& serie : namedSerieList) {
+    for (NamedChartSerie& serie : namedSerieList) 
+    {
         serie.xAxisLabels += String(1);
         serie.yAxisLabels += String(serie.max);
-        for (int i = 0; i < xGaps - 1; i++) {
+        for (int i = 0; i < xGaps - 1; i++) 
+        {
             serie.xAxisLabels += String("\n");
         }
-        for (int i = 0; i < yGaps - 1; i++) {
+        for (int i = 0; i < yGaps - 1; i++) 
+        {
             serie.yAxisLabels += String("\n");
         }
         serie.xAxisLabels += String(UISystem::diveDataSeries.size());
@@ -160,12 +173,14 @@ void StatScreen::dataUpdate() {
 }
 
 // For future use ...
-void StatScreen::update() {
+void StatScreen::update() 
+{
 
 }
 
 // Create new named-chart-series & add them into the list of available series
-void StatScreen::addNamedChartSerie(const char* name) {
+void StatScreen::addNamedChartSerie(const char* name) 
+{
     NamedChartSerie serie = NamedChartSerie();
     serie.name = name;
     serie.series = 0;
@@ -175,24 +190,29 @@ void StatScreen::addNamedChartSerie(const char* name) {
 }
 
 // Calculate the min/max-values, add next point on chart & write them into the referenced series
-void StatScreen::processDiveData(int16_t value, NamedChartSerie& serie) {
+void StatScreen::processDiveData(int16_t value, NamedChartSerie& serie) 
+{
     serie.max = std::max(value, serie.max);
     serie.min = std::min(value, serie.min);
 }
 
 // Apply min value & put point on chart-series
-void StatScreen::addNormlizedPointsOnChart(int16_t value, NamedChartSerie serie) {
+void StatScreen::addNormlizedPointsOnChart(int16_t value, NamedChartSerie serie) 
+{
     lv_chart_set_next(chartObj, serie.series, value - serie.min);
 }
 
 // Create Tick-Labels on the x- & y-axis
-void StatScreen::createAxisLabels(NamedChartSerie& serie, int16_t xGaps, int16_t yGaps) {
+void StatScreen::createAxisLabels(NamedChartSerie& serie, int16_t xGaps, int16_t yGaps) 
+{
     serie.xAxisLabels += String(0);
     serie.yAxisLabels += String(serie.min);
-    for (int i = 0; i < xGaps; i++) {
+    for (int i = 0; i < xGaps; i++) 
+    {
         serie.xAxisLabels += String("\n");
     }
-    for (int i = 0; i < yGaps; i++) {
+    for (int i = 0; i < yGaps; i++) 
+    {
         serie.yAxisLabels += String("\n");
     }
     serie.xAxisLabels += String(UISystem::diveDataSeries.size());
@@ -200,7 +220,8 @@ void StatScreen::createAxisLabels(NamedChartSerie& serie, int16_t xGaps, int16_t
 }
 
 // Switch to next series in the series-list & show them on the chart
-void StatScreen::showNextSeries() {
+void StatScreen::showNextSeries() 
+{
     // Get current series
     std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
     std::advance(it, currentSeriesIndex);
