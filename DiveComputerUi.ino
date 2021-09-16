@@ -19,13 +19,11 @@
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
 static lv_color_t buf[LV_HOR_RES_MAX * 10];
-//const char* ssid = "23PSE";
-//const char* password = "ZZZDiveZZZ";
 int m_chipSelect = 14;
 //int port = 21;
 //WiFiServer wifiServer;
 
-CustomTouchButton touchButton1, touchButton2;
+CustomTouchButton buttonActivate, buttonSelect;
 
 void initializeSD() 
 {
@@ -54,18 +52,14 @@ void my_print(lv_log_level_t level, const char * file, uint32_t line, const char
 /* Display flushing */
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
 {
-  uint32_t w = (area->x2 - area->x1 + 1);
-  uint32_t h = (area->y2 - area->y1 + 1);
-
-  tft.startWrite();
-  tft.setAddrWindow(area->x1, area->y1, w, h);
-  tft.pushColors(&color_p->full, w * h, true);
-  tft.endWrite();
-
-  lv_disp_flush_ready(disp);
+   uint32_t w = (area->x2 - area->x1 + 1);
+   uint32_t h = (area->y2 - area->y1 + 1);   
+   tft.startWrite();
+   tft.setAddrWindow(area->x1, area->y1, w, h);
+   tft.pushColors(&color_p->full, w * h, true);
+   tft.endWrite();   
+   lv_disp_flush_ready(disp);
 }
-
-
 
 void setup()
 {
@@ -109,7 +103,6 @@ void setup()
   FileSystem fileSystem;
   fileSystem.createWifiDataFile();
   fileSystem.initializeMetaData();
-
 
   // wifiServer = WiFiServer(port);
   // WiFi.mode(WIFI_AP);
@@ -163,52 +156,53 @@ void setup()
   //Touch::touchEvent();
   //Touch::registerArea(1, 5, 5, 40, 40);
 
-  touchButton1 = CustomTouchButton(T0);
+  buttonSelect   = CustomTouchButton(T0);
+  buttonActivate = CustomTouchButton(T5);
 
-  touchButton2 = CustomTouchButton(T5);
   UISystem::setScreen(IDLE_SCREEN);
 }
 
-void loop() {
+void loop() 
+{
   /* UI updater for refreshing the display*/
-  
   UISystem::start();
-  touchButton1.btnClickEventListener([](void)
+
+  /*Setup OnClick EventListeners for the buttons to navigate through the menu*/
+  buttonSelect.btnClickEventListener([](void)
   {
-    if(UISystem::currentScreen == IDLE_SCREEN)
-    {
-      UISystem::currentScreen = OPTION_SCREEN;
-    }
-    else if(UISystem::currentScreen == DIVE_SCREEN)
-    {
-      UISystem::currentScreen = OPTION_SCREEN;
-    }
-    else if(UISystem::currentScreen == OPTION_SCREEN)
-    {  
-      OptionScreen::processButtonPress(BUTTON2);
-    }
-    else if(UISystem::currentScreen == STAT_SCREEN)
-    {     
-      UISystem::currentScreen = OPTION_SCREEN;    
-    }
-    else if(UISystem::currentScreen == WIFI_SCREEN)
-    {     
-      WifiScreen::processButtonPress(BUTTON2); 
-    }
-    UISystem::setScreen(UISystem::currentScreen);
+      if(UISystem::currentScreen == IDLE_SCREEN)
+      {
+        UISystem::currentScreen = OPTION_SCREEN;
+      }
+      else if(UISystem::currentScreen == DIVE_SCREEN)
+      {
+        UISystem::currentScreen = OPTION_SCREEN;
+      }
+      else if(UISystem::currentScreen == OPTION_SCREEN)
+      {  
+        OptionScreen::processButtonPress(BUTTON_ACTIVATE);
+      }
+      else if(UISystem::currentScreen == STAT_SCREEN)
+      {     
+        UISystem::currentScreen = OPTION_SCREEN;    
+      }
+      else if(UISystem::currentScreen == WIFI_SCREEN)
+      {     
+        WifiScreen::processButtonPress(BUTTON_ACTIVATE); 
+      }
+      UISystem::setScreen(UISystem::currentScreen);
   });
 
-
-  touchButton2.btnClickEventListener([](void)
+  buttonActivate.btnClickEventListener([](void)
   {
-    if(UISystem::currentScreen == OPTION_SCREEN)
-    {
-      OptionScreen::processButtonPress(BUTTON1);
-    }
-    else if(UISystem::currentScreen == WIFI_SCREEN)
-    {
-      WifiScreen::processButtonPress(BUTTON1);
-    }    
+      if(UISystem::currentScreen == OPTION_SCREEN)
+      {
+        OptionScreen::processButtonPress(BUTTON_SELECT);
+      }
+      else if(UISystem::currentScreen == WIFI_SCREEN)
+      {
+        WifiScreen::processButtonPress(BUTTON_SELECT);
+      }    
   });
 
   //Touch::drawAreas();

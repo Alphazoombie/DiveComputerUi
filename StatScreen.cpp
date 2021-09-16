@@ -74,9 +74,9 @@ void StatScreen::showScreen() {
 
 void StatScreen::processButtonPress(ButtonType buttonType) {
     // Back to Idle-Screen or show the next series
-    if(buttonType == BUTTON1) {
+    if(buttonType == BUTTON_SELECT) {
         //UISystem::setScreen(IDLE_SCREEN);
-    } else if(buttonType == BUTTON2) {
+    } else if(buttonType == BUTTON_ACTIVATE) {
         showNextSeries();
     }
 }

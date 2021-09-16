@@ -23,8 +23,8 @@ lv_obj_t* DiveScreen::lblHeartFrequency;
 Timer DiveScreen::diveTimer;
 //stopwatch::Stopwatch diveTimer;
 
-void DiveScreen::setup() {
-
+void DiveScreen::setup() 
+{
   screenObj = lv_obj_create(NULL, NULL);
   lv_obj_set_style_local_bg_color(screenObj, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_SECONDARY_COLOR_DARK);
 
@@ -46,7 +46,6 @@ void DiveScreen::setup() {
   lv_label_set_align(lblTimeObj, LV_LABEL_ALIGN_CENTER);
   lv_obj_align(lblTimeObj, NULL, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_style_local_text_color(lblTimeObj, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-
 
   imgTimeObj = lv_img_create(contTime, NULL);
   lv_img_set_src(imgTimeObj, &sandclock_image);
@@ -142,15 +141,19 @@ void DiveScreen::setup() {
   diveTimer.start();
 }
 
-void DiveScreen::showScreen() {
+void DiveScreen::showScreen() 
+{
   dataUpdate();
   lv_scr_load(DiveScreen::screenObj);
 }
 
-void DiveScreen::processButtonPress(ButtonType buttonType) {
+void DiveScreen::processButtonPress(ButtonType buttonType) 
+{
+
 }
 
-void DiveScreen::dataUpdate() {
+void DiveScreen::dataUpdate() 
+{
   //int8_t s = UISystem::currentDiveData.time % 60;
   //int8_t m = (UISystem::currentDiveData.time - s) / 60;
 
@@ -173,14 +176,18 @@ void DiveScreen::dataUpdate() {
   lv_obj_realign(lblDepth);
 }
 
-void DiveScreen::update() {
-
+void DiveScreen::update() 
+{
   dataUpdate();
 
-  if (UISystem::currentDiveData.depth < 1) {
-    if (UISystem::currentDiveData.time >= 10) {
+  if (UISystem::currentDiveData.depth < 1) 
+  {
+    if (UISystem::currentDiveData.time >= 10) 
+    {
       //UISystem::setScreen(STAT_SCREEN);
-    } else {
+    } 
+    else 
+    {
       //UISystem::setScreen(IDLE_SCREEN);
     }
   }
