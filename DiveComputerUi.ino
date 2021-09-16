@@ -14,12 +14,36 @@
 #include "Touch.h"
 #include "CustomTouchButton.h"
 #include "FileSystem.h"
+#include "Datalogger.h"
 
 
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
 static lv_color_t buf[LV_HOR_RES_MAX * 10];
+
 int m_chipSelect = 14;
+
+FileSystem fileSystem;
+
+Datalogger datalogger;
+char jsonString[200];
+
+char directoryName[10];
+char tempFileName[6];
+char directoryPathAndDirectoryName[19];
+char fullFilePath[28];
+char fileName[10];
+char diveID[4];
+
+float depth;
+
+bool simulateDive = false;
+bool isPathBuilt = false;
+bool isInDive = false;
+
+// TEST
+bool isUp = true;
+
 //int port = 21;
 //WiFiServer wifiServer;
 
@@ -37,6 +61,31 @@ void initializeSD()
       while (1);
     }
     Serial.println(" card initialized.");
+}
+
+bool isUnderwater()
+{
+    if(depth >= 1)
+    {
+        isInDive = true;
+        return true;
+    }
+    else
+    {
+        if(isInDive)
+        {
+            isPathBuilt = false;
+            isInDive = false;
+            fileSystem.m_diveID++;
+            fileSystem.setDiveID();
+        }
+        return false;
+    }
+}
+
+void buildDirectoryName()
+{
+    Helper::concatCharArrays(directoryName, "/", fileSystem.m_current_date);
 }
 
 #if USE_LV_LOG != 0
@@ -100,9 +149,11 @@ void setup()
 
   delay(5000);
 
-  FileSystem fileSystem;
   fileSystem.createWifiDataFile();
   fileSystem.initializeMetaData();
+
+  buildDirectoryName();
+
 
   // wifiServer = WiFiServer(port);
   // WiFi.mode(WIFI_AP);
@@ -167,43 +218,99 @@ void loop()
   /* UI updater for refreshing the display*/
   UISystem::start();
 
-  /*Setup OnClick EventListeners for the buttons to navigate through the menu*/
   buttonSelect.btnClickEventListener([](void)
-  {
-      if(UISystem::currentScreen == IDLE_SCREEN)
+  { 
+      if(isUp)
       {
-        UISystem::currentScreen = OPTION_SCREEN;
+          depth = 2.0;
+          isUp = false;
       }
-      else if(UISystem::currentScreen == DIVE_SCREEN)
+      else
       {
-        UISystem::currentScreen = OPTION_SCREEN;
+          depth = 0.0;
+          isUp = true;
       }
-      else if(UISystem::currentScreen == OPTION_SCREEN)
-      {  
-        OptionScreen::processButtonPress(BUTTON_ACTIVATE);
-      }
-      else if(UISystem::currentScreen == STAT_SCREEN)
-      {     
-        UISystem::currentScreen = OPTION_SCREEN;    
-      }
-      else if(UISystem::currentScreen == WIFI_SCREEN)
-      {     
-        WifiScreen::processButtonPress(BUTTON_ACTIVATE); 
-      }
-      UISystem::setScreen(UISystem::currentScreen);
   });
 
-  buttonActivate.btnClickEventListener([](void)
-  {
-      if(UISystem::currentScreen == OPTION_SCREEN)
+  if(isUnderwater())
+    {
+        if (!fileSystem.m_sameSession)
+        {
+            Serial.println("inside not sameSession");
+            fileSystem.writeDateToSessionFile(fileSystem.m_current_date);
+            fileSystem.m_sameSession = true;
+            Helper::concatCharArrays(directoryPathAndDirectoryName, fileSystem.m_directoryPath, directoryName);
+            SD.mkdir(directoryPathAndDirectoryName);
+            Serial.print("directoryPathAndDirectoryName -> ");
+            Serial.println(directoryPathAndDirectoryName);
+        }
+        if(!isPathBuilt)
+        {
+            Serial.println("inside isPathBuilt");
+            snprintf(diveID, sizeof (diveID), "%i", fileSystem.m_diveID);
+            Serial.println("1");
+            Serial.println(diveID);
+            Helper::concatCharArrays(tempFileName, "/d_", diveID);
+            Serial.println("2");
+            Serial.println(tempFileName);
+            Helper::concatCharArrays(fileName, tempFileName, ".log");
+            Serial.println("3");
+            Serial.println(fileName);
+            Helper::concatCharArrays(fullFilePath, directoryPathAndDirectoryName, fileName);
+            Serial.println("4");
+            Serial.println(fullFilePath);
+            isPathBuilt = true;
+        }
+        Serial.print("fileName -> ");
+        Serial.println(fileName);
+        Serial.print("fullFilePath -> ");
+        Serial.println(fullFilePath);
+        delay(50);
+        datalogger.getData(jsonString, &fileSystem);
+        datalogger.logData(fullFilePath, jsonString);
+    }
+    else
+    {
+        /*Setup OnClick EventListeners for the buttons to navigate through the menu*/
+      // buttonSelect.btnClickEventListener([](void)
+      // {
+      //     if(UISystem::currentScreen == IDLE_SCREEN)
+      //     {
+      //       UISystem::currentScreen = OPTION_SCREEN;
+      //     }
+      //     else if(UISystem::currentScreen == DIVE_SCREEN)
+      //     {
+      //       UISystem::currentScreen = OPTION_SCREEN;
+      //     }
+      //     else if(UISystem::currentScreen == OPTION_SCREEN)
+      //     {  
+      //       OptionScreen::processButtonPress(BUTTON_ACTIVATE);
+      //     }
+      //     else if(UISystem::currentScreen == STAT_SCREEN)
+      //     {     
+      //       UISystem::currentScreen = OPTION_SCREEN;    
+      //     }
+      //     else if(UISystem::currentScreen == WIFI_SCREEN)
+      //     {     
+      //       WifiScreen::processButtonPress(BUTTON_ACTIVATE); 
+      //     }
+      //     UISystem::setScreen(UISystem::currentScreen);
+      // });
+
+      buttonActivate.btnClickEventListener([](void)
       {
-        OptionScreen::processButtonPress(BUTTON_SELECT);
-      }
-      else if(UISystem::currentScreen == WIFI_SCREEN)
-      {
-        WifiScreen::processButtonPress(BUTTON_SELECT);
-      }    
-  });
+          if(UISystem::currentScreen == OPTION_SCREEN)
+          {
+            OptionScreen::processButtonPress(BUTTON_SELECT);
+          }
+          else if(UISystem::currentScreen == WIFI_SCREEN)
+          {
+            WifiScreen::processButtonPress(BUTTON_SELECT);
+          }    
+      });
+    }
+
+  
 
   //Touch::drawAreas();
   /*Search for updates*/

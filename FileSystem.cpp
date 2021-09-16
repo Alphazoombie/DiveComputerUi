@@ -1,6 +1,6 @@
 #include "FileSystem.h"
 
-int FileSystem::m_diveID = 1;
+// int FileSystem::m_diveID = 1;
 
 //writes the value of variable date in "date.log"
 void FileSystem::setDateToFile() 
@@ -71,7 +71,7 @@ void FileSystem::getCurrentDate()
     //strncpy ( date, out, 6);
     
     // char currDate[] = "05_06_21";
-    strcpy(m_current_date, "06_01_22");
+    strcpy(m_current_date, "10_02_22");
 }
 // -------META files--------
 // sets the date; checks if the meta-files "dive.log" and "date.log"

@@ -19,11 +19,12 @@ public:
     const char* m_datePath PROGMEM = "/date.log";
     const char* m_sessionsPath PROGMEM = "/sessions.log";
     const char* m_wifiDataPath PROGMEM = "/wifidata.wfd";
-    static int m_diveID;
+    int m_diveID = 1;
     char m_current_date[9];
     char m_oldDate[9];
     char m_logPath[25] PROGMEM;
     bool m_sameSession = false;
+    //FileSystem(){};
     void setDateToFile(); 
     void getDateFromFile(); //char* result
     int  getDiveID(); 

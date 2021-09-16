@@ -9,7 +9,7 @@ class Datalogger
 {
     public:
         // void initialize(PeripheralManager* peripheralManager);
-        void getData(char* jsonString);
+        void getData(char* jsonString, FileSystem* fileSystem);
         void logData(char* fullFilePath, char* data);
 
         void test();

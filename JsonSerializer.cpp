@@ -31,7 +31,7 @@ void JsonSerializer::createJsonString(float accX,
 	jsonObject["10"] = confidence;
 	jsonObject["11"] = brightness;
 	jsonObject["12"] = oxygen;
-	jsonObject["13"] = FileSystem::m_diveID;
+	jsonObject["13"] = diveID;
 	jsonObject["14"] = waterTemperature;
 	
 	serializeJson(jsonObject, jsonResultString, 200);
