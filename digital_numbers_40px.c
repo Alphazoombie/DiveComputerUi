@@ -18,7 +18,8 @@
  *----------------*/
 
 /*Store the image of the glyphs*/
-static LV_ATTRIBUTE_LARGE_CONST const uint8_t gylph_bitmap[] = {
+static LV_ATTRIBUTE_LARGE_CONST const uint8_t gylph_bitmap[] = 
+{
     /* U+30 "0" */
     0x7f, 0xf5, 0xff, 0xec, 0xff, 0xfe, 0x0, 0x7e,
     0x0, 0xfc, 0x1, 0xf8, 0x3, 0xf0, 0x7, 0xe0,
@@ -108,12 +109,12 @@ static LV_ATTRIBUTE_LARGE_CONST const uint8_t gylph_bitmap[] = {
     0xff, 0x80, 0x0, 0x0, 0x7f, 0xc0
 };
 
-
 /*---------------------
  *  GLYPH DESCRIPTION
  *--------------------*/
 
-static const lv_font_fmt_txt_glyph_dsc_t glyph_dsc[] = {
+static const lv_font_fmt_txt_glyph_dsc_t glyph_dsc[] = 
+{
     {.bitmap_index = 0, .adv_w = 0, .box_w = 0, .box_h = 0, .ofs_x = 0, .ofs_y = 0} /* id = 0 reserved */,
     {.bitmap_index = 0, .adv_w = 303, .box_w = 15, .box_h = 26, .ofs_x = 2, .ofs_y = 0},
     {.bitmap_index = 49, .adv_w = 105, .box_w = 3, .box_h = 26, .ofs_x = 2, .ofs_y = 0},
@@ -132,8 +133,6 @@ static const lv_font_fmt_txt_glyph_dsc_t glyph_dsc[] = {
  *  CHARACTER MAPPING
  *--------------------*/
 
-
-
 /*Collect the unicode lists and glyph_id offsets*/
 static const lv_font_fmt_txt_cmap_t cmaps[] =
 {
@@ -143,14 +142,13 @@ static const lv_font_fmt_txt_cmap_t cmaps[] =
     }
 };
 
-
-
 /*--------------------
  *  ALL CUSTOM DATA
  *--------------------*/
 
 /*Store all the custom data of the font*/
-static lv_font_fmt_txt_dsc_t font_dsc = {
+static lv_font_fmt_txt_dsc_t font_dsc = 
+{
     .glyph_bitmap = gylph_bitmap,
     .glyph_dsc = glyph_dsc,
     .cmaps = cmaps,
@@ -162,13 +160,13 @@ static lv_font_fmt_txt_dsc_t font_dsc = {
     .bitmap_format = 0
 };
 
-
 /*-----------------
  *  PUBLIC FONT
  *----------------*/
 
 /*Initialize a public general font descriptor*/
-lv_font_t digital_numbers_40px = {
+lv_font_t digital_numbers_40px = 
+{
     .get_glyph_dsc = lv_font_get_glyph_dsc_fmt_txt,    /*Function pointer to get glyph's data*/
     .get_glyph_bitmap = lv_font_get_bitmap_fmt_txt,    /*Function pointer to get glyph's bitmap*/
     .line_height = 27,          /*The maximum line height required by the font*/
@@ -182,7 +180,5 @@ lv_font_t digital_numbers_40px = {
 #endif
     .dsc = &font_dsc           /*The custom font data. Will be accessed by `get_glyph_bitmap/dsc` */
 };
-
-
 
 #endif /*#if DIGITAL_NUMBERS_40PX*/

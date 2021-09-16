@@ -5,6 +5,6 @@
 #ifndef BUTTON_TYPE_H
 #define BUTTON_TYPE_H
 
-enum ButtonType { BUTTON1, BUTTON2 };
+enum ButtonType { BUTTON_SELECT, BUTTON_ACTIVATE };
 
 #endif

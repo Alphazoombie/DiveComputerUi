@@ -7,7 +7,8 @@
 lv_obj_t* IdleScreen::screenObj;
 lv_obj_t* IdleScreen::lblTime;
 
-void IdleScreen::setup() {
+void IdleScreen::setup() 
+{
     screenObj = lv_obj_create(NULL, NULL);
 
     // Change screen-background-color
@@ -35,22 +36,29 @@ void IdleScreen::setup() {
     lv_obj_align(lblTime, NULL, LV_ALIGN_CENTER, 0, 0);
 }
 
-void IdleScreen::showScreen() {
+void IdleScreen::showScreen() 
+{
     dataUpdate();
     lv_scr_load(IdleScreen::screenObj);
 }
 
-void IdleScreen::processButtonPress(ButtonType buttonType) {
-    if(buttonType == BUTTON1) {
-        if(UISystem::currentDiveData.time > 10) {
+void IdleScreen::processButtonPress(ButtonType buttonType) 
+{
+    if(buttonType == BUTTON_SELECT) 
+    {
+        if(UISystem::currentDiveData.time > 10) 
+        {
             //UISystem::setScreen(STAT_SCREEN);
         }
-    } else if(buttonType == BUTTON2) {
+    } 
+    else if(buttonType == BUTTON_ACTIVATE) 
+    {
         //UISystem::setScreen(OPTION_SCREEN);
     }
 }
 
-void IdleScreen::dataUpdate() {
+void IdleScreen::dataUpdate() 
+{
     long time = UISystem::time;
     long s = time % 60;
     long m = (time % 3600) / 60;
@@ -59,11 +67,12 @@ void IdleScreen::dataUpdate() {
     lv_obj_realign(lblTime);
 }
 
-void IdleScreen::update() {
-
+void IdleScreen::update() 
+{
     dataUpdate();
 
-    if(UISystem::currentDiveData.depth >= 1) {
+    if(UISystem::currentDiveData.depth >= 1) 
+    {
         //UISystem::setScreen(DIVE_SCREEN);
     }
 }
