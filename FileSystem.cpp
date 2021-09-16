@@ -8,7 +8,7 @@ void FileSystem::setDateToFile()
     File file = SD.open(m_datePath, FILE_WRITE);
     if(file) 
     {
-        file.print(m_date.c_str());
+        file.print(m_current_date);
         file.close();
     }
 }
@@ -21,17 +21,11 @@ void FileSystem::getDateFromFile() // char* result
     
     if(file) 
     {
-        // strcpy(result, "16_04_21");
-        // Serial.print("result bevor readString -> ");
-        // Serial.println(result);
-        Serial.print("direkt vom file gelesen -> ");
-        String x = file.readString();
-        Serial.println(x);
-        
-        //file.readString().toCharArray(result, dateLength);
-        m_oldDate = file.readString().c_str();
+        file.readBytesUntil('\0', m_oldDate, 9);
+        m_oldDate[8] = '\0';
+
         Serial.print("result aka altes date -> ");
-        Serial.println(m_oldDate.c_str());	
+        Serial.println(m_oldDate);	
         file.close();
     }
 }
@@ -51,10 +45,6 @@ int FileSystem::getDiveID()
 // writes the value of variable diveID in "dive.log"
 void FileSystem::setDiveID() 
 {
-    if(SD.exists(m_divePath))
-    {
-        SD.remove(m_divePath);
-    }
     File file = SD.open(m_divePath, FILE_WRITE);
     if(file) 
     {
@@ -65,7 +55,7 @@ void FileSystem::setDiveID()
 // writes a date in "sessions.log"
 void FileSystem::writeDateToSessionFile(char* date) 
 {
-    File file = SD.open(m_sessionsPath, FILE_WRITE);    
+    File file = SD.open(m_sessionsPath, FILE_APPEND);    
     if(file) 
     {
         file.println(date);
@@ -74,15 +64,14 @@ void FileSystem::writeDateToSessionFile(char* date)
 }
 // has to be implemented with the real-time-clock when built in;
 // get date from the real-time-clock and write value into date-variable
-void FileSystem::setDate() 
+void FileSystem::getCurrentDate() 
 {	
     //char out[20];
     //snprintf(out, sizeof out, "%id", millis());
     //strncpy ( date, out, 6);
     
     // char currDate[] = "05_06_21";
-    // strcpy(m_date, currDate);
-    m_date = "12_11_21";
+    strcpy(m_current_date, "06_01_22");
 }
 // -------META files--------
 // sets the date; checks if the meta-files "dive.log" and "date.log"
@@ -92,9 +81,9 @@ void FileSystem::setDate()
 // the bool "sameSession" is set to true; 
 void FileSystem::initializeMetaData() 
 {
-    setDate();
+    getCurrentDate();
     Serial.print("olddate sollte leer sein -> ");
-    Serial.println(m_oldDate.c_str());
+    Serial.println(m_oldDate);
     if(!SD.exists(m_directoryPath))
     {
         SD.mkdir(m_directoryPath);
@@ -102,16 +91,12 @@ void FileSystem::initializeMetaData()
     
     if (SD.exists(m_datePath)) 
     {
-        // getDateFromFile(m_oldDate.c_str());
-        // strcpy(m_date, "12_11_21");
-        // getDateFromFile(m_oldDate.c_str());
-        // strcpy(m_date, "36_11_21");
         getDateFromFile();
         Serial.print("new date -> ");
-        Serial.println(m_date.c_str());
+        Serial.println(m_current_date);
         Serial.print("old date -> ");
-        Serial.println(m_oldDate.c_str());
-        if (m_date != m_oldDate) //strcmp(m_date, m_oldDate) != 0
+        Serial.println(m_oldDate);
+        if (strcmp(m_current_date, m_oldDate) != 0) //strcmp(m_date, m_oldDate) != 0
         {
             SD.remove(m_datePath);
             setDateToFile();

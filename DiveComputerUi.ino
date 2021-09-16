@@ -108,6 +108,7 @@ void setup()
 
   FileSystem fileSystem;
   fileSystem.createWifiDataFile();
+  fileSystem.initializeMetaData();
 
 
   // wifiServer = WiFiServer(port);
