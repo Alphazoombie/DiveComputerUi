@@ -10,7 +10,8 @@
 #include "ButtonType.h"
 #include "Timer.h"
 
-class DiveScreen {
+class DiveScreen 
+{
     public:
         static lv_obj_t* screenObj;
 
