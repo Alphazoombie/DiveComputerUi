@@ -154,13 +154,13 @@ void DiveScreen::processButtonPress(ButtonType buttonType)
 
 void DiveScreen::dataUpdate() 
 {
-  //int8_t s = UISystem::currentDiveData.time % 60;
-  //int8_t m = (UISystem::currentDiveData.time - s) / 60;
+  int8_t s = UISystem::currentDiveData.time % 60;
+  int8_t m = (UISystem::currentDiveData.time - s) / 60;
 
-  int currentTime = diveTimer.elapsedSeconds();
+  // int currentTime = diveTimer.elapsedSeconds();
 
-  int32_t s = currentTime % 60;
-  int32_t m = (currentTime - s) / 60;
+  // int32_t s = currentTime % 60;
+  // int32_t m = (currentTime - s) / 60;
 
   //lv_gauge_set_value(gaugeSpO2Obj, 0, UISystem::currentDiveData.o2saturation);
   lv_arc_set_value(arcSpO2Obj, UISystem::currentDiveData.o2saturation);

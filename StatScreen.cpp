@@ -69,8 +69,11 @@ void StatScreen::setup()
 
 void StatScreen::showScreen() 
 {
+    Serial.println("1");
     // Update stats after diving
     dataUpdate();
+    Serial.println("3");
+
     lv_scr_load(StatScreen::screenObj);
 }
 
@@ -90,6 +93,8 @@ void StatScreen::processButtonPress(ButtonType buttonType)
 // Updates all data got from the last dive & inserts them into a chart
 void StatScreen::dataUpdate() 
 {
+    Serial.println("2");
+
     // Get last shown series
     std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
     std::advance(it, currentSeriesIndex);

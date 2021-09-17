@@ -52,5 +52,6 @@
         "compare": "cpp",
         "concepts": "cpp",
         "iterator": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

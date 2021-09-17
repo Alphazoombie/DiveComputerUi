@@ -4,18 +4,33 @@
 */
 
 #include "UISystem.h"
-#include <Wire.h>
-#include "MS5837.h"
 MS5837 sensor;
 
 DiveData UISystem::currentDiveData = DiveData();
 bool UISystem::collectingData = false;
 std::list<DiveData> UISystem::diveDataSeries = std::list<DiveData>();
 
-float UISystem::gyroX = 0, UISystem::gyroY = 0, UISystem::gyroZ = 0;
-float UISystem::accelX = 0, UISystem::accelY = 0, UISystem::accelZ = 0;
-float UISystem::magnetField = 0;
+FileSystem UISystem::fileSystem;
+Datalogger datalogger;
+
 long UISystem::time = 0;
+
+CustomTouchButton buttonActivate = CustomTouchButton(T5); 
+CustomTouchButton buttonSelect = CustomTouchButton(T0);
+
+char jsonString[200];
+char UISystem::directoryName[10];
+char tempFileName[6];
+char directoryPathAndDirectoryName[19];
+char fullFilePath[28];
+char fileName[10];
+char diveID[4];
+
+float UISystem::depth = 0.0;
+
+bool simulateDive = false;
+bool isPathBuilt = false;
+bool isInDive = false;
 
 
 ScreenType UISystem::currentScreen;
@@ -33,10 +48,12 @@ void UISystem::setup()
   lv_task_create([](lv_task_t* task) 
   {
     // ToDo: Insert here your Data Update Logic
-    sensor.read();
-    currentDiveData.depth =sensor.depth();
-    currentDiveData.time++;
-    currentDiveData.temperatur = sensor.temperature();
+    handleDiveLogic();
+
+    // sensor.read();
+    // currentDiveData.depth =sensor.depth();
+    // currentDiveData.time++;
+    // currentDiveData.temperatur = sensor.temperature();
 
     switch (currentScreen) 
     {
@@ -56,7 +73,7 @@ void UISystem::setup()
         WifiScreen::update();
         break;
     }
-  }, 500, LV_TASK_PRIO_MID, NULL);
+  }, 100, LV_TASK_PRIO_MID, NULL);
 
   lv_task_create([](lv_task_t* task) 
   {
@@ -65,7 +82,7 @@ void UISystem::setup()
     if (collectingData) 
     {
       currentDiveData.time++;
-      diveDataSeries.push_back(currentDiveData);
+      //diveDataSeries.push_back(currentDiveData);
     }
   }, 1000, LV_TASK_PRIO_MID, NULL);
 
@@ -108,4 +125,110 @@ void UISystem::start()
   lv_task_handler(); /* let the GUI do its work */
   //setScreen(currentScreen);
   delay(5);
+}
+
+void UISystem::handleDiveLogic()
+{
+  if(isUnderwater())
+    {
+        if (!UISystem::fileSystem.m_sameSession)
+        {
+            Serial.println("inside not sameSession");
+            UISystem::fileSystem.writeDateToSessionFile(UISystem::fileSystem.m_current_date);
+            UISystem::fileSystem.m_sameSession = true;
+            Helper::concatCharArrays(directoryPathAndDirectoryName, UISystem::fileSystem.m_directoryPath, directoryName);
+            SD.mkdir(directoryPathAndDirectoryName);
+            Serial.print("directoryPathAndDirectoryName -> ");
+            Serial.println(directoryPathAndDirectoryName);
+        }
+        if(!isPathBuilt)
+        {
+            Serial.println("inside isPathBuilt");
+            snprintf(diveID, sizeof (diveID), "%i", fileSystem.m_diveID);
+            Serial.println("1");
+            Serial.println(diveID);
+            Helper::concatCharArrays(tempFileName, "/d_", diveID);
+            Serial.println("2");
+            Serial.println(tempFileName);
+            Helper::concatCharArrays(fileName, tempFileName, ".log");
+            Serial.println("3");
+            Serial.println(fileName);
+            Helper::concatCharArrays(fullFilePath, directoryPathAndDirectoryName, fileName);
+            Serial.println("4");
+            Serial.println(fullFilePath);
+            isPathBuilt = true;
+        }
+        Serial.print("fileName -> ");
+        Serial.println(fileName);
+        Serial.print("fullFilePath -> ");
+        Serial.println(fullFilePath);
+        delay(50);
+        datalogger.getData(&fileSystem);
+        datalogger.logData(&fileSystem, fullFilePath);
+    }
+    else
+    {
+      handleButtons();
+    }
+}
+
+void UISystem::handleButtons()
+{
+    /*Setup OnClick EventListeners for the buttons to navigate through the menu*/
+      buttonSelect.btnClickEventListener([](void)
+      {
+          if(UISystem::currentScreen == IDLE_SCREEN)
+          {
+            UISystem::currentScreen = OPTION_SCREEN;
+          }
+          else if(UISystem::currentScreen == DIVE_SCREEN)
+          {
+            UISystem::currentScreen = OPTION_SCREEN;
+          }
+          else if(UISystem::currentScreen == OPTION_SCREEN)
+          {  
+            OptionScreen::processButtonPress(BUTTON_ACTIVATE);
+          }
+          else if(UISystem::currentScreen == STAT_SCREEN)
+          {     
+            UISystem::currentScreen = OPTION_SCREEN;    
+          }
+          else if(UISystem::currentScreen == WIFI_SCREEN)
+          {     
+            WifiScreen::processButtonPress(BUTTON_ACTIVATE); 
+          }
+          UISystem::setScreen(UISystem::currentScreen);
+      });
+
+      // buttonActivate.btnClickEventListener([](void)
+      // {
+      //     if(UISystem::currentScreen == OPTION_SCREEN)
+      //     {
+      //       OptionScreen::processButtonPress(BUTTON_SELECT);
+      //     }
+      //     else if(UISystem::currentScreen == WIFI_SCREEN)
+      //     {
+      //       WifiScreen::processButtonPress(BUTTON_SELECT);
+      //     }    
+      // });
+}
+
+bool UISystem::isUnderwater()
+{
+    if(UISystem::depth >= 1)
+    {
+        isInDive = true;
+        return true;
+    }
+    else
+    {
+        if(isInDive)
+        {
+            isPathBuilt = false;
+            isInDive = false;
+            UISystem::fileSystem.m_diveID++;
+            UISystem::fileSystem.setDiveID();
+        }
+        return false;
+    }
 }

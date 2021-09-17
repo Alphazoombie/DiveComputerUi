@@ -4,13 +4,15 @@
 #include "JsonSerializer.h"
 #include "PeripheralManager.h"
 #include "FileSystem.h"
+#include "DiveData.h"
+#include "UISystem.h"
 
 class Datalogger 
 {
     public:
         // void initialize(PeripheralManager* peripheralManager);
-        void getData(char* jsonString, FileSystem* fileSystem);
-        void logData(char* fullFilePath, char* data);
+        void getData(FileSystem* fileSystem);
+        void logData(FileSystem* fileSystem, char* fullFilePath);
 
         void test();
     
