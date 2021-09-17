@@ -1,23 +1,23 @@
 #include "JsonSerializer.h"
 
 //returns a Json String with values: diveID, time, heartrate, oxygen, confidence, depth, brightness, temperature, accX, accY, accZ, gyrX, gyrY, gyrZ
-void JsonSerializer::createJsonString(DiveData* diveData, FileSystem* fileSystem, char* jsonResultString)
+void JsonSerializer::createJsonString(FileSystem* fileSystem, char* jsonResultString)
 {
 	DynamicJsonDocument jsonObject(256);
-	jsonObject["1"] = diveData->accelX;
-	jsonObject["2"] = diveData->accelY;
-	jsonObject["3"] = diveData->accelZ;
-	jsonObject["4"] = diveData->depth;
-	jsonObject["5"] = diveData->time;
-	jsonObject["6"] = diveData->gyroX; 
-	jsonObject["7"] = diveData->gyroY;
-	jsonObject["8"] = diveData->gyroZ; 
-	jsonObject["9"] = diveData->heartFrequency;
-	jsonObject["10"] = diveData->heartVariability;
-	jsonObject["11"] = diveData->brightness;
-	jsonObject["12"] = diveData->o2saturation;
+	jsonObject["1"]  = UISystem::currentDiveData.accelX;
+	jsonObject["2"]  = UISystem::currentDiveData.accelY;
+	jsonObject["3"]  = UISystem::currentDiveData.accelZ;
+	jsonObject["4"]  = UISystem::currentDiveData.depth;
+	jsonObject["5"]  = UISystem::currentDiveData.time;
+	jsonObject["6"]  = UISystem::currentDiveData.gyroX; 
+	jsonObject["7"]  = UISystem::currentDiveData.gyroY;
+	jsonObject["8"]  = UISystem::currentDiveData.gyroZ; 
+	jsonObject["9"]  = UISystem::currentDiveData.heartFrequency;
+	jsonObject["10"] = UISystem::currentDiveData.heartVariability;
+	jsonObject["11"] = UISystem::currentDiveData.brightness;
+	jsonObject["12"] = UISystem::currentDiveData.o2saturation;
 	jsonObject["13"] = fileSystem->m_diveID;
-	jsonObject["14"] = diveData->temperatur;
+	jsonObject["14"] = UISystem::currentDiveData.temperatur;
 	
 	serializeJson(jsonObject, jsonResultString, 200);
 }

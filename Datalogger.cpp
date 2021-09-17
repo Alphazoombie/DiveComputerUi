@@ -4,28 +4,27 @@
 // parameter.
 void Datalogger::getData(FileSystem* fileSystem) 
 {   
-    DiveData::diveData->accelX = 1.1f;
-    DiveData::diveData->accelY = 1.2f;
-    DiveData::diveData->accelZ = 1.3f;
-    DiveData::diveData->depth = 5.5f;
-    DiveData::diveData->time = 300000;
-    DiveData::diveData->gyroX = 2.1f;
-    DiveData::diveData->gyroY = 2.2f;
-    DiveData::diveData->gyroZ = 2.3f;
-    DiveData::diveData->heartFrequency = 75;
-    DiveData::diveData->heartVariability = 100;
-    DiveData::diveData->brightness = 50;
-    DiveData::diveData->o2saturation = 98;
-    DiveData::diveData->temperatur = 18.5f;
+    //Currently hardcoded dummy data
+    UISystem::currentDiveData.accelX = 1.1f;
+    UISystem::currentDiveData.accelY = 1.2f;
+    UISystem::currentDiveData.accelZ = 1.3f;
+    UISystem::currentDiveData.depth = 5.5f;
+    UISystem::currentDiveData.time = 300000;
+    UISystem::currentDiveData.gyroX = 2.1f;
+    UISystem::currentDiveData.gyroY = 2.2f;
+    UISystem::currentDiveData.gyroZ = 2.3f;
+    UISystem::currentDiveData.heartFrequency = 75;
+    UISystem::currentDiveData.heartVariability = 100;
+    UISystem::currentDiveData.brightness = 50;
+    UISystem::currentDiveData.o2saturation = 98;
+    UISystem::currentDiveData.temperatur = 18.5f;
 }
-
-
 
 // This function saves a String (Json-string with our data) in a file on the SD card.
 void Datalogger::logData(FileSystem* fileSystem, char* fullFilePath) 
 {
     char data[200];
-    JsonSerializer::createJsonString(DiveData::diveData, fileSystem, data);
+    JsonSerializer::createJsonString(fileSystem, data);
     m_dataFile = SD.open(fullFilePath, FILE_APPEND); //logPath
     if (m_dataFile)
     {

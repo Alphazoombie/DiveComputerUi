@@ -177,23 +177,24 @@ void loop()
   /* UI updater for refreshing the display*/
   UISystem::start();
 
+  delay(100);
+
   diveButton.btnClickEventListener([](void)
   { 
+      Serial.println("***In DiveButton Event listener");
       if(isUp)
       {
+          Serial.println("***Setting depth to 2.0");
           UISystem::depth = 2.0;
           isUp = false;
       }
       else
       {
+          Serial.println("***Resetting depth back to 0.0");
           UISystem::depth = 0.0;
           isUp = true;
       }
   });
-
-  
-
-  
 
   //Touch::drawAreas();
   /*Search for updates*/
