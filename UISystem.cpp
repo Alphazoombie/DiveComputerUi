@@ -47,9 +47,6 @@ void UISystem::setup()
 
   lv_task_create([](lv_task_t* task) 
   {
-    // ToDo: Insert here your Data Update Logic
-    handleDiveLogic();
-
     // sensor.read();
     // currentDiveData.depth =sensor.depth();
     // currentDiveData.time++;
@@ -73,7 +70,7 @@ void UISystem::setup()
         WifiScreen::update();
         break;
     }
-  }, 100, LV_TASK_PRIO_MID, NULL);
+  }, 500, LV_TASK_PRIO_MID, NULL);
 
   lv_task_create([](lv_task_t* task) 
   {
@@ -86,8 +83,18 @@ void UISystem::setup()
     }
   }, 1000, LV_TASK_PRIO_MID, NULL);
 
-  //setScreen(IDLE_SCREEN);
+  lv_task_create([](lv_task_t* task) 
+  {
+    // if (isUnderwater())
+    // {
+    //   // ToDo: Insert here your Data Update Logic
+    //   Serial.println("IN DIVE TASK...***()§)(");
 
+    // }
+    handleDiveLogic();
+  }, 100, LV_TASK_PRIO_MID, NULL);
+
+  //setScreen(IDLE_SCREEN);
 }
 
 void UISystem::setScreen(ScreenType screenType) 
@@ -153,6 +160,7 @@ void UISystem::handleDiveLogic()
             Helper::concatCharArrays(fileName, tempFileName, ".log");
             Serial.println("3");
             Serial.println(fileName);
+            Helper::concatCharArrays(directoryPathAndDirectoryName, UISystem::fileSystem.m_directoryPath, directoryName);
             Helper::concatCharArrays(fullFilePath, directoryPathAndDirectoryName, fileName);
             Serial.println("4");
             Serial.println(fullFilePath);
@@ -162,7 +170,6 @@ void UISystem::handleDiveLogic()
         Serial.println(fileName);
         Serial.print("fullFilePath -> ");
         Serial.println(fullFilePath);
-        delay(50);
         datalogger.getData(&fileSystem);
         datalogger.logData(&fileSystem, fullFilePath);
     }
@@ -200,17 +207,17 @@ void UISystem::handleButtons()
           UISystem::setScreen(UISystem::currentScreen);
       });
 
-      // buttonActivate.btnClickEventListener([](void)
-      // {
-      //     if(UISystem::currentScreen == OPTION_SCREEN)
-      //     {
-      //       OptionScreen::processButtonPress(BUTTON_SELECT);
-      //     }
-      //     else if(UISystem::currentScreen == WIFI_SCREEN)
-      //     {
-      //       WifiScreen::processButtonPress(BUTTON_SELECT);
-      //     }    
-      // });
+      buttonActivate.btnClickEventListener([](void)
+      {
+          if(UISystem::currentScreen == OPTION_SCREEN)
+          {
+            OptionScreen::processButtonPress(BUTTON_SELECT);
+          }
+          else if(UISystem::currentScreen == WIFI_SCREEN)
+          {
+            WifiScreen::processButtonPress(BUTTON_SELECT);
+          }    
+      });
 }
 
 bool UISystem::isUnderwater()

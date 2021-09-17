@@ -71,7 +71,7 @@ void FileSystem::getCurrentDate()
     //strncpy ( date, out, 6);
     
     // char currDate[] = "05_06_21";
-    strcpy(m_current_date, "02_03_22");
+    strcpy(m_current_date, "11_03_22");
 }
 // -------META files--------
 // sets the date; checks if the meta-files "dive.log" and "date.log"

@@ -47,7 +47,13 @@ void initializeSD()
 
 void buildDirectoryName()
 {
+    Serial.println("BuildDirectoryName Call:");
+    Serial.print("Current Data Param: ");
+    Serial.println(UISystem::fileSystem.m_current_date);
+    Serial.print("Directory Name Param: ");
+    Serial.println(UISystem::directoryName);
     Helper::concatCharArrays(UISystem::directoryName, "/", UISystem::fileSystem.m_current_date);
+    Serial.println(UISystem::directoryName);
 }
 
 #if USE_LV_LOG != 0
@@ -177,8 +183,6 @@ void loop()
   /* UI updater for refreshing the display*/
   UISystem::start();
 
-  delay(100);
-
   diveButton.btnClickEventListener([](void)
   { 
       Serial.println("***In DiveButton Event listener");
@@ -195,7 +199,6 @@ void loop()
           isUp = true;
       }
   });
-
   //Touch::drawAreas();
   /*Search for updates*/
   /*This Method will later be called manually in the settings, to decrease energy consumption*/
