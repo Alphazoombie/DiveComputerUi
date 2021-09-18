@@ -13,6 +13,7 @@
 #include <WiFiClient.h>
 #include "Touch.h"
 #include "CustomTouchButton.h"
+#include "WifiManager.h"
 
 
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
@@ -24,10 +25,6 @@ int m_chipSelect = 14;
 bool isUp = true;
 
 CustomTouchButton diveButton = CustomTouchButton(T7);
-
-//int port = 21;
-//WiFiServer wifiServer;
-
 
 void initializeSD() 
 {
@@ -42,8 +39,6 @@ void initializeSD()
     }
     Serial.println(" card initialized.");
 }
-
-
 
 void buildDirectoryName()
 {
@@ -122,7 +117,6 @@ void setup()
 
   buildDirectoryName();
 
-
   // wifiServer = WiFiServer(port);
   // WiFi.mode(WIFI_AP);
   // WiFi.softAP("Test1", "123");
@@ -199,6 +193,13 @@ void loop()
           isUp = true;
       }
   });
+
+  if (WifiManager::wifiServerActive)
+  {
+      Serial.println("FTP Server listening...");
+      WifiManager::m_ftpServer.handleFTP(); 
+  }
+
   //Touch::drawAreas();
   /*Search for updates*/
   /*This Method will later be called manually in the settings, to decrease energy consumption*/

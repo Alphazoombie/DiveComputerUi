@@ -76,7 +76,7 @@ void UISystem::setup()
   {
     time = lv_tick_get() / 1000;
 
-    if (collectingData) 
+    if (true)//collectingData) 
     {
       currentDiveData.time++;
       //diveDataSeries.push_back(currentDiveData);
