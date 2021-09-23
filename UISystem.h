@@ -17,6 +17,7 @@
 #include "ButtonType.h"
 #include "ScreenType.h"
 #include "WifiScreen.h"
+#include "SettingsScreen.h"
 #include <Wire.h>
 #include "MS5837.h"
 #include "FileSystem.h"

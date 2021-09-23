@@ -62,9 +62,9 @@ void OptionScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_DIVE_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_DIVE_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_obj_t * label3 = lv_label_create(buttons[BUTTON_DIVE_SCREEN], NULL);
-    //lv_obj_set_style_local_text_font(label3, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
+    lv_obj_set_style_local_text_font(label3, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label3, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-    lv_label_set_text(label3, "Dive");
+    lv_label_set_text(label3, LV_SYMBOL_SETTINGS);
 
     buttons[BUTTON_IDLE_SCREEN] = lv_btn_create(screenObj, NULL);
     lv_obj_set_pos(buttons[BUTTON_IDLE_SCREEN], spacingX * 2 + btnWidth, spacingY * 2 + btnHeight);
@@ -81,7 +81,7 @@ void OptionScreen::setup()
 
 void OptionScreen::showScreen() 
 {
-    lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
+    lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 0;
     lv_obj_set_style_local_border_width(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
     dataUpdate();
@@ -110,7 +110,7 @@ void OptionScreen::processButtonPress(ButtonType buttonType)
                 UISystem::setScreen(UISystem::currentScreen);
                 break;
             case 2:
-                UISystem::currentScreen = DIVE_SCREEN;  
+                UISystem::currentScreen = SETTINGS_SCREEN;  
                 UISystem::setScreen(UISystem::currentScreen);
                 break;
             case 3:

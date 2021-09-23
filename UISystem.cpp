@@ -44,6 +44,7 @@ void UISystem::setup()
   OptionScreen::setup();
   StatScreen::setup();
   WifiScreen::setup();
+  SettingsScreen::setup();
 
   lv_task_create([](lv_task_t* task) 
   {
@@ -71,6 +72,9 @@ void UISystem::setup()
         break;
       case WIFI_SCREEN:
         WifiScreen::update();
+        break;
+      case SETTINGS_SCREEN:
+        SettingsScreen::update();
         break;
     }
   }, 100, LV_TASK_PRIO_MID, NULL);
@@ -116,6 +120,10 @@ void UISystem::setScreen(ScreenType screenType)
   else if (screenType == WIFI_SCREEN)
   {    
     WifiScreen::showScreen();
+  } 
+  else if (screenType == SETTINGS_SCREEN)
+  {    
+    SettingsScreen::showScreen();
   } 
   currentScreen = screenType;
 }
@@ -197,20 +205,28 @@ void UISystem::handleButtons()
           {     
             WifiScreen::processButtonPress(BUTTON_ACTIVATE); 
           }
+          else if(UISystem::currentScreen == SETTINGS_SCREEN)
+          {     
+            SettingsScreen::processButtonPress(BUTTON_ACTIVATE);     
+          }
           UISystem::setScreen(UISystem::currentScreen);
       });
 
-      // buttonActivate.btnClickEventListener([](void)
-      // {
-      //     if(UISystem::currentScreen == OPTION_SCREEN)
-      //     {
-      //       OptionScreen::processButtonPress(BUTTON_SELECT);
-      //     }
-      //     else if(UISystem::currentScreen == WIFI_SCREEN)
-      //     {
-      //       WifiScreen::processButtonPress(BUTTON_SELECT);
-      //     }    
-      // });
+      buttonActivate.btnClickEventListener([](void)
+      {
+        if(UISystem::currentScreen == OPTION_SCREEN)
+        {
+          OptionScreen::processButtonPress(BUTTON_SELECT);
+        }
+        else if(UISystem::currentScreen == WIFI_SCREEN)
+        {
+          WifiScreen::processButtonPress(BUTTON_SELECT);
+        }   
+        else if(UISystem::currentScreen == SETTINGS_SCREEN)
+        {
+          SettingsScreen::processButtonPress(BUTTON_SELECT);
+        } 
+      });
 }
 
 bool UISystem::isUnderwater()

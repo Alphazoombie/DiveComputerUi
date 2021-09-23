@@ -25,10 +25,6 @@ bool isUp = true;
 
 CustomTouchButton diveButton = CustomTouchButton(T7);
 
-//int port = 21;
-//WiFiServer wifiServer;
-
-
 void initializeSD() 
 {
     Serial.print("Initializing SD card...");
@@ -114,55 +110,7 @@ void setup()
   UISystem::fileSystem.createWifiDataFile();
   UISystem::fileSystem.initializeMetaData();
 
-  buildDirectoryName();
-
-
-  // wifiServer = WiFiServer(port);
-  // WiFi.mode(WIFI_AP);
-  // WiFi.softAP("Test1", "123");
-  
-  /*
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    Serial.println("Connection Failed! Rebooting...");
-    delay(5000);
-    ESP.restart();
-  }
-  
-  ArduinoOTA
-  .onStart([]() {
-    String type;
-    if (ArduinoOTA.getCommand() == U_FLASH)
-      type = "sketch";
-    else // U_SPIFFS
-      type = "filesystem";
-
-    // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
-    Serial.println("Start updating " + type);
-  })
-  .onEnd([]() {
-    Serial.println("\nEnd");
-  })
-  .onProgress([](unsigned int progress, unsigned int total) {
-    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
-  })
-  .onError([](ota_error_t error) {
-    Serial.printf("Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
-    else if (error == OTA_END_ERROR) Serial.println("End Failed");
-  });
-
-  ArduinoOTA.begin();
-  
-  Serial.println("Ready");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-  */
-
+  buildDirectoryName(); 
 
   /*The User Interface Initializer*/
   UISystem::setup();
@@ -196,8 +144,5 @@ void loop()
       }
   });
 
-  //Touch::drawAreas();
-  /*Search for updates*/
-  /*This Method will later be called manually in the settings, to decrease energy consumption*/
-  //ArduinoOTA.handle()
+  //Touch::drawAreas();  
 }
