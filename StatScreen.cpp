@@ -64,7 +64,6 @@ void StatScreen::setup()
     addNamedChartSerie("O2-Saturation/Depth");
     addNamedChartSerie("Heart-Frequency/Depth");
     addNamedChartSerie("Heart-Variability");
-
 }
 
 void StatScreen::showScreen() 
@@ -186,6 +185,7 @@ void StatScreen::update()
 // Create new named-chart-series & add them into the list of available series
 void StatScreen::addNamedChartSerie(const char* name) 
 {
+    //SHIT HAPPENS HERE
     NamedChartSerie serie = NamedChartSerie();
     serie.name = name;
     serie.series = 0;

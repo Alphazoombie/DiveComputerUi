@@ -4,6 +4,8 @@ WiFiServer WifiManager::m_server;
 bool WifiManager::serverActive;
 bool WifiManager::clientActive;
 bool WifiManager::connectionFailed = false;
+FtpServer WifiManager::m_ftpServer;
+bool WifiManager::wifiServerActive = false;
 
 void WifiManager::createAccessPoint(int port, const char* ssid, const char* password)
 {    
@@ -15,7 +17,12 @@ void WifiManager::createAccessPoint(int port, const char* ssid, const char* pass
     m_server = WiFiServer(port);
     WiFi.mode(WIFI_AP);
     WiFi.softAP(ssid, password);
+	
     serverActive = true;
+    Serial.println(WiFi.softAPNetworkID());
+    wifiServerActive = true;
+    m_ftpServer.begin("diver", "diverpass");
+    Serial.println("FTP Server started...");
 }
 
 void WifiManager::disconnectAccessPoint()
@@ -29,7 +36,8 @@ void WifiManager::disconnectAccessPoint()
     if (clientActive == true)
     {
         WiFi.disconnect();
-        serverActive = false;
+        serverActive = false;		
+		wifiServerActive = false;
     } 
 }
 

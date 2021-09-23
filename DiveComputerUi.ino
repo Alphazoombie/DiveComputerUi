@@ -13,6 +13,7 @@
 #include <WiFiClient.h>
 #include "Touch.h"
 #include "CustomTouchButton.h"
+#include "WifiManager.h"
 
 
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
@@ -39,11 +40,15 @@ void initializeSD()
     Serial.println(" card initialized.");
 }
 
-
-
 void buildDirectoryName()
 {
+    Serial.println("BuildDirectoryName Call:");
+    Serial.print("Current Data Param: ");
+    Serial.println(UISystem::fileSystem.m_current_date);
+    Serial.print("Directory Name Param: ");
+    Serial.println(UISystem::directoryName);
     Helper::concatCharArrays(UISystem::directoryName, "/", UISystem::fileSystem.m_current_date);
+    Serial.println(UISystem::directoryName);
 }
 
 #if USE_LV_LOG != 0
@@ -109,8 +114,8 @@ void setup()
 
   UISystem::fileSystem.createWifiDataFile();
   UISystem::fileSystem.initializeMetaData();
-
   buildDirectoryName(); 
+
 
   /*The User Interface Initializer*/
   UISystem::setup();
@@ -124,8 +129,6 @@ void loop()
 {
   /* UI updater for refreshing the display*/
   UISystem::start();
-
-  delay(100);
 
   diveButton.btnClickEventListener([](void)
   { 
@@ -143,6 +146,10 @@ void loop()
           isUp = true;
       }
   });
-
-  //Touch::drawAreas();  
+  
+  if (WifiManager::wifiServerActive)
+  {
+      Serial.println("FTP Server listening...");
+      WifiManager::m_ftpServer.handleFTP(); 
+  }
 }

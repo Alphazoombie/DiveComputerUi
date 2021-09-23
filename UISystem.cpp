@@ -48,9 +48,6 @@ void UISystem::setup()
 
   lv_task_create([](lv_task_t* task) 
   {
-    // ToDo: Insert here your Data Update Logic
-    handleDiveLogic();
-
     // sensor.read();
     // currentDiveData.depth =sensor.depth();
     // currentDiveData.time++;
@@ -77,21 +74,31 @@ void UISystem::setup()
         SettingsScreen::update();
         break;
     }
-  }, 100, LV_TASK_PRIO_MID, NULL);
+  }, 500, LV_TASK_PRIO_MID, NULL);
 
   lv_task_create([](lv_task_t* task) 
   {
     time = lv_tick_get() / 1000;
 
-    if (collectingData) 
+    if (true)//collectingData) 
     {
       currentDiveData.time++;
       //diveDataSeries.push_back(currentDiveData);
     }
   }, 1000, LV_TASK_PRIO_MID, NULL);
 
-  //setScreen(IDLE_SCREEN);
+  lv_task_create([](lv_task_t* task) 
+  {
+    // if (isUnderwater())
+    // {
+    //   // ToDo: Insert here your Data Update Logic
+    //   Serial.println("IN DIVE TASK...***()§)(");
 
+    // }
+    handleDiveLogic();
+  }, 100, LV_TASK_PRIO_MID, NULL);
+
+  //setScreen(IDLE_SCREEN);
 }
 
 void UISystem::setScreen(ScreenType screenType) 
@@ -161,16 +168,24 @@ void UISystem::handleDiveLogic()
             Helper::concatCharArrays(fileName, tempFileName, ".log");
             Serial.println("3");
             Serial.println(fileName);
+            Helper::concatCharArrays(directoryPathAndDirectoryName, UISystem::fileSystem.m_directoryPath, directoryName);
             Helper::concatCharArrays(fullFilePath, directoryPathAndDirectoryName, fileName);
             Serial.println("4");
             Serial.println(fullFilePath);
             isPathBuilt = true;
+            char time[9];
+            PeripheralManager::getCurrentTime(time);
+            File file = SD.open(fullFilePath, FILE_APPEND);
+            if(file)
+            {
+              file.println(time);
+              file.close();
+            }
         }
         Serial.print("fileName -> ");
         Serial.println(fileName);
         Serial.print("fullFilePath -> ");
         Serial.println(fullFilePath);
-        delay(50);
         datalogger.getData(&fileSystem);
         datalogger.logData(&fileSystem, fullFilePath);
     }
