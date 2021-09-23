@@ -165,6 +165,14 @@ void UISystem::handleDiveLogic()
             Serial.println("4");
             Serial.println(fullFilePath);
             isPathBuilt = true;
+            char time[9];
+            PeripheralManager::getCurrentTime(time);
+            File file = SD.open(fullFilePath, FILE_APPEND);
+            if(file)
+            {
+              file.println(time);
+              file.close();
+            }
         }
         Serial.print("fileName -> ");
         Serial.println(fileName);

@@ -43,3 +43,10 @@ void PeripheralManager::initializeSD()
     }
     Serial.println(" card initialized.");
 }
+
+//TODO
+//get time from real-time clock
+void PeripheralManager::getCurrentTime(char* time)
+{
+    strcpy(time, "14:50:13");
+}
