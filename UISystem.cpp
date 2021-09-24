@@ -210,7 +210,7 @@ void UISystem::handleButtons()
           }
           else if(UISystem::currentScreen == OPTION_SCREEN)
           {  
-            OptionScreen::processButtonPress(BUTTON_ACTIVATE);
+            OptionScreen::processButtonPress(BUTTON_ACTIVATE, -1);
           }
           else if(UISystem::currentScreen == STAT_SCREEN)
           {     
@@ -218,11 +218,11 @@ void UISystem::handleButtons()
           }
           else if(UISystem::currentScreen == WIFI_SCREEN)
           {     
-            WifiScreen::processButtonPress(BUTTON_ACTIVATE); 
+            WifiScreen::processButtonPress(BUTTON_ACTIVATE, -1); 
           }
           else if(UISystem::currentScreen == SETTINGS_SCREEN)
           {     
-            SettingsScreen::processButtonPress(BUTTON_ACTIVATE);     
+            SettingsScreen::processButtonPress(BUTTON_ACTIVATE, -1);     
           }
           UISystem::setScreen(UISystem::currentScreen);
       });
@@ -231,15 +231,15 @@ void UISystem::handleButtons()
       {
         if(UISystem::currentScreen == OPTION_SCREEN)
         {
-          OptionScreen::processButtonPress(BUTTON_SELECT);
+          OptionScreen::processButtonPress(BUTTON_SELECT, -1);
         }
         else if(UISystem::currentScreen == WIFI_SCREEN)
         {
-          WifiScreen::processButtonPress(BUTTON_SELECT);
+          WifiScreen::processButtonPress(BUTTON_SELECT, -1);
         }   
         else if(UISystem::currentScreen == SETTINGS_SCREEN)
         {
-          SettingsScreen::processButtonPress(BUTTON_SELECT);
+          SettingsScreen::processButtonPress(BUTTON_SELECT, -1);
         } 
       });
 }

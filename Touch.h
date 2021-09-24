@@ -9,27 +9,29 @@ using namespace std;
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ILI9341.h> // Hardware-specific library
 #include <Adafruit_STMPE610.h>
+#include "UISystem.h"
+#include "WifiScreen.h"
+#include "SettingsScreen.h"
+#include "OptionScreen.h"
 
-struct Area 
-{
-   int id;
-   int x;
-   int y;
-   int width;
-   int height;
+struct Area {
+    int id;
+    int x;
+    int y;
+    int width;
+    int height;
 };
 
 static vector<Area> areas;
 
-class Touch
-{
-public:
-   //static vector<Area> areas;
-   static void touchEvent();
-   static void registerArea(int id, int x, int y, int width, int height);
-   static void clearRegister();
-   static void drawAreas();
-   static int areaTouched(int x, int y);
+class Touch{
+  public:
+    //static vector<Area> areas;
+    static void setup();
+    static void registerArea(int id, int x, int y, int width, int height);
+    static void clearRegister();
+    static void handleTouch();
+    static int areaTouched();
 };
 
 #endif

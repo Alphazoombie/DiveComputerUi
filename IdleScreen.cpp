@@ -38,6 +38,8 @@ void IdleScreen::setup()
 
 void IdleScreen::showScreen() 
 {
+    Touch::clearRegister();    
+    Touch::registerArea(1, 0, 0, 320, 240);
     dataUpdate();
     lv_scr_load(IdleScreen::screenObj);
 }

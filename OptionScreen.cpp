@@ -4,6 +4,7 @@
 
 #include "OptionScreen.h"
 
+
 lv_obj_t* OptionScreen::screenObj;
 int16_t OptionScreen::selectionIndex;
 lv_obj_t* OptionScreen::buttons[4];
@@ -81,6 +82,17 @@ void OptionScreen::setup()
 
 void OptionScreen::showScreen() 
 {
+    int16_t btnWidth = 140;
+    int16_t btnHeight = 100;
+    int16_t spacingX = (SCREEN_WIDTH - btnWidth * 2) / 3;
+    int16_t spacingY = (SCREEN_HEIGHT - btnHeight * 2) / 3; 
+
+    Touch::clearRegister();
+    Touch::registerArea(1, spacingX, spacingY, btnWidth, btnHeight);
+    Touch::registerArea(2, spacingX * 2 + btnWidth, spacingY, btnWidth, btnHeight);
+    Touch::registerArea(3, spacingX, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+    Touch::registerArea(4, spacingX * 2 + btnWidth, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 0;
     lv_obj_set_style_local_border_width(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
@@ -88,14 +100,23 @@ void OptionScreen::showScreen()
     lv_scr_load(OptionScreen::screenObj);
 }
 
-void OptionScreen::processButtonPress(ButtonType buttonType) 
+void OptionScreen::processButtonPress(ButtonType buttonType, int index) 
 {
     if(buttonType == BUTTON_SELECT) 
     {
-        lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
-        selectionIndex++;
-        selectionIndex %= 4;
-        lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+        if (index == -1)
+        {
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
+            selectionIndex++;
+            selectionIndex %= 4;
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+        }
+        else
+        {
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);        
+            selectionIndex = index;
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+        }        
     } 
     else 
     {

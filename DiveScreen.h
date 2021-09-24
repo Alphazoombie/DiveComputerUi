@@ -9,6 +9,7 @@
 #include "UISystem.h"
 #include "ButtonType.h"
 #include "Timer.h"
+#include "Touch.h"
 
 class DiveScreen 
 {

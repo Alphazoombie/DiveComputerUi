@@ -8,6 +8,7 @@
 #include <lvgl.h>
 #include "UISystem.h"
 #include "ButtonType.h"
+#include "Touch.h"
 
 class IdleScreen 
 {

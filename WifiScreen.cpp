@@ -91,6 +91,16 @@ void WifiScreen::setup()
 
 void WifiScreen::showScreen() 
 {
+    int16_t btnWidth = 140;
+    int16_t btnHeight = 100;
+    int16_t spacingX = (SCREEN_WIDTH - btnWidth * 2) / 3;
+    int16_t spacingY = (SCREEN_HEIGHT - btnHeight * 2) / 3; 
+
+    Touch::clearRegister();
+    Touch::registerArea(1, spacingX * 2 + btnWidth, spacingY, btnWidth, btnHeight);
+    Touch::registerArea(2, spacingX, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+    Touch::registerArea(3, spacingX * 2 + btnWidth, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 2;
     lv_obj_set_style_local_border_width(buttons[BUTTON_WIFI_ACTIVATION], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
@@ -98,20 +108,30 @@ void WifiScreen::showScreen()
     lv_scr_load(WifiScreen::screenObj);
 }
 
-void WifiScreen::processButtonPress(ButtonType buttonType) 
+void WifiScreen::processButtonPress(ButtonType buttonType, int index) 
 {
     if(buttonType == BUTTON_SELECT) 
     {
-        lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
-        selectionIndex++;
-        selectionIndex %= 4;
-
-        if (selectionIndex == 0)
+        if (index == -1)
         {
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
             selectionIndex++;
-        }
+            selectionIndex %= 4;
+
+            if (selectionIndex == 0)
+            {
+                selectionIndex++;
+            }
         
-        lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+        }
+        else
+        {
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);        
+            selectionIndex = index;
+            selectionIndex++;
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+        }  
     } 
     else 
     {

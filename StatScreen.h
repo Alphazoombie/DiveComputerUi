@@ -9,7 +9,7 @@
 #include <list>
 #include <math.h>
 #include <Arduino.h>
-
+#include "Touch.h"
 #include "UISystem.h"
 #include "ScreenType.h"
 #include "ButtonType.h"

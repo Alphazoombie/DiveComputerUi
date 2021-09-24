@@ -1,4 +1,5 @@
 #include "SettingsScreen.h"
+#include "Touch.h"
 
 lv_obj_t* SettingsScreen::screenObj;
 int16_t SettingsScreen::selectionIndex;
@@ -75,6 +76,15 @@ void SettingsScreen::setup()
 
 void SettingsScreen::showScreen() 
 {
+    int16_t btnWidth = 140;
+    int16_t btnHeight = 100;
+    int16_t spacingX = (SCREEN_WIDTH - btnWidth * 2) / 3;
+    int16_t spacingY = (SCREEN_HEIGHT - btnHeight * 2) / 3; 
+
+    Touch::clearRegister();    
+    Touch::registerArea(3, spacingX, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+    Touch::registerArea(4, spacingX * 2 + btnWidth, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 1;
     lv_obj_set_style_local_border_width(buttons[BUTTON_OTA_ACTIVATION], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
@@ -99,20 +109,31 @@ void SettingsScreen::showScreen()
     lv_scr_load(SettingsScreen::screenObj);
 }
 
-void SettingsScreen::processButtonPress(ButtonType buttonType) 
+void SettingsScreen::processButtonPress(ButtonType buttonType, int index) 
 {
     if(buttonType == BUTTON_SELECT) 
     {
-        lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
-        selectionIndex++;
-        selectionIndex %= 3;
-
-        if (selectionIndex == 0)
+        if (index == -1)
         {
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
             selectionIndex++;
+            selectionIndex %= 3;
+
+            if (selectionIndex == 0)
+            {
+                selectionIndex++;
+            }
+            
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
         }
-        
-        lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+        else
+        {
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);        
+            selectionIndex = index;
+            selectionIndex++;
+            selectionIndex++;
+            lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
+        }        
     } 
     else 
     {
@@ -212,8 +233,8 @@ bool SettingsScreen::createsampledata()
     File newFile = SD.open(OTA_ACCESS_DATA_PATH, FILE_APPEND);
     if (newFile)
     {
-        newFile.println("Vodafone-D638");
-        newFile.println("ZStrix!CXT210?");
+        newFile.println("Your Network");
+        newFile.println("Your Pass");
         newFile.close();        
     }    
     return true;

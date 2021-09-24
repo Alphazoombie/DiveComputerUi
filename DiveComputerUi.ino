@@ -119,8 +119,7 @@ void setup()
 
   /*The User Interface Initializer*/
   UISystem::setup();
-  //Touch::touchEvent();
-  //Touch::registerArea(1, 5, 5, 40, 40);
+  Touch::setup();
 
   UISystem::setScreen(IDLE_SCREEN);
 }
@@ -152,4 +151,6 @@ void loop()
       Serial.println("FTP Server listening...");
       WifiManager::m_ftpServer.handleFTP(); 
   }
+
+  Touch::handleTouch();
 }

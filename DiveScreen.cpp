@@ -4,6 +4,7 @@
 
 #include "DiveScreen.h"
 
+
 lv_obj_t* DiveScreen::screenObj;
 
 lv_obj_t* DiveScreen::lblTimeObj;
@@ -143,6 +144,7 @@ void DiveScreen::setup()
 
 void DiveScreen::showScreen() 
 {
+  Touch::clearRegister();    
   dataUpdate();
   lv_scr_load(DiveScreen::screenObj);
 }

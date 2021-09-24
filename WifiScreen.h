@@ -10,6 +10,7 @@
 #include "WifiAccessGenerator.h"
 #include "WifiManager.h"
 #include "Helper.h"
+#include "Touch.h"
 
 
 #define WIFI_ACCESS_DATA_PATH "/wifidata.wfd"
@@ -32,7 +33,7 @@ public:
     
     static void setup();
     static void showScreen();
-    static void processButtonPress(ButtonType);
+    static void processButtonPress(ButtonType, int index);
     static void dataUpdate();
     static void update();
     static void readWifiAccessData(char* ssid, char* password);

@@ -29,7 +29,7 @@ public:
     
     static void setup();
     static void showScreen();
-    static void processButtonPress(ButtonType);
+    static void processButtonPress(ButtonType, int index);
     static void dataUpdate();
     static void update();
     static void readWifiAccessData(char* ssid, char* password);

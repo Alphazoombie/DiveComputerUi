@@ -8,6 +8,7 @@
 #include <lvgl.h>
 #include "UISystem.h"
 #include "ButtonType.h"
+#include "Touch.h"
 
 class OptionScreen 
 {
@@ -20,7 +21,7 @@ public:
     
     static void setup();
     static void showScreen();
-    static void processButtonPress(ButtonType);
+    static void processButtonPress(ButtonType, int index);
     static void dataUpdate();
     static void update();
 };

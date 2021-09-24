@@ -31,13 +31,13 @@ void WifiManager::disconnectAccessPoint()
     {
         WiFi.softAPdisconnect(true);
         serverActive = false;
+        serverActive = false;		
+		wifiServerActive = false;
     }
     
     if (clientActive == true)
     {
-        WiFi.disconnect();
-        serverActive = false;		
-		wifiServerActive = false;
+        WiFi.disconnect();        
     } 
 }
 
