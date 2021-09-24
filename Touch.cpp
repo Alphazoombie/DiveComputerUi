@@ -43,11 +43,6 @@ int Touch::areaTouched(){
   
   if(ts.touched() && p.x > 0 && p.y > 0)
   {
-    Serial.print("X : ");
-    Serial.print(p.y);
-    Serial.print("Y : ");
-    Serial.println(p.x);
-    Serial.println("------------");
     for(int i = 0; i < areas.size(); i++)
     {
       if((areas[i].x <= p.y && p.y <= areas[i].x + areas[i].width)
@@ -58,7 +53,6 @@ int Touch::areaTouched(){
         return i; 
       }       
     }
-    Serial.println("------------");
   }
   
   return -1;
@@ -86,7 +80,7 @@ void Touch::handleTouch()
          }
          else if(UISystem::currentScreen == WIFI_SCREEN)
          {
-            if(WifiScreen::selectionIndex == z)
+            if(WifiScreen::selectionIndex == (z + 1))
             {
             WifiScreen::processButtonPress(BUTTON_ACTIVATE, z); 
             }
@@ -97,7 +91,7 @@ void Touch::handleTouch()
          }
          else if(UISystem::currentScreen == SETTINGS_SCREEN)
          {
-            if(SettingsScreen::selectionIndex == z)
+            if(SettingsScreen::selectionIndex == (z + 1))
             {
             SettingsScreen::processButtonPress(BUTTON_ACTIVATE, z); 
             }

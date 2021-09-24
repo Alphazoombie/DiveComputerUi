@@ -82,8 +82,8 @@ void SettingsScreen::showScreen()
     int16_t spacingY = (SCREEN_HEIGHT - btnHeight * 2) / 3; 
 
     Touch::clearRegister();    
-    Touch::registerArea(3, spacingX, spacingY * 2 + btnHeight, btnWidth, btnHeight);
-    Touch::registerArea(4, spacingX * 2 + btnWidth, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+    Touch::registerArea(1, spacingX, spacingY * 2 + btnHeight, btnWidth, btnHeight);
+    Touch::registerArea(2, spacingX * 2 + btnWidth, spacingY * 2 + btnHeight, btnWidth, btnHeight);
 
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 1;
@@ -128,10 +128,10 @@ void SettingsScreen::processButtonPress(ButtonType buttonType, int index)
         }
         else
         {
+            Serial.println("in select");
+            Serial.println(index);
             lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);        
-            selectionIndex = index;
-            selectionIndex++;
-            selectionIndex++;
+            selectionIndex = index + 1;
             lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
         }        
     } 
