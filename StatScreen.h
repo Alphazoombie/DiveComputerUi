@@ -13,6 +13,8 @@
 #include "UISystem.h"
 #include "ScreenType.h"
 #include "ButtonType.h"
+#include "DiveData.h"
+#include <ArduinoJson.h>
 
 struct NamedChartSerie 
 {
@@ -30,7 +32,7 @@ public:
     static lv_obj_t* chartObj;
     static lv_obj_t* lblSerieNameObj;
     static lv_obj_t* lblSecondsObj;
-
+    static std::list<SmallDiveData> diveData;
     static std::list<NamedChartSerie> namedSerieList;
     static int8_t currentSeriesIndex; 
       

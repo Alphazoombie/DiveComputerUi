@@ -121,6 +121,17 @@ void FileSystem::initializeMetaData()
     }
     setDiveID();  
 }
+
+void FileSystem::createLastDiveFile(char* path)
+{
+    File file = SD.open("/lastDive.log", FILE_WRITE);
+    if (file)
+    {
+        file.println(path);
+        file.close();
+    }  
+}
+
 //creates a directory with given parameter as name
 void FileSystem::createDirectory() 
 {

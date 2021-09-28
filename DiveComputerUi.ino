@@ -137,12 +137,14 @@ void loop()
           Serial.println("***Setting depth to 2.0");
           UISystem::depth = 2.0;
           isUp = false;
+          UISystem::goin = true;
       }
       else
       {
           Serial.println("***Resetting depth back to 0.0");
           UISystem::depth = 0.0;
           isUp = true;
+          UISystem::goin = true;
       }
   });
   

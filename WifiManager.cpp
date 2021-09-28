@@ -82,10 +82,8 @@ bool WifiManager::connectAccessPoint(char* ssid, char* password)
     }
     realPass[sizePass - 1] =  '\0';
 
-    Serial.println("size:");
-    Serial.println(sizeof(realSsid));
+    Serial.println("ssid pass:");
     Serial.println(realSsid);
-    Serial.println(sizeof(realPass));
     Serial.println(realPass);
     int counter = 0;
     Serial.println(counter);

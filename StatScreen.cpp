@@ -8,6 +8,7 @@ lv_obj_t* StatScreen::screenObj;
 lv_obj_t* StatScreen::chartObj;
 lv_obj_t* StatScreen::lblSerieNameObj;
 lv_obj_t* StatScreen::lblSecondsObj;
+std::list<SmallDiveData> StatScreen::diveData;
 
 std::list<NamedChartSerie> StatScreen::namedSerieList = std::list<NamedChartSerie>();
 int8_t StatScreen::currentSeriesIndex = 0;
@@ -102,7 +103,7 @@ void StatScreen::dataUpdate()
     NamedChartSerie serie = *it;
 
     // Set data count (to display the whole curve)
-    lv_chart_set_point_count(chartObj, UISystem::diveDataSeries.size());
+    lv_chart_set_point_count(chartObj, StatScreen::diveData.size());
     // Hide last shown series
     lv_chart_hide_series(chartObj, serie.series, true);
     // Reset seriesIndex
@@ -119,27 +120,21 @@ void StatScreen::dataUpdate()
     }
 
     //Calculate Min/Max Values & Add them to chart-series
-    for (DiveData data : UISystem::diveDataSeries) 
+    for (SmallDiveData data : StatScreen::diveData) 
     {
         std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
         processDiveData(data.depth, *it++);
-        processDiveData(data.temperatur, *it++);
-        processDiveData(data.brightness, *it++);
         processDiveData(data.o2saturation, *it++);
         processDiveData(data.heartFrequency, *it++);
-        processDiveData(data.heartVariability, *it++);
     }
 
     //Apply min values for correct chart-curve & put them on chart
-    for (DiveData data : UISystem::diveDataSeries) 
+    for (SmallDiveData data : StatScreen::diveData) 
     {
         std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
         addNormlizedPointsOnChart(data.depth, *it++);
-        addNormlizedPointsOnChart(data.temperatur, *it++);
-        addNormlizedPointsOnChart(data.brightness, *it++);
         addNormlizedPointsOnChart(data.o2saturation, *it++);
         addNormlizedPointsOnChart(data.heartFrequency, *it++);
-        addNormlizedPointsOnChart(data.heartVariability, *it++);
     }
 
     // Create axis-strings for labels
@@ -148,7 +143,7 @@ void StatScreen::dataUpdate()
 
     for (NamedChartSerie& serie : namedSerieList) 
     {
-        serie.xAxisLabels += String(1);
+         
         serie.yAxisLabels += String(serie.max);
         for (int i = 0; i < xGaps - 1; i++) 
         {
@@ -158,7 +153,7 @@ void StatScreen::dataUpdate()
         {
             serie.yAxisLabels += String("\n");
         }
-        serie.xAxisLabels += String(UISystem::diveDataSeries.size());
+        serie.xAxisLabels += String(StatScreen::diveData.size());
         serie.yAxisLabels += String(serie.min);
     }
 
@@ -176,6 +171,49 @@ void StatScreen::dataUpdate()
 
     // Chart needs to be updated
     lv_chart_refresh(chartObj);
+}
+
+void getLastDive(char* lastDivePath)
+{
+    File file = SD.open("/lastDive.log", FILE_READ);
+    if(file)
+    {
+        file.readStringUntil('\n').toCharArray(lastDivePath,200);
+        file.close();
+    }
+}
+
+SmallDiveData etractJson(char* json)
+{    
+    SmallDiveData smallDiveData;
+
+    DynamicJsonDocument jDocument(200);   
+
+    deserializeJson(jDocument, json);                                      
+                smallDiveData.depth = jDocument["4"];                                
+                smallDiveData.time = jDocument["5"];    
+                smallDiveData.heartFrequency = jDocument["9"];
+                smallDiveData.o2saturation = jDocument["12"];
+    
+    return smallDiveData;
+}
+
+void getData()
+{
+    char fullFilePath[29];
+    char data[200];
+    getLastDive(fullFilePath);
+    File file = SD.open(fullFilePath, FILE_READ);
+    if (file)
+    {
+        while(file.available())
+        {
+            file.readStringUntil('\n').toCharArray(data,200);
+            SmallDiveData small = etractJson(data);
+            StatScreen::diveData.push_back(small);
+        }  
+        file.close();
+    }   
 }
 
 // For future use ...
@@ -222,7 +260,7 @@ void StatScreen::createAxisLabels(NamedChartSerie& serie, int16_t xGaps, int16_t
     {
         serie.yAxisLabels += String("\n");
     }
-    serie.xAxisLabels += String(UISystem::diveDataSeries.size());
+    serie.xAxisLabels += String(StatScreen::diveData.size());
     serie.yAxisLabels += String(serie.max);
 }
 

@@ -89,6 +89,8 @@ void SettingsScreen::showScreen()
     selectionIndex = 1;
     lv_obj_set_style_local_border_width(buttons[BUTTON_OTA_ACTIVATION], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
     dataUpdate();
+    Serial.println("connection status: ");
+    Serial.println(WifiManager::connectionFailed);
     if (otaActive && WifiManager::isConnected())
     {
         buildWifiStatusString(ssidS, "connected", wifiAccessDataStringS);
@@ -97,6 +99,7 @@ void SettingsScreen::showScreen()
     }
     else if (WifiManager::connectionFailed)
     {
+        Serial.println("going in");
         buildWifiStatusString(ssidS, "connection failed", wifiAccessDataStringS);
         lv_label_set_text(btnOtaData, wifiAccessDataStringS);
     }    
@@ -128,8 +131,6 @@ void SettingsScreen::processButtonPress(ButtonType buttonType, int index)
         }
         else
         {
-            Serial.println("in select");
-            Serial.println(index);
             lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);        
             selectionIndex = index + 1;
             lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);

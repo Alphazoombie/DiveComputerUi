@@ -8,8 +8,15 @@ void Datalogger::getData(FileSystem* fileSystem)
     UISystem::currentDiveData.accelX = 1.1f;
     UISystem::currentDiveData.accelY = 1.2f;
     UISystem::currentDiveData.accelZ = 1.3f;
-    UISystem::currentDiveData.depth = 5.5f;
-    UISystem::currentDiveData.time = 300000;
+    UISystem::currentDiveData.depth = random(3, 10)*1.0f;
+    if (millis() > 1000)
+    {
+        UISystem::currentDiveData.time = millis() / 1000;
+    }
+    else
+    {
+        UISystem::currentDiveData.time = 1;
+    }    
     UISystem::currentDiveData.gyroX = 2.1f;
     UISystem::currentDiveData.gyroY = 2.2f;
     UISystem::currentDiveData.gyroZ = 2.3f;

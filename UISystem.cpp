@@ -12,7 +12,7 @@ std::list<DiveData> UISystem::diveDataSeries = std::list<DiveData>();
 
 FileSystem UISystem::fileSystem;
 Datalogger datalogger;
-
+bool UISystem::goin = false;
 long UISystem::time = 0;
 
 CustomTouchButton buttonActivate = CustomTouchButton(T5); 
@@ -20,10 +20,10 @@ CustomTouchButton buttonSelect = CustomTouchButton(T0);
 
 char jsonString[200];
 char UISystem::directoryName[10];
-char tempFileName[6];
+char tempFileName[7];
 char directoryPathAndDirectoryName[19];
-char fullFilePath[28];
-char fileName[10];
+char fullFilePath[29];
+char fileName[11];
 char diveID[4];
 
 float UISystem::depth = 0.0;
@@ -145,52 +145,74 @@ void UISystem::start()
 void UISystem::handleDiveLogic()
 {
   if(isUnderwater())
-    {
-        if (!UISystem::fileSystem.m_sameSession)
+    {      
+      if (UISystem::goin)
+      {
+        UISystem::goin = false;
+        setScreen(DIVE_SCREEN);
+        Serial.println("goin");
+      }
+      
+      
+      if (!UISystem::fileSystem.m_sameSession)
+      {
+          Serial.println("inside not sameSession");
+          UISystem::fileSystem.writeDateToSessionFile(UISystem::fileSystem.m_current_date);
+          UISystem::fileSystem.m_sameSession = true;
+          Helper::concatCharArrays(directoryPathAndDirectoryName, UISystem::fileSystem.m_directoryPath, directoryName);
+          SD.mkdir(directoryPathAndDirectoryName);
+          Serial.print("directoryPathAndDirectoryName -> ");
+          Serial.println(directoryPathAndDirectoryName);
+      }
+      if(!isPathBuilt)
+      {
+        if (fileSystem.m_diveID < 10)
         {
-            Serial.println("inside not sameSession");
-            UISystem::fileSystem.writeDateToSessionFile(UISystem::fileSystem.m_current_date);
-            UISystem::fileSystem.m_sameSession = true;
-            Helper::concatCharArrays(directoryPathAndDirectoryName, UISystem::fileSystem.m_directoryPath, directoryName);
-            SD.mkdir(directoryPathAndDirectoryName);
-            Serial.print("directoryPathAndDirectoryName -> ");
-            Serial.println(directoryPathAndDirectoryName);
+          snprintf(diveID, sizeof (diveID), "00%i", fileSystem.m_diveID);      
         }
-        if(!isPathBuilt)
+        else if (fileSystem.m_diveID < 100)
         {
-            Serial.println("inside isPathBuilt");
-            snprintf(diveID, sizeof (diveID), "%i", fileSystem.m_diveID);
-            Serial.println("1");
-            Serial.println(diveID);
-            Helper::concatCharArrays(tempFileName, "/d_", diveID);
-            Serial.println("2");
-            Serial.println(tempFileName);
-            Helper::concatCharArrays(fileName, tempFileName, ".log");
-            Serial.println("3");
-            Serial.println(fileName);
-            Helper::concatCharArrays(directoryPathAndDirectoryName, UISystem::fileSystem.m_directoryPath, directoryName);
-            Helper::concatCharArrays(fullFilePath, directoryPathAndDirectoryName, fileName);
-            Serial.println("4");
-            Serial.println(fullFilePath);
-            isPathBuilt = true;
-            char time[9];
-            PeripheralManager::getCurrentTime(time);
-            File file = SD.open(fullFilePath, FILE_APPEND);
-            if(file)
-            {
-              file.println(time);
-              file.close();
-            }
-        }
-        Serial.print("fileName -> ");
-        Serial.println(fileName);
-        Serial.print("fullFilePath -> ");
+          snprintf(diveID, sizeof (diveID), "0%i", fileSystem.m_diveID);      
+        }  
+        else
+        {
+          snprintf(diveID, sizeof (diveID), "%i", fileSystem.m_diveID);      
+        }  
+        Serial.println("nach dive id");
+        Serial.println(diveID);
+        Helper::concatCharArrays(tempFileName, "/d_", diveID);
+        Helper::concatCharArrays(fileName, tempFileName, ".log");
+        Helper::concatCharArrays(directoryPathAndDirectoryName, UISystem::fileSystem.m_directoryPath, directoryName);
+        Helper::concatCharArrays(fullFilePath, directoryPathAndDirectoryName, fileName);
+        Serial.println("full file");
         Serial.println(fullFilePath);
-        datalogger.getData(&fileSystem);
-        datalogger.logData(&fileSystem, fullFilePath);
+        isPathBuilt = true;
+        char time[9];
+        PeripheralManager::getCurrentTime(time);
+        File file = SD.open(fullFilePath, FILE_APPEND);
+        if(file)
+        {
+          file.println(time);
+          file.close();
+        }
+      }
+      Serial.print("fileName -> ");
+      Serial.println(fileName);
+      Serial.print("fullFilePath -> ");
+      Serial.println(fullFilePath);
+      datalogger.getData(&fileSystem);
+      datalogger.logData(&fileSystem, fullFilePath);
+      fileSystem.createLastDiveFile(fullFilePath);
     }
     else
-    {
+    {      
+      if (UISystem::goin)
+      {
+        UISystem::goin = false;
+        setScreen(STAT_SCREEN);
+        Serial.println("goin out");
+      }
+      
       handleButtons();
     }
 }

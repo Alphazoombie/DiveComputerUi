@@ -49,6 +49,8 @@ public:
    static std::list<DiveData> diveDataSeries;        
    static ScreenType currentScreen;
    static FileSystem fileSystem;
+   
+   static bool goin;
 
 #if DIVE_SIMULATION
    static int16_t diveAccel;

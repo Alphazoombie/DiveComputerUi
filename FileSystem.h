@@ -29,12 +29,13 @@ public:
     void getDateFromFile(); //char* result
     int  getDiveID(); 
     void setDiveID();
+    void createWifiDataFile();
     void writeDateToSessionFile(char* date); 
+    void createLastDiveFile(char* path);
     void getCurrentDate(); 
     void initializeMetaData();
     void createDirectory();  
     bool fileExists();
-    void createWifiDataFile();
 };
 
 #endif
