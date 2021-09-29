@@ -183,7 +183,7 @@ void DiveScreen::update()
   dataUpdate();
 
   if (UISystem::currentDiveData.depth < 1) 
-  {
+  {    
     if (UISystem::currentDiveData.time >= 10) 
     {
       //UISystem::setScreen(STAT_SCREEN);

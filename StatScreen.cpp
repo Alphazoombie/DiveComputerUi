@@ -80,22 +80,23 @@ void StatScreen::showScreen()
 }
 
 void StatScreen::processButtonPress(ButtonType buttonType) 
-{
+{    
     // Back to Idle-Screen or show the next series
-    if(buttonType == BUTTON_SELECT)
+    if(buttonType == BUTTON_ACTIVATE)
     {
         //UISystem::setScreen(IDLE_SCREEN);
     } 
-    else if(buttonType == BUTTON_ACTIVATE) 
+    else if(buttonType == BUTTON_SELECT) 
     {
+        Serial.println("processButtonPress");
         showNextSeries();
     }
+    
 }
 
 // Updates all data got from the last dive & inserts them into a chart
 void StatScreen::dataUpdate() 
 {
-    Serial.println("2");
 
     // Get last shown series
     std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
@@ -136,7 +137,7 @@ void StatScreen::dataUpdate()
         addNormlizedPointsOnChart(data.o2saturation, *it++);
         addNormlizedPointsOnChart(data.heartFrequency, *it++);
     }
-
+    
     // Create axis-strings for labels
     int16_t xGaps = 7;
     int16_t yGaps = 5;
@@ -156,13 +157,15 @@ void StatScreen::dataUpdate()
         serie.xAxisLabels += String(StatScreen::diveData.size());
         serie.yAxisLabels += String(serie.min);
     }
-
+    
     // Show first series
     NamedChartSerie& startSeries = *namedSerieList.begin();
-    lv_chart_set_y_range(chartObj, LV_CHART_AXIS_PRIMARY_Y, 0, startSeries.max - startSeries.min);
-    lv_chart_set_x_tick_texts(chartObj, startSeries.xAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
+    lv_chart_set_y_range(chartObj, LV_CHART_AXIS_PRIMARY_Y, 0, startSeries.max - startSeries.min);    
+    lv_chart_set_x_tick_texts(chartObj, startSeries.xAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);    
     lv_chart_set_y_tick_texts(chartObj, startSeries.yAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
-    lv_chart_hide_series(chartObj, startSeries.series, false);
+    
+    // war eigentlich auf false programm ist dadurch abgeschmiert
+    lv_chart_hide_series(chartObj, startSeries.series, true);
     
     // Show Series-Name of first series
     lv_label_set_text(lblSerieNameObj, startSeries.name);
@@ -171,6 +174,7 @@ void StatScreen::dataUpdate()
 
     // Chart needs to be updated
     lv_chart_refresh(chartObj);
+    
 }
 
 void getLastDive(char* lastDivePath)
@@ -287,7 +291,8 @@ void StatScreen::showNextSeries()
     lv_chart_set_y_range(chartObj, LV_CHART_AXIS_PRIMARY_Y, 0, newSerie.max - newSerie.min);
     lv_chart_set_x_tick_texts(chartObj, newSerie.xAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
     lv_chart_set_y_tick_texts(chartObj, newSerie.yAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
-    lv_chart_hide_series(chartObj, newSerie.series, false);
+    // was false, the reason why it crashed
+    lv_chart_hide_series(chartObj, newSerie.series, true);
     
     // Update Serie-Name-Label
     lv_label_set_text(lblSerieNameObj, newSerie.name);

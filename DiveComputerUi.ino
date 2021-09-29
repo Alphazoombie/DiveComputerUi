@@ -143,6 +143,7 @@ void loop()
       {
           Serial.println("***Resetting depth back to 0.0");
           UISystem::depth = 0.0;
+          UISystem::currentDiveData.depth = 0;
           isUp = true;
           UISystem::goin = true;
       }

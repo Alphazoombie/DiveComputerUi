@@ -263,6 +263,10 @@ void UISystem::handleButtons()
         {
           SettingsScreen::processButtonPress(BUTTON_SELECT, -1);
         } 
+        else if(UISystem::currentScreen == STAT_SCREEN)
+        {
+          StatScreen::processButtonPress(BUTTON_SELECT);
+        }         
       });
 }
 
