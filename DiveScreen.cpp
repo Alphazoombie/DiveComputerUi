@@ -168,7 +168,7 @@ void DiveScreen::dataUpdate()
   lv_arc_set_value(arcSpO2Obj, UISystem::currentDiveData.o2saturation);
   lv_label_set_text_fmt(lblTimeObj, "%02d:%02d", m, s);
   lv_obj_realign(lblTimeObj);
-  lv_label_set_text_fmt(lblDepth, "%d", UISystem::currentDiveData.depth);
+  lv_label_set_text_fmt(lblDepth, "%d", (int)UISystem::currentDiveData.depth);
   lv_label_set_text_fmt(lblSpO2Obj, "%d", UISystem::currentDiveData.o2saturation);
   lv_label_set_text_fmt(lblHeartFrequency, "%d", UISystem::currentDiveData.heartFrequency);
   lv_bar_set_value(barDepthObj, 20 - UISystem::currentDiveData.depth, LV_ANIM_ON);

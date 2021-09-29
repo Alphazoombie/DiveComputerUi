@@ -20,10 +20,10 @@ void Datalogger::getData(FileSystem* fileSystem)
     UISystem::currentDiveData.gyroX = 2.1f;
     UISystem::currentDiveData.gyroY = 2.2f;
     UISystem::currentDiveData.gyroZ = 2.3f;
-    UISystem::currentDiveData.heartFrequency = 75;
+    UISystem::currentDiveData.heartFrequency = random(50, 70);
     UISystem::currentDiveData.heartVariability = 100;
     UISystem::currentDiveData.brightness = 50;
-    UISystem::currentDiveData.o2saturation = 98;
+    UISystem::currentDiveData.o2saturation = random(90, 99);
     UISystem::currentDiveData.temperatur = 18.5f;
 }
 

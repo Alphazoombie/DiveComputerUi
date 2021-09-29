@@ -73,7 +73,14 @@ void StatScreen::showScreen()
     Touch::registerArea(1, 0, 0, 320, 240);
     Serial.println("1");
     // Update stats after diving
-    dataUpdate();
+    StatScreen::getData();
+    for (SmallDiveData& data : diveData) 
+    {
+        float x = data.depth;
+        Serial.println(x);
+    }
+    Serial.println("nach getdata");
+    StatScreen::dataUpdate();
     Serial.println("3");
 
     lv_scr_load(StatScreen::screenObj);
@@ -187,7 +194,7 @@ void getLastDive(char* lastDivePath)
     }
 }
 
-SmallDiveData etractJson(char* json)
+SmallDiveData StatScreen::extractJson(char* json)
 {    
     SmallDiveData smallDiveData;
 
@@ -202,19 +209,30 @@ SmallDiveData etractJson(char* json)
     return smallDiveData;
 }
 
-void getData()
+void StatScreen::getData()
 {
     char fullFilePath[29];
+    diveData.clear();
     char data[200];
+    int count = 1;
     getLastDive(fullFilePath);
     File file = SD.open(fullFilePath, FILE_READ);
     if (file)
     {
+        file.readStringUntil('\n');
         while(file.available())
         {
-            file.readStringUntil('\n').toCharArray(data,200);
-            SmallDiveData small = etractJson(data);
-            StatScreen::diveData.push_back(small);
+            if(count % 100 == 0)
+            {
+                file.readStringUntil('\n').toCharArray(data,200);
+                SmallDiveData small = extractJson(data);
+                StatScreen::diveData.push_back(small);
+            }
+            else
+            {
+                file.readStringUntil('\n');
+            }
+            count++;
         }  
         file.close();
     }   
