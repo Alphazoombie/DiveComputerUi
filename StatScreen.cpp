@@ -72,6 +72,8 @@ void StatScreen::showScreen()
     Touch::clearRegister();    
     Touch::registerArea(1, 0, 0, 320, 240);
     Serial.println("1");
+    getData()
+    Serial.println("2");
     // Update stats after diving
     dataUpdate();
     Serial.println("3");

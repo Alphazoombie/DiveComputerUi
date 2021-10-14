@@ -10,7 +10,7 @@
 #include "Helper.h"
 #include "OtaManager.h"
 
-#define OTA_ACCESS_DATA_PATH "/otadata.wfd"
+#define OTA_ACCESS_DATA_PATH "/ota_data.wfd"
 class SettingsScreen 
 {
 public:
