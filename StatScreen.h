@@ -46,6 +46,8 @@ public:
     static void addNormlizedPointsOnChart(int16_t value, NamedChartSerie serie);
     static void createAxisLabels(NamedChartSerie& serie, int16_t xGaps, int16_t yGaps);
     static void showNextSeries();
+    static void getData();
+    static SmallDiveData extractJson(char* json);
 };
 
 #endif
