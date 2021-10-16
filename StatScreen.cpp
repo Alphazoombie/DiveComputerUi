@@ -60,11 +60,8 @@ void StatScreen::setup()
     
     // Setup the current available series
     addNamedChartSerie("Depth");
-    addNamedChartSerie("Temperatur");
-    addNamedChartSerie("Brightness");
     addNamedChartSerie("O2-Saturation/Depth");
     addNamedChartSerie("Heart-Frequency/Depth");
-    addNamedChartSerie("Heart-Variability");
 }
 
 void StatScreen::showScreen() 
@@ -75,11 +72,16 @@ void StatScreen::showScreen()
     Serial.println("2");
     // Update stats after diving
     StatScreen::getData();
+    /*
     for (SmallDiveData& data : diveData) 
     {
+        Serial.println("data: ");
         float x = data.depth;
         Serial.println(x);
+        float y = data.heartFrequency;
+        Serial.println(y);
     }
+    */
     Serial.println("nach getdata");
     StatScreen::dataUpdate();
     Serial.println("3");
@@ -92,7 +94,7 @@ void StatScreen::processButtonPress(ButtonType buttonType)
     // Back to Idle-Screen or show the next series
     if(buttonType == BUTTON_ACTIVATE)
     {
-        //UISystem::setScreen(IDLE_SCREEN);
+        UISystem::setScreen(IDLE_SCREEN);
     } 
     else if(buttonType == BUTTON_SELECT) 
     {
@@ -173,7 +175,7 @@ void StatScreen::dataUpdate()
     lv_chart_set_y_tick_texts(chartObj, startSeries.yAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
     
     // war eigentlich auf false programm ist dadurch abgeschmiert
-    lv_chart_hide_series(chartObj, startSeries.series, true);
+    lv_chart_hide_series(chartObj, startSeries.series, false);
     
     // Show Series-Name of first series
     lv_label_set_text(lblSerieNameObj, startSeries.name);
@@ -311,7 +313,7 @@ void StatScreen::showNextSeries()
     lv_chart_set_x_tick_texts(chartObj, newSerie.xAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
     lv_chart_set_y_tick_texts(chartObj, newSerie.yAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
     // was false, the reason why it crashed
-    lv_chart_hide_series(chartObj, newSerie.series, true);
+    lv_chart_hide_series(chartObj, newSerie.series, false);
     
     // Update Serie-Name-Label
     lv_label_set_text(lblSerieNameObj, newSerie.name);

@@ -201,13 +201,13 @@ void UISystem::handleDiveLogic()
       Serial.print("fullFilePath -> ");
       Serial.println(fullFilePath);
       datalogger.getData(&fileSystem);
-      datalogger.logData(&fileSystem, fullFilePath);
-      fileSystem.createLastDiveFile(fullFilePath);
+      datalogger.logData(&fileSystem, fullFilePath);      
     }
     else
     {      
       if (UISystem::goin)
       {
+        fileSystem.createLastDiveFile(fullFilePath);
         UISystem::goin = false;
         setScreen(STAT_SCREEN);
         Serial.println("goin out");
