@@ -60,8 +60,8 @@ void StatScreen::setup()
     
     // Setup the current available series
     addNamedChartSerie("Depth");
-    addNamedChartSerie("O2-Saturation/Depth");
-    addNamedChartSerie("Heart-Frequency/Depth");
+    addNamedChartSerie("O2-Saturation");
+    addNamedChartSerie("Heart-Frequency");
 }
 
 void StatScreen::showScreen() 
@@ -217,15 +217,33 @@ void StatScreen::getData()
     char fullFilePath[29];
     diveData.clear();
     char data[200];
-    int count = 1;
+    int count = 0;
+    int index = 0;    
     getLastDive(fullFilePath);
+
+
     File file = SD.open(fullFilePath, FILE_READ);
     if (file)
     {
+
+        while (file.available())
+        {
+            file.readStringUntil('\n');
+            index++;
+        }
+        int scaling = index / 20;   
+        if (scaling == 0)
+        {
+            scaling = 1;
+        }
+             
+        file.seek(0);
+        Serial.print("index: ");
+        Serial.println(index);
         file.readStringUntil('\n');
         while(file.available())
         {
-            if(count % 100 == 0)
+            if(count % scaling == 0)
             {
                 file.readStringUntil('\n').toCharArray(data,200);
                 SmallDiveData small = extractJson(data);
@@ -298,8 +316,9 @@ void StatScreen::showNextSeries()
     NamedChartSerie& serie = *it;
 
     // Hide current series on chart
-    if(it != namedSerieList.begin())
-        lv_chart_hide_series(chartObj, serie.series, true);
+    /*if(it != namedSerieList.begin())
+        lv_chart_hide_series(chartObj, serie.series, true);*/
+    lv_chart_hide_series(chartObj, serie.series, true);
 
     // Get next series
     currentSeriesIndex++;
