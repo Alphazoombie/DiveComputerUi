@@ -156,6 +156,7 @@ void DiveScreen::processButtonPress(ButtonType buttonType)
 
 void DiveScreen::dataUpdate() 
 {
+  Serial.println("in update");
   int8_t s = UISystem::currentDiveData.time % 60;
   int8_t m = (UISystem::currentDiveData.time - s) / 60;
 
@@ -169,6 +170,8 @@ void DiveScreen::dataUpdate()
   lv_label_set_text_fmt(lblTimeObj, "%02d:%02d", m, s);
   lv_obj_realign(lblTimeObj);
   lv_label_set_text_fmt(lblDepth, "%d", (int)UISystem::currentDiveData.depth);
+  Serial.print("depth: ");
+  Serial.println(UISystem::currentDiveData.depth);
   lv_label_set_text_fmt(lblSpO2Obj, "%d", UISystem::currentDiveData.o2saturation);
   lv_label_set_text_fmt(lblHeartFrequency, "%d", UISystem::currentDiveData.heartFrequency);
   lv_bar_set_value(barDepthObj, 20 - UISystem::currentDiveData.depth, LV_ANIM_ON);
