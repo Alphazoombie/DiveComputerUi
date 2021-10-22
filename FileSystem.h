@@ -7,6 +7,7 @@
 #include <string>
 #include <fstream>
 #include "WifiAccessGenerator.h"
+#include "Helper.h"
 
 #define dateLength 10
 using namespace std;

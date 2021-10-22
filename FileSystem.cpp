@@ -71,7 +71,7 @@ void FileSystem::getCurrentDate()
     //strncpy ( date, out, 6);
     
     // char currDate[] = "05_06_21";
-    strcpy(m_current_date, "20_10_21");
+    strcpy(m_current_date, "21_10_21");
 }
 // -------META files--------
 // sets the date; checks if the meta-files "dive.log" and "date.log"
@@ -96,14 +96,20 @@ void FileSystem::initializeMetaData()
         Serial.println(m_current_date);
         Serial.print("old date -> ");
         Serial.println(m_oldDate);
-        if (strcmp(m_current_date, m_oldDate) != 0) //strcmp(m_date, m_oldDate) != 0
+        if (strcmp(m_current_date, m_oldDate) != 0)
         {
             SD.remove(m_datePath);
             setDateToFile();
         } 
         else 
         {
-            m_sameSession = true;
+            char datePath[20] = "/logFiles/";
+            Helper::concatCharArrays(datePath, m_current_date);
+
+            if (SD.exists(datePath))
+            {
+                m_sameSession = true;
+            }
         }
     } 
     else 

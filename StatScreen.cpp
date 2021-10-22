@@ -70,20 +70,16 @@ void StatScreen::showScreen()
     Touch::registerArea(1, 0, 0, 320, 240);
     Serial.println("1");
     Serial.println("2");
+
     // Update stats after diving
     StatScreen::getData();
-    /*
-    for (SmallDiveData& data : diveData) 
-    {
-        Serial.println("data: ");
-        float x = data.depth;
-        Serial.println(x);
-        float y = data.heartFrequency;
-        Serial.println(y);
-    }
-    */
     Serial.println("nach getdata");
-    StatScreen::dataUpdate();
+
+    if (!diveData.empty())
+    {
+        StatScreen::dataUpdate();
+    }
+
     Serial.println("3");
 
     lv_scr_load(StatScreen::screenObj);
@@ -107,7 +103,6 @@ void StatScreen::processButtonPress(ButtonType buttonType)
 // Updates all data got from the last dive & inserts them into a chart
 void StatScreen::dataUpdate() 
 {
-
     // Get last shown series
     std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
     std::advance(it, currentSeriesIndex);
@@ -221,11 +216,14 @@ void StatScreen::getData()
     int index = 0;    
     getLastDive(fullFilePath);
 
+    if (!SD.exists(fullFilePath))
+    {
+        return;
+    }
 
     File file = SD.open(fullFilePath, FILE_READ);
     if (file)
     {
-
         while (file.available())
         {
             file.readStringUntil('\n');

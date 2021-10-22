@@ -202,11 +202,11 @@ void SettingsScreen::buildWifiStatusString(char* ssid, char* status, char* outpu
     char s2[] = "\n";
     char s3[] = "state: ";
 
-    Helper::concatCharArraysTwoArguments(output, s1);
-    Helper::concatCharArraysTwoArguments(output, ssid);
-    Helper::concatCharArraysTwoArguments(output, s2);
-    Helper::concatCharArraysTwoArguments(output, s3);
-    Helper::concatCharArraysTwoArguments(output, status);
+    Helper::concatCharArrays(output, s1);
+    Helper::concatCharArrays(output, ssid);
+    Helper::concatCharArrays(output, s2);
+    Helper::concatCharArrays(output, s3);
+    Helper::concatCharArrays(output, status);
 }
 
 void SettingsScreen::readWifiAccessData(char* ssid, char* password)

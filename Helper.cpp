@@ -15,7 +15,7 @@ namespace Helper
         }
     }
 
-    void concatCharArraysTwoArguments(char* res, char* arr)
+    void concatCharArrays(char* res, char* arr)
     {
         int i = 0;
         int j = 0;

@@ -217,11 +217,11 @@ void WifiScreen::buildWifiAccessDataString(char* ssid, char* password, char* out
     char s2[] = "\n";
     char s3[] = "PW: ";
 
-    Helper::concatCharArraysTwoArguments(output, s1);
-    Helper::concatCharArraysTwoArguments(output, ssid);
-    Helper::concatCharArraysTwoArguments(output, s2);
-    Helper::concatCharArraysTwoArguments(output, s3);
-    Helper::concatCharArraysTwoArguments(output, password);
+    Helper::concatCharArrays(output, s1);
+    Helper::concatCharArrays(output, ssid);
+    Helper::concatCharArrays(output, s2);
+    Helper::concatCharArrays(output, s3);
+    Helper::concatCharArrays(output, password);
 }
 
 void WifiScreen::readWifiAccessData(char* ssid, char* password)

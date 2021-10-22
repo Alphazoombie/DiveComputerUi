@@ -155,7 +155,6 @@ void UISystem::handleDiveLogic()
         Serial.println("goin");
       }
       
-      
       if (!UISystem::fileSystem.m_sameSession)
       {
           Serial.println("inside not sameSession");
@@ -191,9 +190,10 @@ void UISystem::handleDiveLogic()
         isPathBuilt = true;
         char time[9];
         PeripheralManager::getCurrentTime(time);
-        File file = SD.open(fullFilePath, FILE_APPEND);
+        File file = SD.open(fullFilePath, FILE_WRITE);
         if(file)
         {
+          Serial.println("Logfile erstellt!");
           file.println(time);
           file.close();
         }

@@ -8,7 +8,6 @@
 #include <lvgl.h>
 #include "UISystem.h"
 #include "ButtonType.h"
-#include "Timer.h"
 #include "Touch.h"
 
 class DiveScreen 
@@ -28,8 +27,6 @@ class DiveScreen
 
         static lv_obj_t* lblDepth;
         static lv_obj_t* lblHeartFrequency;
-
-        static Timer diveTimer;
 
         static void setup();
         static void showScreen();
