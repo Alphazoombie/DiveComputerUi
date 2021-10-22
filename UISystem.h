@@ -40,6 +40,7 @@ public:
    static float accelX, accelY, accelZ;
    static float magnetField;
    static float depth;
+   static long startTimeDive;
    
    static long time;         
    static bool collectingData;

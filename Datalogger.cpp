@@ -9,9 +9,9 @@ void Datalogger::getData(FileSystem* fileSystem)
     UISystem::currentDiveData.accelY = 1.2f;
     UISystem::currentDiveData.accelZ = 1.3f;
     UISystem::currentDiveData.depth = random(3, 10)*1.0f;
-    if (millis() > 1000)
+    if (millis() - UISystem::startTimeDive > 1000)
     {
-        UISystem::currentDiveData.time = millis() / 1000;
+        UISystem::currentDiveData.time = (millis() - UISystem::startTimeDive) / 1000;
     }
     else
     {

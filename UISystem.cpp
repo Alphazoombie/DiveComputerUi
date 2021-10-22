@@ -14,6 +14,7 @@ FileSystem UISystem::fileSystem;
 Datalogger datalogger;
 bool UISystem::goin = false;
 long UISystem::time = 0;
+long UISystem::startTimeDive = 0;
 
 CustomTouchButton buttonActivate = CustomTouchButton(T5); 
 CustomTouchButton buttonSelect = CustomTouchButton(T0);
@@ -150,6 +151,7 @@ void UISystem::handleDiveLogic()
       {
         UISystem::goin = false;
         setScreen(DIVE_SCREEN);
+        startTimeDive = millis();
         Serial.println("goin");
       }
       
