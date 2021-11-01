@@ -10,7 +10,11 @@ lv_obj_t* StatScreen::lblSerieNameObj;
 lv_obj_t* StatScreen::lblSecondsObj;
 std::list<SmallDiveData> StatScreen::diveData;
 
-std::list<NamedChartSerie> StatScreen::namedSerieList = std::list<NamedChartSerie>();
+
+int16_t StatScreen::xGaps = 7;
+int16_t StatScreen::yGaps = 5;
+
+std::vector<NamedChartSerie> StatScreen::namedSerieList = std::vector<NamedChartSerie>();
 int8_t StatScreen::currentSeriesIndex = 0;
 
 void StatScreen::setup() 
@@ -58,10 +62,16 @@ void StatScreen::setup()
     lv_obj_set_pos(lblSecondsObj, (SCREEN_WIDTH - 7 * 8) / 2, SCREEN_HEIGHT - 24);
     lv_obj_set_style_local_text_color(lblSecondsObj, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_BRIGHTER);
     
+    // Create axis-strings for labels
+    xGaps = 7;
+    yGaps = 5;
+
     // Setup the current available series
-    addNamedChartSerie("Depth");
-    addNamedChartSerie("O2-Saturation");
-    addNamedChartSerie("Heart-Frequency");
+    addNamedChartSerie("Depth", SERIE_COLOR_YELLOW);
+    addNamedChartSerie("O2-Saturation", SERIE_COLOR_BLUE);
+    addNamedChartSerie("Heart-Frequency", SERIE_COLOR_GREEN);
+    addNamedChartSerie("O2-Saturation/Depth", SERIE_COLOR_BLUE);
+    addNamedChartSerie("Heart-Frequency/Depth", SERIE_COLOR_GREEN);
 }
 
 void StatScreen::showScreen() 
@@ -104,9 +114,7 @@ void StatScreen::processButtonPress(ButtonType buttonType)
 void StatScreen::dataUpdate() 
 {
     // Get last shown series
-    std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
-    std::advance(it, currentSeriesIndex);
-    NamedChartSerie serie = *it;
+    NamedChartSerie serie = namedSerieList[currentSeriesIndex];
 
     // Set data count (to display the whole curve)
     lv_chart_set_point_count(chartObj, StatScreen::diveData.size());
@@ -128,43 +136,30 @@ void StatScreen::dataUpdate()
     //Calculate Min/Max Values & Add them to chart-series
     for (SmallDiveData data : StatScreen::diveData) 
     {
-        std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
-        processDiveData(data.depth, *it++);
-        processDiveData(data.o2saturation, *it++);
-        processDiveData(data.heartFrequency, *it++);
+        processDiveData(namedSerieList[0], data.depth);
+        processDiveData(namedSerieList[1], data.o2saturation);
+        processDiveData(namedSerieList[2], data.heartFrequency);
+        processDiveData(namedSerieList[3], data.o2saturation);
+        processDiveData(namedSerieList[4], data.heartFrequency);
     }
 
     //Apply min values for correct chart-curve & put them on chart
     for (SmallDiveData data : StatScreen::diveData) 
     {
-        std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
-        addNormlizedPointsOnChart(data.depth, *it++);
-        addNormlizedPointsOnChart(data.o2saturation, *it++);
-        addNormlizedPointsOnChart(data.heartFrequency, *it++);
+        addNormlizedPointsOnChart(namedSerieList[0], data.depth);
+        addNormlizedPointsOnChart(namedSerieList[1], data.o2saturation);
+        addNormlizedPointsOnChart(namedSerieList[2], data.heartFrequency);
+        addNormlizedPointsOnChart(namedSerieList[3], data.o2saturation);
+        addNormlizedPointsOnChart(namedSerieList[4], data.heartFrequency);
     }
-    
-    // Create axis-strings for labels
-    int16_t xGaps = 7;
-    int16_t yGaps = 5;
 
     for (NamedChartSerie& serie : namedSerieList) 
     {
-         
-        serie.yAxisLabels += String(serie.max);
-        for (int i = 0; i < xGaps - 1; i++) 
-        {
-            serie.xAxisLabels += String("\n");
-        }
-        for (int i = 0; i < yGaps - 1; i++) 
-        {
-            serie.yAxisLabels += String("\n");
-        }
-        serie.xAxisLabels += String(StatScreen::diveData.size());
-        serie.yAxisLabels += String(serie.min);
+        createAxisLabels(serie, serie.min, serie.max);
     }
     
     // Show first series
-    NamedChartSerie& startSeries = *namedSerieList.begin();
+    NamedChartSerie& startSeries = namedSerieList[0];
     lv_chart_set_y_range(chartObj, LV_CHART_AXIS_PRIMARY_Y, 0, startSeries.max - startSeries.min);    
     lv_chart_set_x_tick_texts(chartObj, startSeries.xAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);    
     lv_chart_set_y_tick_texts(chartObj, startSeries.yAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
@@ -264,35 +259,35 @@ void StatScreen::update()
 }
 
 // Create new named-chart-series & add them into the list of available series
-void StatScreen::addNamedChartSerie(const char* name) 
+void StatScreen::addNamedChartSerie(const char* name, lv_color_t color) 
 {
     //SHIT HAPPENS HERE
     NamedChartSerie serie = NamedChartSerie();
     serie.name = name;
     serie.series = 0;
-    serie.series = lv_chart_add_series(chartObj, THEME_PRIMARY_COLOR_NORMAL);
+    serie.series = lv_chart_add_series(chartObj, color);
     lv_chart_hide_series(chartObj, serie.series, true);
     namedSerieList.push_back(serie);
 }
 
 // Calculate the min/max-values, add next point on chart & write them into the referenced series
-void StatScreen::processDiveData(int16_t value, NamedChartSerie& serie) 
+void StatScreen::processDiveData(NamedChartSerie& serie, int16_t value) 
 {
     serie.max = std::max(value, serie.max);
     serie.min = std::min(value, serie.min);
 }
 
 // Apply min value & put point on chart-series
-void StatScreen::addNormlizedPointsOnChart(int16_t value, NamedChartSerie serie) 
+void StatScreen::addNormlizedPointsOnChart(NamedChartSerie& serie, int16_t value) 
 {
     lv_chart_set_next(chartObj, serie.series, value - serie.min);
 }
 
 // Create Tick-Labels on the x- & y-axis
-void StatScreen::createAxisLabels(NamedChartSerie& serie, int16_t xGaps, int16_t yGaps) 
+void StatScreen::createAxisLabels(NamedChartSerie& serie, int16_t min, int16_t max) 
 {
-    serie.xAxisLabels += String(0);
-    serie.yAxisLabels += String(serie.min);
+    serie.xAxisLabels = String("0");
+    serie.yAxisLabels = String(max);
     for (int i = 0; i < xGaps; i++) 
     {
         serie.xAxisLabels += String("\n");
@@ -302,37 +297,77 @@ void StatScreen::createAxisLabels(NamedChartSerie& serie, int16_t xGaps, int16_t
         serie.yAxisLabels += String("\n");
     }
     serie.xAxisLabels += String(StatScreen::diveData.size());
-    serie.yAxisLabels += String(serie.max);
+    serie.yAxisLabels += String(min);
 }
 
 // Switch to next series in the series-list & show them on the chart
 void StatScreen::showNextSeries() 
 {
-    // Get current series
-    std::list<NamedChartSerie>::iterator it = namedSerieList.begin();
-    std::advance(it, currentSeriesIndex);
-    NamedChartSerie& serie = *it;
+    Serial.print("index -> ");
+    Serial.println(currentSeriesIndex);
 
     // Hide current series on chart
-    /*if(it != namedSerieList.begin())
-        lv_chart_hide_series(chartObj, serie.series, true);*/
-    lv_chart_hide_series(chartObj, serie.series, true);
+    if(currentSeriesIndex == 0 || currentSeriesIndex == 1)
+    {
+        Serial.print("serie name: ");
+        Serial.println(namedSerieList[currentSeriesIndex].name);
+        lv_chart_hide_series(chartObj, namedSerieList[currentSeriesIndex].series, true);
+    }
+    else if(currentSeriesIndex == 2)
+    {
+        Serial.print("serie name: ");
+        Serial.println(namedSerieList[currentSeriesIndex].name);
+        lv_chart_hide_series(chartObj, namedSerieList[currentSeriesIndex].series, true);
 
+        Serial.print("serie name of depth: ");
+        Serial.println(namedSerieList[0].name);
+
+        lv_chart_hide_series(chartObj, namedSerieList[0].series, false);
+    }
+    else if(currentSeriesIndex == 3)
+    {
+        Serial.print("serie name: ");
+        Serial.println(namedSerieList[currentSeriesIndex].name);
+        lv_chart_hide_series(chartObj, namedSerieList[currentSeriesIndex].series, true);
+    }
+    else if(currentSeriesIndex == 4)
+    {
+        Serial.print("serie name: ");
+        Serial.println(namedSerieList[currentSeriesIndex].name);
+        lv_chart_hide_series(chartObj, namedSerieList[currentSeriesIndex].series, true);
+    }
+    
     // Get next series
     currentSeriesIndex++;
     currentSeriesIndex %= namedSerieList.size();
-    it = namedSerieList.begin();
-    std::advance(it, currentSeriesIndex);
-    NamedChartSerie& newSerie = *it;
     
+    Serial.print("new serie name: ");
+    Serial.println(namedSerieList[currentSeriesIndex].name);
+
+    int maxIndex = currentSeriesIndex;
+    int minIndex = currentSeriesIndex;
+
+    if(currentSeriesIndex == 3 || currentSeriesIndex == 4)
+    {
+        if(namedSerieList[0].max > namedSerieList[currentSeriesIndex].max)
+        {
+            maxIndex = 0;
+        }
+        if(namedSerieList[0].min < namedSerieList[currentSeriesIndex].min)
+        {
+            minIndex = 0;
+        }
+        createAxisLabels(namedSerieList[currentSeriesIndex], namedSerieList[minIndex].min, namedSerieList[maxIndex].max);
+    }
+
     // Update the series on the chart
-    lv_chart_set_y_range(chartObj, LV_CHART_AXIS_PRIMARY_Y, 0, newSerie.max - newSerie.min);
-    lv_chart_set_x_tick_texts(chartObj, newSerie.xAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
-    lv_chart_set_y_tick_texts(chartObj, newSerie.yAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
+    lv_chart_set_y_range(chartObj, LV_CHART_AXIS_PRIMARY_Y, 0, namedSerieList[maxIndex].max - namedSerieList[minIndex].min);
+    lv_chart_set_x_tick_texts(chartObj, namedSerieList[maxIndex].xAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
+    lv_chart_set_y_tick_texts(chartObj, namedSerieList[maxIndex].yAxisLabels.c_str(), 1, LV_CHART_AXIS_DRAW_LAST_TICK);
     // was false, the reason why it crashed
-    lv_chart_hide_series(chartObj, newSerie.series, false);
+    lv_chart_hide_series(chartObj, namedSerieList[currentSeriesIndex].series, false);
     
     // Update Serie-Name-Label
-    lv_label_set_text(lblSerieNameObj, newSerie.name);
+    lv_label_set_text(lblSerieNameObj, namedSerieList[currentSeriesIndex].name);
     lv_obj_realign(lblSerieNameObj);
 }

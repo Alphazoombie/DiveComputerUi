@@ -29,4 +29,9 @@ LV_FONT_DECLARE(digital_numbers_40px)
 #define THEME_SECONDARY_COLOR_BRIGHTER lv_color_mix(THEME_SECONDARY_COLOR_NORMAL, LV_COLOR_WHITE, 255 * 0.25)
 #define THEME_SECONDARY_COLOR_DARKER lv_color_mix(THEME_SECONDARY_COLOR_NORMAL, LV_COLOR_BLACK, 255 * 0.25)
 
+#define SERIE_COLOR_BLUE lv_color_make(54, 168, 255)
+#define SERIE_COLOR_GREEN lv_color_make(0, 230, 0)
+#define SERIE_COLOR_YELLOW lv_color_make(255, 255, 0)
+
+
 #endif

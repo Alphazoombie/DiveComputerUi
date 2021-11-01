@@ -8,7 +8,7 @@ void Datalogger::getData(FileSystem* fileSystem)
     UISystem::currentDiveData.accelX = 1.1f;
     UISystem::currentDiveData.accelY = 1.2f;
     UISystem::currentDiveData.accelZ = 1.3f;
-    UISystem::currentDiveData.depth = random(3, 10)*1.0f;
+    UISystem::currentDiveData.depth = random(3, 20)*1.0f;
     if (millis() - UISystem::startTimeDive > 1000)
     {
         UISystem::currentDiveData.time = (millis() - UISystem::startTimeDive) / 1000;
@@ -20,10 +20,10 @@ void Datalogger::getData(FileSystem* fileSystem)
     UISystem::currentDiveData.gyroX = 2.1f;
     UISystem::currentDiveData.gyroY = 2.2f;
     UISystem::currentDiveData.gyroZ = 2.3f;
-    UISystem::currentDiveData.heartFrequency = random(50, 70);
+    UISystem::currentDiveData.heartFrequency = random(100, 120);
     UISystem::currentDiveData.heartVariability = 100;
     UISystem::currentDiveData.brightness = 50;
-    UISystem::currentDiveData.o2saturation = random(90, 99);
+    UISystem::currentDiveData.o2saturation = random(94, 99);
     UISystem::currentDiveData.temperatur = 18.5f;
 }
 
