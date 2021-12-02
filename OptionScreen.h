@@ -22,8 +22,6 @@ public:
     static void setup();
     static void showScreen();
     static void processButtonPress(ButtonType, int index);
-    static void dataUpdate();
-    static void update();
 };
 
 #endif

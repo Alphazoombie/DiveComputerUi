@@ -25,9 +25,8 @@ public:
     char m_oldDate[9];
     char m_logPath[25] PROGMEM;
     bool m_sameSession = false;
-    //FileSystem(){};
     void setDateToFile(); 
-    void getDateFromFile(); //char* result
+    void getDateFromFile();
     int  getDiveID(); 
     void setDiveID();
     void createWifiDataFile();

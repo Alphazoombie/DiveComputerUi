@@ -34,8 +34,6 @@ public:
     static void setup();
     static void showScreen();
     static void processButtonPress(ButtonType, int index);
-    static void dataUpdate();
-    static void update();
     static void readWifiAccessData(char* ssid, char* password);
     static bool saveWifiAccessData(char* ssid, char* password);
     static void buildWifiAccessDataString(char* ssid, char* password, char* output);

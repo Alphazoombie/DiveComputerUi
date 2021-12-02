@@ -45,8 +45,3 @@ void Datalogger::logData(FileSystem* fileSystem, char* fullFilePath)
         Serial.println("error opening logfile");
     }
 }
-
-// void Datalogger::initialize(PeripheralManager* peripheralManager)
-// {
-//     m_peripheralManager = peripheralManager;
-// }

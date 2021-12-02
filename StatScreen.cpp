@@ -10,7 +10,6 @@ lv_obj_t* StatScreen::lblSerieNameObj;
 lv_obj_t* StatScreen::lblSecondsObj;
 std::list<SmallDiveData> StatScreen::diveData;
 
-
 int16_t StatScreen::xGaps = 7;
 int16_t StatScreen::yGaps = 5;
 
@@ -106,8 +105,7 @@ void StatScreen::processButtonPress(ButtonType buttonType)
     {
         Serial.println("processButtonPress");
         showNextSeries();
-    }
-    
+    }  
 }
 
 // Updates all data got from the last dive & inserts them into a chart
@@ -261,7 +259,6 @@ void StatScreen::update()
 // Create new named-chart-series & add them into the list of available series
 void StatScreen::addNamedChartSerie(const char* name, lv_color_t color) 
 {
-    //SHIT HAPPENS HERE
     NamedChartSerie serie = NamedChartSerie();
     serie.name = name;
     serie.series = 0;

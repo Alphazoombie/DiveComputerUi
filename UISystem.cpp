@@ -33,7 +33,6 @@ bool simulateDive = false;
 bool isPathBuilt = false;
 bool isInDive = false;
 
-
 ScreenType UISystem::currentScreen;
 
 void UISystem::setup() 
@@ -90,12 +89,6 @@ void UISystem::setup()
 
   lv_task_create([](lv_task_t* task) 
   {
-    // if (isUnderwater())
-    // {
-    //   // ToDo: Insert here your Data Update Logic
-    //   Serial.println("IN DIVE TASK...***()§)(");
-
-    // }
     handleDiveLogic();
   }, 100, LV_TASK_PRIO_MID, NULL);
 
@@ -139,7 +132,6 @@ void UISystem::setScreen(ScreenType screenType)
 void UISystem::start() 
 {
   lv_task_handler(); /* let the GUI do its work */
-  //setScreen(currentScreen);
   delay(5);
 }
 

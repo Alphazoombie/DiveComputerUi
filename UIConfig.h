@@ -33,5 +33,4 @@ LV_FONT_DECLARE(digital_numbers_40px)
 #define SERIE_COLOR_GREEN lv_color_make(0, 230, 0)
 #define SERIE_COLOR_YELLOW lv_color_make(255, 255, 0)
 
-
 #endif

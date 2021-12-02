@@ -4,7 +4,6 @@
 
 #include "DiveScreen.h"
 
-
 lv_obj_t* DiveScreen::screenObj;
 
 lv_obj_t* DiveScreen::lblTimeObj;
@@ -93,6 +92,7 @@ void DiveScreen::setup()
   lv_obj_set_style_local_radius(arcSpO2Obj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 0);
   lv_arc_set_range(arcSpO2Obj, 0, 100);
   lv_obj_align(arcSpO2Obj, NULL, LV_ALIGN_CENTER, 0, 0);
+
   /*
     gaugeSpO2Obj = lv_gauge_create(contSpO2, NULL);
     static lv_color_t needleColor[1] = { THEME_PRIMARY_COLOR_DARK };
@@ -105,6 +105,7 @@ void DiveScreen::setup()
     lv_obj_set_style_local_bg_color(gaugeSpO2Obj, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, THEME_SECONDARY_COLOR_DARK);
     lv_obj_set_style_local_border_color(gaugeSpO2Obj, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
   */
+ 
   lblSpO2Obj = lv_label_create(contSpO2, NULL);
   lv_obj_set_pos(lblSpO2Obj, 10, 210);//10,290
   lv_obj_set_size(lblSpO2Obj, contWidth, contHeight);//220,140

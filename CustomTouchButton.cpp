@@ -2,8 +2,7 @@
 
 void CustomTouchButton::btnClickEventListener(std::function<void()> onClickFunction) 
 {
-    //we have to use this print statement at this point to prevent the ESP
-    //from doing stupid shit
+    //the print statement is needed to run the logic below without errors
     Serial.print("");
     if(m_verifiedTouch)
     {

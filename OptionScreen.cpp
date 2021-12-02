@@ -4,7 +4,6 @@
 
 #include "OptionScreen.h"
 
-
 lv_obj_t* OptionScreen::screenObj;
 int16_t OptionScreen::selectionIndex;
 lv_obj_t* OptionScreen::buttons[4];
@@ -140,14 +139,4 @@ void OptionScreen::processButtonPress(ButtonType buttonType, int index)
                 break;
         }
     }
-}
-
-void OptionScreen::dataUpdate() 
-{
-
-}
-
-void OptionScreen::update() 
-{
-    dataUpdate();
 }

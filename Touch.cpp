@@ -1,6 +1,5 @@
 #include "Touch.h"
 
-
 #define STMPE_CS 32
 #define TFT_CS   15
 #define TFT_DC   33
@@ -11,18 +10,19 @@
 #define TS_MINY 100
 #define TS_MAXY 3750
 
-
 Adafruit_STMPE610 ts = Adafruit_STMPE610(STMPE_CS);
 
 void Touch::setup()
 {
-  if (!ts.begin()) {
+  if (!ts.begin()) 
+  {
     Serial.println("Couldn't start touchscreen controller");
     while (1);
   }
 }
 
-void Touch::registerArea(int id, int x, int y, int width, int height){
+void Touch::registerArea(int id, int x, int y, int width, int height)
+{
     areas.push_back(Area());
     areas.back().id = id;
     areas.back().x = x;

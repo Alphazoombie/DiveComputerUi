@@ -14,7 +14,8 @@ using namespace std;
 #include "SettingsScreen.h"
 #include "OptionScreen.h"
 
-struct Area {
+struct Area 
+{
     int id;
     int x;
     int y;
@@ -24,7 +25,8 @@ struct Area {
 
 static vector<Area> areas;
 
-class Touch{
+class Touch
+{
   public:
     //static vector<Area> areas;
     static void setup();

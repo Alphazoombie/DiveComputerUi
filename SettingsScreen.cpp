@@ -185,16 +185,6 @@ void SettingsScreen::processButtonPress(ButtonType buttonType, int index)
     }
 }
 
-void SettingsScreen::dataUpdate() 
-{
-
-}
-
-void SettingsScreen::update() 
-{
-    dataUpdate();
-}
-
 void SettingsScreen::buildWifiStatusString(char* ssid, char* status, char* output)
 {
     output[0] = '\0';

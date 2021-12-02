@@ -12,10 +12,10 @@ void FileSystem::setDateToFile()
         file.close();
     }
 }
+
 // reades the date from "date.log" and writes it
-// in the character-array which is referenced in
-// the parameter
-void FileSystem::getDateFromFile() // char* result
+// in the m_oldDate member variable
+void FileSystem::getDateFromFile() 
 {
     File file = SD.open(m_datePath);
     
@@ -24,11 +24,12 @@ void FileSystem::getDateFromFile() // char* result
         file.readBytesUntil('\0', m_oldDate, 9);
         m_oldDate[8] = '\0';
 
-        Serial.print("result aka altes date -> ");
+        Serial.print("old date read from file: ");
         Serial.println(m_oldDate);	
         file.close();
     }
 }
+
 // returns the diveID from "dive.log"
 // returns -1 if failed to open the file
 int FileSystem::getDiveID() 
@@ -36,13 +37,14 @@ int FileSystem::getDiveID()
     File file = SD.open(m_divePath);
     if(file) 
     {
-        int x = file.parseInt();
+        int diveID = file.parseInt();
         file.close();
-        return x;
+        return diveID;
     }
     return -1;
 }
-// writes the value of variable diveID in "dive.log"
+
+// writes the value of variable m_diveID into "dive.log"
 void FileSystem::setDiveID() 
 {
     File file = SD.open(m_divePath, FILE_WRITE);
@@ -52,6 +54,7 @@ void FileSystem::setDiveID()
         file.close();
     }
 }
+
 // writes a date in "sessions.log"
 void FileSystem::writeDateToSessionFile(char* date) 
 {
@@ -62,6 +65,7 @@ void FileSystem::writeDateToSessionFile(char* date)
         file.close();
     }
 }
+
 // has to be implemented with the real-time-clock when built in;
 // get date from the real-time-clock and write value into date-variable
 void FileSystem::getCurrentDate() 
@@ -73,6 +77,7 @@ void FileSystem::getCurrentDate()
     // char currDate[] = "05_06_21";
     strcpy(m_current_date, "21_10_21");
 }
+
 // -------META files--------
 // sets the date; checks if the meta-files "dive.log" and "date.log"
 // exist and creates them if not; if yes the variables "diveID" and
@@ -123,7 +128,6 @@ void FileSystem::initializeMetaData()
         {
             m_diveID = getDiveID();
         }
-        //SD.remove(divePath);
     }
     setDiveID();  
 }
@@ -138,12 +142,15 @@ void FileSystem::createLastDiveFile(char* path)
     }  
 }
 
-//creates a directory with given parameter as name
+//creates a directory with given member variable m_directoryPath
 void FileSystem::createDirectory() 
 {
     SD.mkdir(m_directoryPath);
 }
 
+//Creates the file where the credentials of the WIFI AP are stored
+//SSIDs are stored in the form of DC_XXXXX where the 5 digits are randomly generated
+//Passwords are 8 digits long and consist of random numbers
 void FileSystem::createWifiDataFile()
 {
     if (!SD.exists(m_wifiDataPath))

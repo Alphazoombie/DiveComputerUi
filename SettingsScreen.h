@@ -30,8 +30,6 @@ public:
     static void setup();
     static void showScreen();
     static void processButtonPress(ButtonType, int index);
-    static void dataUpdate();
-    static void update();
     static void readWifiAccessData(char* ssid, char* password);
     static bool createsampledata();
     static void buildWifiStatusString(char* ssid, char* status, char* output);

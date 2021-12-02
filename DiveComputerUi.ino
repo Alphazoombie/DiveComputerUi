@@ -116,7 +116,6 @@ void setup()
   UISystem::fileSystem.initializeMetaData();
   buildDirectoryName(); 
 
-
   /*The User Interface Initializer*/
   UISystem::setup();
   Touch::setup();

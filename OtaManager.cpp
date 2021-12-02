@@ -1,8 +1,7 @@
 #include "OtaManager.h"
 
 void OtaManager::setup()
-{   
-    
+{    
     ArduinoOTA
     .onStart([]() {
         String type;

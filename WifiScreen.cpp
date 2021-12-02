@@ -47,7 +47,6 @@ void WifiScreen::setup()
     lv_obj_set_style_local_text_color(labelWifiAccessData, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
 
     readWifiAccessData(ssid, password);
-    // check this shit
     buildWifiAccessDataString(ssid, password, wifiAccessDataString);
 
     lv_label_set_text(labelWifiAccessData, wifiAccessDataString);
@@ -200,19 +199,8 @@ void WifiScreen::processButtonPress(ButtonType buttonType, int index)
     }
 }
 
-void WifiScreen::dataUpdate() 
-{
-
-}
-
-void WifiScreen::update() 
-{
-    dataUpdate();
-}
-
 void WifiScreen::buildWifiAccessDataString(char* ssid, char* password, char* output)
 {
-
     char s1[] = "SSID: ";
     char s2[] = "\n";
     char s3[] = "PW: ";
@@ -256,19 +244,8 @@ bool WifiScreen::saveWifiAccessData(char* ssid, char* password)
             newFile.println(ssid);
             newFile.println(password);
             newFile.close();
-            //return true;
+            return true;
         }
-
-        // only test
-        File newFile2 = SD.open(WIFI_ACCESS_DATA_PATH);
-        if (newFile2)
-        {
-            Serial.println("nur gucken ob richtig gespeicher...");
-            Serial.println(newFile2.readStringUntil('\n'));
-            Serial.println(newFile2.readStringUntil('\n'));
-            newFile2.close();
-        }
-        return true;
     }
     return false;
 }

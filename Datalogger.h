@@ -10,11 +10,8 @@
 class Datalogger 
 {
     public:
-        // void initialize(PeripheralManager* peripheralManager);
         void getData(FileSystem* fileSystem);
         void logData(FileSystem* fileSystem, char* fullFilePath);
-
-        void test();
     
     private:
         float m_accX;

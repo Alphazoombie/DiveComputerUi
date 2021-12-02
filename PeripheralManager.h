@@ -17,10 +17,6 @@ public:
     int m_mfioPin = 5;
     int m_chipSelect = 14;
 
-    //NEEDED?
-    //static int loopStateDive = LOOP_STATE_STOPPED;
-    //static int loopStateBluetooth = LOOP_STATE_STOPPED;
-
     SparkFun_Bio_Sensor_Hub m_bioHub = SparkFun_Bio_Sensor_Hub(m_resPin, m_mfioPin);
     bioData m_body;
     

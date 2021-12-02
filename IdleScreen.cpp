@@ -28,7 +28,6 @@ void IdleScreen::setup()
     lv_obj_set_style_local_shadow_ofs_y(contTimeObj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, -3);
     //lv_obj_set_style_local_border_color(contTimeObj, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
 
-    //lv_label
     lblTime = lv_label_create(contTimeObj, NULL);
     lv_obj_set_style_local_text_font(lblTime, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &digital_numbers_40px);
     lv_obj_set_style_local_text_color(lblTime, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
