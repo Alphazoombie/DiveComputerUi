@@ -1,3 +1,9 @@
+/**
+ * @author Manuel Bäcker
+ * @author Jan Tröger
+ * @author Tim Tröger
+ */
+
 #ifndef DIVEDATA_H
 #define DIVEDATA_H
 

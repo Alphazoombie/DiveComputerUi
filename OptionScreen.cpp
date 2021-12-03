@@ -95,7 +95,7 @@ void OptionScreen::showScreen()
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 0;
     lv_obj_set_style_local_border_width(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
-    dataUpdate();
+    //dataUpdate();
     lv_scr_load(OptionScreen::screenObj);
 }
 

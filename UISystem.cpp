@@ -62,16 +62,16 @@ void UISystem::setup()
         IdleScreen::update();
         break;
       case OPTION_SCREEN:
-        OptionScreen::update();
+        //OptionScreen::update();
         break;
       case STAT_SCREEN:
         StatScreen::update();
         break;
       case WIFI_SCREEN:
-        WifiScreen::update();
+        //WifiScreen::update();
         break;
       case SETTINGS_SCREEN:
-        SettingsScreen::update();
+        //SettingsScreen::update();
         break;
     }
   }, 500, LV_TASK_PRIO_MID, NULL);

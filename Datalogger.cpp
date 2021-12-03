@@ -1,3 +1,9 @@
+/**
+ * @author Manuel Bäcker
+ * @author Jan Tröger
+ * @author Tim Tröger
+ */
+
 #include "Datalogger.h"
 
 // Reads data from the sensors and calls the method "createJsonString" with the data as 

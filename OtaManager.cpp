@@ -35,7 +35,7 @@ void OtaManager::setup()
     Serial.println(WiFi.localIP());    
 }
 
-void OtaManager::checkforUpdates()
+void OtaManager::checkForUpdates()
 {
     ArduinoOTA.handle();
 }

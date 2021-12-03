@@ -45,7 +45,7 @@ void SettingsScreen::setup()
     btnOtaData = lv_label_create(buttons[BUTTON_WIFI_DATA], NULL);    
     lv_obj_set_style_local_text_color(btnOtaData, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
 
-    createsampledata();
+    createSampleData();
     readWifiAccessData(ssidS, passwordS);
     buildWifiStatusString(ssidS, "disconnected", wifiAccessDataStringS);
 
@@ -88,14 +88,12 @@ void SettingsScreen::showScreen()
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 1;
     lv_obj_set_style_local_border_width(buttons[BUTTON_OTA_ACTIVATION], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
-    dataUpdate();
     Serial.println("connection status: ");
     Serial.println(WifiManager::connectionFailed);
     if (otaActive && WifiManager::isConnected())
     {
         buildWifiStatusString(ssidS, "connected", wifiAccessDataStringS);
         lv_label_set_text(btnOtaData, wifiAccessDataStringS);
-        OtaManager::checkforUpdates();
     }
     else if (WifiManager::connectionFailed)
     {
@@ -158,6 +156,7 @@ void SettingsScreen::processButtonPress(ButtonType buttonType, int index)
                     {
                         otaActive = true;
                         OtaManager::setup();
+                        WifiScreen::wifiActive = false;
                         lv_label_set_text(btnOta, "Ota [on]");
                     }
                     else
@@ -216,17 +215,16 @@ void SettingsScreen::readWifiAccessData(char* ssid, char* password)
     }
 }
 
-bool SettingsScreen::createsampledata()
+void SettingsScreen::createSampleData()
 {
-    SD.remove(OTA_ACCESS_DATA_PATH);
-    Serial.println("Old Wifi File deleted.");
-
-    File newFile = SD.open(OTA_ACCESS_DATA_PATH, FILE_APPEND);
-    if (newFile)
+    if(!SD.exists(OTA_ACCESS_DATA_PATH)) 
     {
-        newFile.println("Your Network");
-        newFile.println("Your Pass");
-        newFile.close();        
-    }    
-    return true;
+        File newFile = SD.open(OTA_ACCESS_DATA_PATH, FILE_APPEND);
+        if (newFile)
+        {
+            newFile.println("Your Network");
+            newFile.println("Your Pass");
+            newFile.close();        
+        }       
+    }
 }

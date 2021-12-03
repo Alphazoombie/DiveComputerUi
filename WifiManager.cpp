@@ -45,7 +45,7 @@ bool WifiManager::connectAccessPoint(char* ssid, char* password)
 {
     if (serverActive)
     {
-        disconnectAccessPoint();    
+        disconnectAccessPoint();
     }
     int sizeSsid = 0;
     int sizePass = 0;
@@ -74,13 +74,13 @@ bool WifiManager::connectAccessPoint(char* ssid, char* password)
     {
         realSsid[i] = ssid[i];
     }
-    realSsid[sizeSsid - 1] =  '\0';
+    realSsid[sizeSsid] =  '\0';
 
     for (size_t i = 0; i < sizePass; i++)
     {
         realPass[i] = password[i];
     }
-    realPass[sizePass - 1] =  '\0';
+    realPass[sizePass] =  '\0';
 
     Serial.println("ssid pass:");
     Serial.println(realSsid);

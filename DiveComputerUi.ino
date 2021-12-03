@@ -1,6 +1,9 @@
 /**
-   @author Benjamin Bube
-*/
+ * @author Manuel Bäcker
+ * @author Jan Tröger
+ * @author Tim Tröger
+ * @author Benjamin Bube
+ */
 
 #include <lvgl.h>
 #include "UISystem.h"
@@ -8,13 +11,11 @@
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 #include <SPI.h>
-//#include <ArduinoOTA.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include "Touch.h"
 #include "CustomTouchButton.h"
 #include "WifiManager.h"
-
 
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
@@ -128,6 +129,7 @@ void loop()
   /* UI updater for refreshing the display*/
   UISystem::start();
 
+
   diveButton.btnClickEventListener([](void)
   { 
       Serial.println("***In DiveButton Event listener");
@@ -152,6 +154,12 @@ void loop()
   {
       Serial.println("FTP Server listening...");
       WifiManager::m_ftpServer.handleFTP(); 
+  }
+
+   if (SettingsScreen::otaActive)
+  {
+      Serial.println("OTA running...");
+      OtaManager::checkForUpdates();
   }
 
   Touch::handleTouch();

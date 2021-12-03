@@ -30,7 +30,6 @@ class DiveScreen
 
         static void setup();
         static void showScreen();
-        static void processButtonPress(ButtonType);
         static void dataUpdate();
         static void update();
 };

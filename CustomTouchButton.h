@@ -1,3 +1,9 @@
+/**
+ * @author Manuel Bäcker
+ * @author Jan Tröger
+ * @author Tim Tröger
+ */
+
 #ifndef CUSTOMTOUCHBUTTON_H
 #define CUSTOMTOUCHBUTTON_H
 

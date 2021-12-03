@@ -1,3 +1,9 @@
+/**
+ * @author Manuel Bäcker
+ * @author Jan Tröger
+ * @author Tim Tröger
+ */
+
 #include "CustomTouchButton.h"
 
 void CustomTouchButton::btnClickEventListener(std::function<void()> onClickFunction) 

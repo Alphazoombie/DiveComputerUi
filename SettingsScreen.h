@@ -31,7 +31,7 @@ public:
     static void showScreen();
     static void processButtonPress(ButtonType, int index);
     static void readWifiAccessData(char* ssid, char* password);
-    static bool createsampledata();
+    static void createSampleData();
     static void buildWifiStatusString(char* ssid, char* status, char* output);
 };
 

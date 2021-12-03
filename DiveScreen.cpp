@@ -92,19 +92,6 @@ void DiveScreen::setup()
   lv_obj_set_style_local_radius(arcSpO2Obj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 0);
   lv_arc_set_range(arcSpO2Obj, 0, 100);
   lv_obj_align(arcSpO2Obj, NULL, LV_ALIGN_CENTER, 0, 0);
-
-  /*
-    gaugeSpO2Obj = lv_gauge_create(contSpO2, NULL);
-    static lv_color_t needleColor[1] = { THEME_PRIMARY_COLOR_DARK };
-    lv_gauge_set_needle_count(gaugeSpO2Obj, 1, needleColor);
-    lv_obj_set_size(gaugeSpO2Obj, 170, 170);
-    lv_obj_align(gaugeSpO2Obj, NULL, LV_ALIGN_IN_TOP_MID, 0, 0);
-    lv_gauge_set_range(gaugeSpO2Obj, 0, 100);
-    lv_gauge_set_critical_value(gaugeSpO2Obj, 200);
-    lv_obj_set_style_local_text_color(gaugeSpO2Obj, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-    lv_obj_set_style_local_bg_color(gaugeSpO2Obj, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, THEME_SECONDARY_COLOR_DARK);
-    lv_obj_set_style_local_border_color(gaugeSpO2Obj, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
-  */
  
   lblSpO2Obj = lv_label_create(contSpO2, NULL);
   lv_obj_set_pos(lblSpO2Obj, 10, 210);//10,290
@@ -144,24 +131,15 @@ void DiveScreen::showScreen()
   lv_scr_load(DiveScreen::screenObj);
 }
 
-void DiveScreen::processButtonPress(ButtonType buttonType) 
-{
-
-}
-
 void DiveScreen::dataUpdate() 
 {
-  Serial.println("in update");
   int8_t s = UISystem::currentDiveData.time % 60;
   int8_t m = (UISystem::currentDiveData.time - s) / 60;
 
-  //lv_gauge_set_value(gaugeSpO2Obj, 0, UISystem::currentDiveData.o2saturation);
   lv_arc_set_value(arcSpO2Obj, UISystem::currentDiveData.o2saturation);
   lv_label_set_text_fmt(lblTimeObj, "%02d:%02d", m, s);
   lv_obj_realign(lblTimeObj);
   lv_label_set_text_fmt(lblDepth, "%d", (int)UISystem::currentDiveData.depth);
-  Serial.print("depth: ");
-  Serial.println(UISystem::currentDiveData.depth);
   lv_label_set_text_fmt(lblSpO2Obj, "%d", UISystem::currentDiveData.o2saturation);
   lv_label_set_text_fmt(lblHeartFrequency, "%d", UISystem::currentDiveData.heartFrequency);
   lv_bar_set_value(barDepthObj, 20 - UISystem::currentDiveData.depth, LV_ANIM_ON);
@@ -174,16 +152,4 @@ void DiveScreen::dataUpdate()
 void DiveScreen::update() 
 {
   dataUpdate();
-
-  if (UISystem::currentDiveData.depth < 1) 
-  {    
-    if (UISystem::currentDiveData.time >= 10) 
-    {
-      //UISystem::setScreen(STAT_SCREEN);
-    } 
-    else 
-    {
-      //UISystem::setScreen(IDLE_SCREEN);
-    }
-  }
 }

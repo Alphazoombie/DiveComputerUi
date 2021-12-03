@@ -11,7 +11,7 @@ class OtaManager
 {
 public:    
     static void setup();
-    static void checkforUpdates();
+    static void checkForUpdates();
 };
 
 #endif

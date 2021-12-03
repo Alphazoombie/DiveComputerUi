@@ -103,8 +103,12 @@ void WifiScreen::showScreen()
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 2;
     lv_obj_set_style_local_border_width(buttons[BUTTON_WIFI_ACTIVATION], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
-    dataUpdate();
     lv_scr_load(WifiScreen::screenObj);
+
+    if(!wifiActive)
+    {
+        lv_label_set_text(labelWifi, "Wifi [off]");
+    }
 }
 
 void WifiScreen::processButtonPress(ButtonType buttonType, int index) 
