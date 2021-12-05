@@ -6,13 +6,13 @@
  */
 
 #include <lvgl.h>
-#include "UISystem.h"
 #include <TFT_eSPI.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 #include <SPI.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
+#include "UISystem.h"
 #include "Touch.h"
 #include "CustomTouchButton.h"
 #include "WifiManager.h"
@@ -128,7 +128,6 @@ void loop()
 {
   /* UI updater for refreshing the display*/
   UISystem::start();
-
 
   diveButton.btnClickEventListener([](void)
   { 
