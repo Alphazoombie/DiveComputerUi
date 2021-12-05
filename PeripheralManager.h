@@ -11,12 +11,14 @@
 class PeripheralManager
 {
 public:
-    static int m_resPin;
-    static int m_mfioPin;
-    static int m_chipSelect;
+    PeripheralManager(){}
 
-    static SparkFun_Bio_Sensor_Hub m_bioHub;
-    static bioData m_body;
+    int m_resPin = 6;
+    int m_mfioPin = 5;
+    int m_chipSelect = 14;
+
+    SparkFun_Bio_Sensor_Hub m_bioHub = SparkFun_Bio_Sensor_Hub(m_resPin, m_mfioPin);
+    bioData m_body;
     
     static void initializeBioHubSensor();
     static void initializeSD();

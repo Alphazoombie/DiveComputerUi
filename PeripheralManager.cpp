@@ -1,12 +1,5 @@
 #include "PeripheralManager.h"
 
-int PeripheralManager::m_resPin = 6;
-int PeripheralManager::m_mfioPin = 5;
-int PeripheralManager::m_chipSelect = 14;
-
-SparkFun_Bio_Sensor_Hub PeripheralManager::m_bioHub = SparkFun_Bio_Sensor_Hub(m_resPin, m_mfioPin);
-bioData PeripheralManager::m_body;
-
 //TODO: use other library for ESP32 the SparkFun library didn´t work on the ESP32
 //-------biohub sensor--------
 //initializes the biohub-sensor

@@ -66,6 +66,7 @@ void DiveScreen::setup()
   lblDepth = lv_label_create(contDepth, NULL);
   lv_obj_set_pos(lblDepth, 187, 10); //250, 10
   lv_obj_set_size(lblDepth, 160, 100); //220, 140
+  lv_obj_set_style_local_text_font(lblDepth, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
   lv_label_set_align(lblDepth, LV_LABEL_ALIGN_CENTER);
   lv_obj_align(lblDepth, NULL, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_style_local_text_color(lblDepth, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
@@ -94,6 +95,7 @@ void DiveScreen::setup()
   lblSpO2Obj = lv_label_create(contSpO2, NULL);
   lv_obj_set_pos(lblSpO2Obj, 10, 210);//10,290
   lv_obj_set_size(lblSpO2Obj, contWidth, contHeight);//220,140
+  lv_obj_set_style_local_text_font(lblSpO2Obj, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
   lv_label_set_align(lblSpO2Obj, LV_LABEL_ALIGN_CENTER);
   lv_obj_align(lblSpO2Obj, NULL, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_style_local_text_color(lblSpO2Obj, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
@@ -111,6 +113,7 @@ void DiveScreen::setup()
   lblHeartFrequency = lv_label_create(contHeartFrequency, NULL);
   lv_obj_set_pos(lblHeartFrequency, 250, 290);//250,290
   lv_obj_set_size(lblHeartFrequency, contWidth, contHeight);//220,140
+  lv_obj_set_style_local_text_font(lblHeartFrequency, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
   lv_label_set_align(lblHeartFrequency, LV_LABEL_ALIGN_CENTER);
   lv_obj_align(lblHeartFrequency, NULL, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_style_local_text_color(lblHeartFrequency, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
