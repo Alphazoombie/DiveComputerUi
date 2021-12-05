@@ -38,7 +38,6 @@ void OptionScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_obj_t * label1 = lv_label_create(buttons[BUTTON_WIFI], NULL);
-    lv_obj_set_style_local_text_font(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(label1, LV_SYMBOL_WIFI);
 
@@ -50,7 +49,6 @@ void OptionScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_STAT_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_STAT_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_obj_t * label2 = lv_label_create(buttons[BUTTON_STAT_SCREEN], NULL);
-    lv_obj_set_style_local_text_font(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(label2, "Statistic");
 
@@ -62,7 +60,6 @@ void OptionScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_DIVE_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_DIVE_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_obj_t * label3 = lv_label_create(buttons[BUTTON_DIVE_SCREEN], NULL);
-    lv_obj_set_style_local_text_font(label3, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label3, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(label3, LV_SYMBOL_SETTINGS);
 
@@ -74,7 +71,6 @@ void OptionScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_IDLE_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_IDLE_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_obj_t * label4 = lv_label_create(buttons[BUTTON_IDLE_SCREEN], NULL);
-    lv_obj_set_style_local_text_font(label4, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label4, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(label4, LV_SYMBOL_HOME);
 }
