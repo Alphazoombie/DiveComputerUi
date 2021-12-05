@@ -43,7 +43,7 @@ void WifiScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_WIFI_DATA], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_WIFI_DATA], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     labelWifiAccessData = lv_label_create(buttons[BUTTON_WIFI_DATA], NULL);
-    //lv_obj_set_style_local_text_font(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
+    lv_obj_set_style_local_text_font(label1, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(labelWifiAccessData, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
 
     readWifiAccessData(ssid, password);
@@ -59,7 +59,7 @@ void WifiScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_REFRESH_DATA], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_REFRESH_DATA], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     labelWifiGenerate = lv_label_create(buttons[BUTTON_REFRESH_DATA], NULL);
-    //lv_obj_set_style_local_text_font(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
+    lv_obj_set_style_local_text_font(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(labelWifiGenerate, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(labelWifiGenerate, "Refresh SSID/PW");
 
@@ -71,7 +71,7 @@ void WifiScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_WIFI_ACTIVATION], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_WIFI_ACTIVATION], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     labelWifi = lv_label_create(buttons[BUTTON_WIFI_ACTIVATION], NULL);
-    //lv_obj_set_style_local_text_font(label3, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
+    lv_obj_set_style_local_text_font(label3, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(labelWifi, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(labelWifi, "Wifi [off]");
 
@@ -83,7 +83,7 @@ void WifiScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_BACK], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_BACK], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_obj_t * label4 = lv_label_create(buttons[BUTTON_BACK], NULL);
-    //lv_obj_set_style_local_text_font(label4, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
+    lv_obj_set_style_local_text_font(label4, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label4, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(label4, "Back");
 }

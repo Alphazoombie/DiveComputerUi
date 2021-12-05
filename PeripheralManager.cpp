@@ -1,5 +1,6 @@
 #include "PeripheralManager.h"
 
+//TODO: use other library for ESP32 the SparkFun library didn´t work on the ESP32
 //-------biohub sensor--------
 //initializes the biohub-sensor
 void PeripheralManager::initializeBioHubSensor() 
@@ -44,9 +45,14 @@ void PeripheralManager::initializeSD()
     Serial.println(" card initialized.");
 }
 
-//TODO
+//TODO: get real-time clock value 
 //get time from real-time clock
 void PeripheralManager::getCurrentTime(char* time)
 {
     strcpy(time, "14:50:13");
+}
+
+void PeripheralManager::getCurrentDate(char* date)
+{
+    //TBI
 }

@@ -27,8 +27,7 @@ static vector<Area> areas;
 
 class Touch
 {
-  public:
-    //static vector<Area> areas;
+public:
     static void setup();
     static void registerArea(int id, int x, int y, int width, int height);
     static void clearRegister();

@@ -50,7 +50,7 @@ void OptionScreen::setup()
     lv_obj_set_style_local_radius(buttons[BUTTON_STAT_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
     lv_obj_set_style_local_border_color(buttons[BUTTON_STAT_SCREEN], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_obj_t * label2 = lv_label_create(buttons[BUTTON_STAT_SCREEN], NULL);
-    //lv_obj_set_style_local_text_font(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
+    lv_obj_set_style_local_text_font(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_40);
     lv_obj_set_style_local_text_color(label2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, THEME_PRIMARY_COLOR_NORMAL);
     lv_label_set_text(label2, "Statistic");
 
@@ -95,7 +95,6 @@ void OptionScreen::showScreen()
     lv_obj_set_style_local_border_width(buttons[selectionIndex], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 1);
     selectionIndex = 0;
     lv_obj_set_style_local_border_width(buttons[BUTTON_WIFI], LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 3);
-    //dataUpdate();
     lv_scr_load(OptionScreen::screenObj);
 }
 
