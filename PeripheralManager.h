@@ -20,10 +20,9 @@ public:
     SparkFun_Bio_Sensor_Hub m_bioHub = SparkFun_Bio_Sensor_Hub(m_resPin, m_mfioPin);
     bioData m_body;
     
-    static void initializeBioHubSensor();
-    static void initializeSD();
+    void initializeBioHubSensor();
+    void initializeSD();
     static void getCurrentTime(char* time);
-    static void getCurrentDate(char* date);
 };
 
 #endif

@@ -12,6 +12,7 @@
 #include "Helper.h"
 #include "Touch.h"
 
+
 #define WIFI_ACCESS_DATA_PATH "/wifidata.wfd"
 
 class WifiScreen 

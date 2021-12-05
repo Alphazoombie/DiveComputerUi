@@ -16,7 +16,6 @@
 #include "Touch.h"
 #include "CustomTouchButton.h"
 #include "WifiManager.h"
-#include "PeripheralManager.h"
 
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
 static lv_disp_buf_t disp_buf;
@@ -27,6 +26,20 @@ int m_chipSelect = 14;
 bool isUp = true;
 
 CustomTouchButton diveButton = CustomTouchButton(T7);
+
+void initializeSD() 
+{
+    Serial.print("Initializing SD card...");
+    // see if the card is present and can be initialized:
+    SD.begin(m_chipSelect);
+    if (!SD.begin(m_chipSelect)) 
+    {
+      Serial.println("Card failed, or not present");
+      // don't do anything more:
+      while (1);
+    }
+    Serial.println(" card initialized.");
+}
 
 void buildDirectoryName()
 {
@@ -76,7 +89,7 @@ void setup()
   tft.begin(); /* TFT init */
   tft.setRotation(1); /* Landscape orientation */
 
-  PeripheralManager::initializeSD();
+  initializeSD();
 
   uint16_t calData[5] = { 275, 3620, 264, 3532, 1 };
   tft.setTouch(calData);
