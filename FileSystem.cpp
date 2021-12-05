@@ -1,7 +1,5 @@
 #include "FileSystem.h"
 
-// int FileSystem::m_diveID = 1;
-
 //writes the value of variable date in "date.log"
 void FileSystem::setDateToFile() 
 {
@@ -13,7 +11,7 @@ void FileSystem::setDateToFile()
     }
 }
 
-// reades the date from "date.log" and writes it
+// reads the date from "date.log" and writes it
 // in the m_oldDate member variable
 void FileSystem::getDateFromFile() 
 {
@@ -70,11 +68,7 @@ void FileSystem::writeDateToSessionFile(char* date)
 // get date from the real-time-clock and write value into date-variable
 void FileSystem::getCurrentDate() 
 {	
-    //char out[20];
-    //snprintf(out, sizeof out, "%id", millis());
-    //strncpy ( date, out, 6);
-    
-    // char currDate[] = "05_06_21";
+    //TODO: implement reading of realtime clock values to set the current date    
     strcpy(m_current_date, "21_10_21");
 }
 
@@ -87,8 +81,7 @@ void FileSystem::getCurrentDate()
 void FileSystem::initializeMetaData() 
 {
     getCurrentDate();
-    Serial.print("olddate sollte leer sein -> ");
-    Serial.println(m_oldDate);
+
     if(!SD.exists(m_directoryPath))
     {
         SD.mkdir(m_directoryPath);
@@ -97,10 +90,7 @@ void FileSystem::initializeMetaData()
     if (SD.exists(m_datePath)) 
     {
         getDateFromFile();
-        Serial.print("new date -> ");
-        Serial.println(m_current_date);
-        Serial.print("old date -> ");
-        Serial.println(m_oldDate);
+
         if (strcmp(m_current_date, m_oldDate) != 0)
         {
             SD.remove(m_datePath);

@@ -78,9 +78,10 @@ void setup()
 {
   void SetMillis();
   Serial.begin(115200); /* prepare for possible serial debug */
-  Serial.println("Booting");
+  Serial.println("Booting...");
   SPI.begin(5, 19, 18);
   lv_init();
+
 #if USE_LV_LOG != 0
   lv_log_register_print_cb(my_print); /* register print function for debugging */
 #endif
@@ -111,13 +112,11 @@ void setup()
   //indev_drv.read_cb = my_touchpad_read;
   lv_indev_drv_register(&indev_drv);
 
-  delay(5000);
-
   UISystem::fileSystem.createWifiDataFile();
   UISystem::fileSystem.initializeMetaData();
   buildDirectoryName(); 
 
-  /*The User Interface Initializer*/
+  /*Initialize User Interface and Touch handling*/
   UISystem::setup();
   Touch::setup();
 
@@ -126,22 +125,21 @@ void setup()
 
 void loop() 
 {
-  /* UI updater for refreshing the display*/
+  /*UI updater for refreshing the display*/
   UISystem::start();
 
   diveButton.btnClickEventListener([](void)
   { 
-      Serial.println("***In DiveButton Event listener");
       if(isUp)
       {
-          Serial.println("***Setting depth to 2.0");
+          Serial.println("Starting dive...");
           UISystem::depth = 2.0;
           isUp = false;
           UISystem::goin = true;
       }
       else
       {
-          Serial.println("***Resetting depth back to 0.0");
+          Serial.println("Stopping dive...");
           UISystem::depth = 0.0;
           UISystem::currentDiveData.depth = 0;
           isUp = true;

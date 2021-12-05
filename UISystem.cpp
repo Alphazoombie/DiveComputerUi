@@ -48,11 +48,6 @@ void UISystem::setup()
 
   lv_task_create([](lv_task_t* task) 
   {
-    // sensor.read();
-    // currentDiveData.depth =sensor.depth();
-    // currentDiveData.time++;
-    // currentDiveData.temperatur = sensor.temperature();
-
     switch (currentScreen) 
     {
       case DIVE_SCREEN:
@@ -61,17 +56,8 @@ void UISystem::setup()
       case IDLE_SCREEN:
         IdleScreen::update();
         break;
-      case OPTION_SCREEN:
-        //OptionScreen::update();
-        break;
       case STAT_SCREEN:
         StatScreen::update();
-        break;
-      case WIFI_SCREEN:
-        //WifiScreen::update();
-        break;
-      case SETTINGS_SCREEN:
-        //SettingsScreen::update();
         break;
     }
   }, 500, LV_TASK_PRIO_MID, NULL);
@@ -80,7 +66,7 @@ void UISystem::setup()
   {
     time = lv_tick_get() / 1000;
 
-    if (true)//collectingData) 
+    if (collectingData) 
     {
       currentDiveData.time++;
       //diveDataSeries.push_back(currentDiveData);

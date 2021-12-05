@@ -10,6 +10,8 @@
 // parameter.
 void Datalogger::getData(FileSystem* fileSystem) 
 {   
+    //TODO: read real sensor values 
+
     //Currently hardcoded dummy data
     UISystem::currentDiveData.accelX = 1.1f;
     UISystem::currentDiveData.accelY = 1.2f;
@@ -43,7 +45,7 @@ void Datalogger::logData(FileSystem* fileSystem, char* fullFilePath)
     {
         m_dataFile.println(data);
         m_dataFile.close();
-        Serial.println("data logged...");
+        Serial.println("measurepoint logged...");
         delay(50);
     }
     else 

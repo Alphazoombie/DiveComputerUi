@@ -19,9 +19,6 @@ public:
     CustomTouchButton(int pin) : m_pin(pin) {}
     
     void btnClickEventListener(std::function<void()> onClickFunction);
-    void isTouched();
-    void isStillTouched();
-    static void Callback(void* this_pointer);
 
 private:
     int m_pin;

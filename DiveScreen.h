@@ -19,7 +19,6 @@ class DiveScreen
         static lv_obj_t* lblSpO2Obj;
         static lv_obj_t* barDepthObj;
         static lv_obj_t* arcSpO2Obj;
-        //static lv_obj_t* gaugeSpO2Obj;
         static lv_obj_t* imgHeartFrequencyObj;
         static lv_obj_t* imgTimeObj;
         static lv_obj_t* imgSpO2Obj;

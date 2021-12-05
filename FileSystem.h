@@ -25,6 +25,7 @@ public:
     char m_oldDate[9];
     char m_logPath[25] PROGMEM;
     bool m_sameSession = false;
+    
     void setDateToFile(); 
     void getDateFromFile();
     int  getDiveID(); 

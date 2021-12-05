@@ -8,7 +8,6 @@ lv_obj_t* DiveScreen::screenObj;
 
 lv_obj_t* DiveScreen::lblTimeObj;
 lv_obj_t* DiveScreen::barDepthObj;
-//lv_obj_t* DiveScreen::gaugeSpO2Obj;
 lv_obj_t* DiveScreen::arcSpO2Obj;
 
 lv_obj_t* DiveScreen::imgHeartFrequencyObj;
