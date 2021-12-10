@@ -11,7 +11,6 @@
 #define TS_MAXY 3750
 
 Adafruit_STMPE610 ts = Adafruit_STMPE610(STMPE_CS);
-vector<Area> Touch::areas;
 
 void Touch::setup()
 {
