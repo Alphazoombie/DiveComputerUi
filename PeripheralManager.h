@@ -23,7 +23,6 @@ public:
     void initializeBioHubSensor();
     void initializeSD();
     static void getCurrentTime(char* time);
-    static void getCurrentDate(char* date);
 };
 
 #endif
