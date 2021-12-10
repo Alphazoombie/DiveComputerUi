@@ -14,11 +14,11 @@ Adafruit_STMPE610 ts = Adafruit_STMPE610(STMPE_CS);
 
 void Touch::setup()
 {
-  if (!ts.begin()) 
-  {
-    Serial.println("Couldn't start touchscreen controller");
-    while (1);
-  }
+    if (!ts.begin()) 
+    {
+        Serial.println("Failed to initialize touchscreen controller");
+        while (1);
+    }
 }
 
 void Touch::registerArea(int id, int x, int y, int width, int height)
@@ -31,79 +31,72 @@ void Touch::registerArea(int id, int x, int y, int width, int height)
     areas.back().height = height;
 };
 
-void Touch::clearRegister(){
-  areas.clear();
+void Touch::clearRegister()
+{
+    areas.clear();
 };
 
-int Touch::areaTouched(){
-  TS_Point p = ts.getPoint();
-  p.x = map(p.x, TS_MINX, TS_MAXX, 0, 240);
-  p.y = map(p.y, TS_MINY, TS_MAXY, 0, 320);
-  p.x = 240 - p.x;
+int Touch::areaTouched()
+{
+    TS_Point p = ts.getPoint();
+    p.x = map(p.x, TS_MINX, TS_MAXX, 0, 240);
+    p.y = map(p.y, TS_MINY, TS_MAXY, 0, 320);
+    p.x = 240 - p.x;
   
-  if(ts.touched() && p.x > 0 && p.y > 0)
-  {
-    for(int i = 0; i < areas.size(); i++)
+    if(ts.touched() && p.x > 0 && p.y > 0)
     {
-      if((areas[i].x <= p.y && p.y <= areas[i].x + areas[i].width)
-          && (areas[i].y <= p.x && p.x <= areas[i].y + areas[i].height))
-      {        
-        Serial.print("returned : ");
-        Serial.println(i);
-        return i; 
-      }       
+        for(int i = 0; i < areas.size(); i++)
+        {
+            if((areas[i].x <= p.y && p.y <= areas[i].x + areas[i].width)
+                && (areas[i].y <= p.x && p.x <= areas[i].y + areas[i].height))
+            {        
+                return i; 
+            }       
+        }
     }
-  }
   
-  return -1;
+    return -1;
 }
 
 void Touch::handleTouch()
 {
-   int z = Touch::areaTouched();
-   switch(z)
-   {
-      case 0:
-      case 1:  
-      case 2:   
-      case 3:
-         if(UISystem::currentScreen == OPTION_SCREEN)
-         {
-            if(OptionScreen::selectionIndex == z)
-            {
-            OptionScreen::processButtonPress(BUTTON_ACTIVATE, z); 
-            }
-            else
-            {
-            OptionScreen::processButtonPress(BUTTON_SELECT, z); 
-            }
-         }
-         else if(UISystem::currentScreen == WIFI_SCREEN)
-         {
-            if(WifiScreen::selectionIndex == (z + 1))
-            {
-            WifiScreen::processButtonPress(BUTTON_ACTIVATE, z); 
-            }
-            else
-            {
-            WifiScreen::processButtonPress(BUTTON_SELECT, z); 
-            }
-         }
-         else if(UISystem::currentScreen == SETTINGS_SCREEN)
-         {
-            if(SettingsScreen::selectionIndex == (z + 1))
-            {
-            SettingsScreen::processButtonPress(BUTTON_ACTIVATE, z); 
-            }
-            else
-            {
-            SettingsScreen::processButtonPress(BUTTON_SELECT, z); 
-            }
-         }               
-         else
-         {
-            UISystem::setScreen(OPTION_SCREEN);
-         }               
-         break;
-   }
+    int areaIndex = Touch::areaTouched();
+
+    if (UISystem::currentScreen == OPTION_SCREEN)
+    {
+        if (OptionScreen::selectionIndex == areaIndex)
+        {
+            OptionScreen::processButtonPress(BUTTON_ACTIVATE, areaIndex); 
+        }
+        else
+        {
+            OptionScreen::processButtonPress(BUTTON_SELECT, areaIndex); 
+        }
+    }
+    else if (UISystem::currentScreen == WIFI_SCREEN)
+    {
+        if (WifiScreen::selectionIndex == (areaIndex + 1))
+        {
+            WifiScreen::processButtonPress(BUTTON_ACTIVATE, areaIndex); 
+        }
+        else
+        {
+            WifiScreen::processButtonPress(BUTTON_SELECT, areaIndex); 
+        }
+    }
+    else if (UISystem::currentScreen == SETTINGS_SCREEN)
+    {
+        if (SettingsScreen::selectionIndex == (areaIndex + 1))
+        {
+            SettingsScreen::processButtonPress(BUTTON_ACTIVATE, areaIndex); 
+        }
+        else
+        {
+            SettingsScreen::processButtonPress(BUTTON_SELECT, areaIndex); 
+        }
+    }               
+    else
+    {
+        UISystem::setScreen(OPTION_SCREEN);
+    }  
 }

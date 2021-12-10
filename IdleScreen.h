@@ -14,7 +14,8 @@ class IdleScreen
 {
 public:
     static lv_obj_t* screenObj;
-    static lv_obj_t* lblTime;   
+    static lv_obj_t* lblTime;  
+     
     static void setup();
     static void showScreen();
     static void processButtonPress(ButtonType);

@@ -47,8 +47,10 @@ bool WifiManager::connectAccessPoint(char* ssid, char* password)
     {
         disconnectAccessPoint();
     }
+
     int sizeSsid = 0;
     int sizePass = 0;
+
     for (size_t i = 0; i < 29; i++)
     {         
         if (ssid[i] == '\0' || ssid[i] == '\n')
@@ -88,11 +90,14 @@ bool WifiManager::connectAccessPoint(char* ssid, char* password)
     int counter = 0;
     Serial.println(counter);
     WiFi.begin(realSsid, realPass);
-    while (WiFi.status() != WL_CONNECTED && counter < 10) {
-    delay(500);
-    Serial.println("Connecting to WiFi..");
-    counter++;
+
+    while (WiFi.status() != WL_CONNECTED && counter < 10) 
+    {
+        delay(500);
+        Serial.println("Connecting to WiFi..");
+        counter++;
     }
+    
     if (counter >= 10)
     {
         Serial.println("Connection failed");
