@@ -1,5 +1,8 @@
 /**
    @author Lucas Balda
+   @author Manuel Bäcker
+   @author Tim Tröger
+   @author Jan Tröger
    modified by Benjamin Bube
 */
 
@@ -16,8 +19,8 @@ bool UISystem::goin = false;
 long UISystem::time = 0;
 long UISystem::startTimeDive = 0;
 
-CustomTouchButton buttonActivate = CustomTouchButton(T5); 
-CustomTouchButton buttonSelect = CustomTouchButton(T0);
+TouchButton buttonActivate = TouchButton(T5); 
+TouchButton buttonSelect = TouchButton(T0);
 
 char jsonString[200];
 char UISystem::directoryName[10];
@@ -200,7 +203,7 @@ void UISystem::handleDiveLogic()
 void UISystem::handleButtons()
 {
     /*Setup OnClick EventListeners for the buttons to navigate through the menu*/
-      buttonSelect.btnClickEventListener([](void)
+      buttonSelect.addTouchEvent([](void)
       {
           if(UISystem::currentScreen == IDLE_SCREEN)
           {
@@ -229,24 +232,24 @@ void UISystem::handleButtons()
           UISystem::setScreen(UISystem::currentScreen);
       });
 
-      buttonActivate.btnClickEventListener([](void)
+      buttonActivate.addTouchEvent([](void)
       {
-        if(UISystem::currentScreen == OPTION_SCREEN)
-        {
-          OptionScreen::processButtonPress(BUTTON_SELECT, -1);
-        }
-        else if(UISystem::currentScreen == WIFI_SCREEN)
-        {
-          WifiScreen::processButtonPress(BUTTON_SELECT, -1);
-        }   
-        else if(UISystem::currentScreen == SETTINGS_SCREEN)
-        {
-          SettingsScreen::processButtonPress(BUTTON_SELECT, -1);
-        } 
-        else if(UISystem::currentScreen == STAT_SCREEN)
-        {
-          StatScreen::processButtonPress(BUTTON_SELECT);
-        }         
+          if(UISystem::currentScreen == OPTION_SCREEN)
+          {
+            OptionScreen::processButtonPress(BUTTON_SELECT, -1);
+          }
+          else if(UISystem::currentScreen == WIFI_SCREEN)
+          {
+            WifiScreen::processButtonPress(BUTTON_SELECT, -1);
+          }   
+          else if(UISystem::currentScreen == SETTINGS_SCREEN)
+          {
+            SettingsScreen::processButtonPress(BUTTON_SELECT, -1);
+          } 
+          else if(UISystem::currentScreen == STAT_SCREEN)
+          {
+            StatScreen::processButtonPress(BUTTON_SELECT);
+          }         
       });
 }
 

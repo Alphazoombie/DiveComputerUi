@@ -14,7 +14,7 @@
 #include <WiFiClient.h>
 #include "UISystem.h"
 #include "Touch.h"
-#include "CustomTouchButton.h"
+#include "TouchButton.h"
 #include "WifiManager.h"
 
 TFT_eSPI tft = TFT_eSPI(); /* TFT instance */
@@ -25,7 +25,7 @@ int m_chipSelect = 14;
 
 bool isUp = true;
 
-CustomTouchButton diveButton = CustomTouchButton(T7);
+TouchButton diveButton = TouchButton(T7);
 
 void initializeSD() 
 {
@@ -128,7 +128,7 @@ void loop()
   /*UI updater for refreshing the display*/
   UISystem::start();
 
-  diveButton.btnClickEventListener([](void)
+  diveButton.addTouchEvent([](void)
   { 
       if(isUp)
       {

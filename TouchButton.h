@@ -4,21 +4,18 @@
  * @author Tim Tröger
  */
 
-#ifndef CUSTOMTOUCHBUTTON_H
-#define CUSTOMTOUCHBUTTON_H
+#ifndef TOUCHBUTTON_H
+#define TOUCHBUTTON_H
 
 #include <Arduino.h>
 #include <functional>
-#include <Ticker.h>
 
-class CustomTouchButton
+class TouchButton
 {
 public:
-    CustomTouchButton() {}
-
-    CustomTouchButton(int pin) : m_pin(pin) {}
+    TouchButton(int pin) : m_pin(pin) { }
     
-    void btnClickEventListener(std::function<void()> onClickFunction);
+    void addTouchEvent(std::function<void()> onTouchEventCallback);
 
 private:
     int m_pin;

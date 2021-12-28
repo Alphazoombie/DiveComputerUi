@@ -4,9 +4,9 @@
  * @author Tim Tröger
  */
 
-#include "CustomTouchButton.h"
+#include "TouchButton.h"
 
-void CustomTouchButton::btnClickEventListener(std::function<void()> onClickFunction) 
+void TouchButton::addTouchEvent(std::function<void()> onTouchEventCallback) 
 {
     //the print statement is needed to run the logic below without errors
     Serial.print("");
@@ -14,7 +14,7 @@ void CustomTouchButton::btnClickEventListener(std::function<void()> onClickFunct
     {
         if(touchRead(m_pin) > 60)
         {
-            onClickFunction();
+            onTouchEventCallback();
             m_verifiedTouch = false;
             m_count = 1;
         }

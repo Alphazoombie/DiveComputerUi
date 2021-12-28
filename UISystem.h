@@ -23,7 +23,7 @@
 #include "FileSystem.h"
 #include "Datalogger.h"
 #include "Helper.h"
-#include "CustomTouchButton.h"
+#include "TouchButton.h"
 
 #if DIVE_SIMULATION
 #define PI 3.14159

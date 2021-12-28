@@ -1,5 +1,6 @@
 /**
  * @author Lucas Balda
+ * modified by Manuel Bäcker
  */
 
 #ifndef BUTTON_TYPE_H
